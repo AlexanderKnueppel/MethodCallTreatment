@@ -178,8 +178,9 @@ public class VerificationEffortMain {
 	 	  
 	 	 List<Integer> result = new ArrayList<Integer>();
 	 	 
-	 	 for(VerificationResult v : verify(getTmpPath().getPath() + "/" + 1000 + "/", (p == Program.BUBBLESORT) ? Arrays.asList("execute") : Arrays.asList("a1"))) {
+	 	 for(VerificationResult v : verify(getTmpPath().getPath() + "/" + 1000 + "/", Arrays.asList("a1"))) {
 	 		  result.add(v.getStatistics().nodes);
+	 		  System.out.println("Closed? " + v.isClosed());
 	 	  }
 	 	  return result;
 	}
@@ -300,7 +301,8 @@ public class VerificationEffortMain {
 						// Start auto mode
 						env.getUi().getProofControl().startAndWaitForAutoMode(proof);
 						
-						resultList.add(new VerificationResult(contract.getTarget().toString(), contract.getDisplayName(), proof.getStatistics()));
+						resultList.add(new VerificationResult(contract.getTarget().toString(), contract.getDisplayName(), proof.getStatistics(), proof.openGoals()
+								.isEmpty()));
 					} catch (ProofInputException e) {
 						System.out.println(
 								"Exception at '" + contract.getDisplayName() + "' of " + contract.getTarget() + ":");
@@ -338,10 +340,10 @@ public class VerificationEffortMain {
 		 * 
 		 */
 		int runs = 10;
-		Program p = Program.BUBBLESORT;
+		Program p = Program.ADD;
 		String path = "Results";
-		int width = 2;
-		int depth = 4;
+		int width = 5;
+		int depth = 3;
 		boolean completeSpec = true; //used for method inlining vs contracting
 		boolean contracting = false; //only necessary when completeSpec is true
 		
@@ -364,6 +366,7 @@ public class VerificationEffortMain {
 			}
 		}
 		
+		//for(int d = depth; d <= 30; ++d) {
 		VerificationEffortMain executer = new VerificationEffortMain(p, path, width, depth, runs);
 		
 		try {
@@ -428,6 +431,7 @@ public class VerificationEffortMain {
 			result = result.substring(0, result.length()-1);
 			
 			lines.add(result);
+			
 			System.out.println(result);
 			
 			if(caching) {
@@ -448,6 +452,7 @@ public class VerificationEffortMain {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		//}
 	}
 
 	/* (non-Javadoc)

@@ -7,7 +7,17 @@ public class VerificationResult implements Comparable<VerificationResult> {
 	private String target;
 	private String displayName;
 	private Statistics statistics;
-	
+	private boolean closed = false;
+
+	public boolean isClosed() {
+		return closed;
+	}
+
+
+	public void setClosed(boolean closed) {
+		this.closed = closed;
+	}
+
 
 	/**
 	 * @return the target
@@ -64,6 +74,10 @@ public class VerificationResult implements Comparable<VerificationResult> {
 		this.statistics = statistics;
 	}
 
+	public VerificationResult(String target, String displayName, Statistics statistics, boolean closed) {
+		this(target, displayName, statistics);
+		setClosed(closed);
+	}
 
 	@Override
 	public int compareTo(VerificationResult o) {
