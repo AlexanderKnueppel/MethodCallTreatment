@@ -187,7 +187,7 @@ public class VerificationEffortMain {
 	
 	public List<Integer> verifyAddProgram(int seed, int run) {
 	 	  try {
-	 			Incrementer.generatRandomSpecifiedProgramsForAdd(width, depth, seed, getTmpPath().getPath(), (run > 0? false : true));
+	 			Incrementer.generatRandomSpecifiedProgramsForAdd(width, depth, seed, getTmpPath().getPath(), (run > 0 ? false : true));
 	 	  } catch (FileNotFoundException e1) {
 	 			// TODO Auto-generated catch block
 	 			e1.printStackTrace();
