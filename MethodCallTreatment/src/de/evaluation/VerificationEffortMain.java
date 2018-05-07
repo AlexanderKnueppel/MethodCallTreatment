@@ -346,10 +346,12 @@ public class VerificationEffortMain {
 		int depth = 3;
 		boolean completeSpec = true; //used for method inlining vs contracting
 		boolean contracting = false; //only necessary when completeSpec is true
+
 		
 		if(completeSpec) {
 			runs = 1;
 		}
+
 		
 		boolean caching = true;
 		String file = path + "/cache.txt";
