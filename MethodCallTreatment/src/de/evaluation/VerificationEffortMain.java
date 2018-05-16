@@ -1,7 +1,6 @@
 package de.evaluation;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -33,16 +32,18 @@ public class VerificationEffortMain {
 	private List<Integer> result = new ArrayList<Integer>();
 	private int width;
 	private int depth;
-	private boolean contracting = true;
+	private boolean contracting;
 	private int runs;
 	private boolean completeSpec;
 
-	public VerificationEffortMain(Program p, int width, int depth, int runs, boolean completeSpec) {
+
+	public VerificationEffortMain(Program p, int width, int depth, int runs, boolean completeSpec, boolean contracting) {
 		this.program = p;
 		this.width = width;
 		this.depth = depth;
 		this.runs = runs;
 		this.completeSpec = completeSpec;
+		this.contracting = contracting;
 	}
 
 	/**

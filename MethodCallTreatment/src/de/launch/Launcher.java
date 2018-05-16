@@ -25,7 +25,7 @@ public class Launcher {
 	static int width = 3;
 	static int depth = 2;
 	static boolean completeSpec = true; // used for method inlining vs contracting
-	static boolean contracting = true;
+	static boolean contracting = false;
 	static VerificationEffortMain executer;
 
 	/**
@@ -44,7 +44,7 @@ public class Launcher {
 		}
 
 		// for(int d = depth; d <= 30; ++d) {
-		executer = new VerificationEffortMain(program, width, depth, runs, completeSpec);
+		executer = new VerificationEffortMain(program, width, depth, runs, completeSpec, contracting);
 
 		try {
 			FileControl.initStructure();
