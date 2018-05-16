@@ -263,11 +263,11 @@ public static void generatRandomSpecifiedProgramsForBubbleSort(final int width, 
 		int total = totalNumberOfMethods(width, depth);
 		System.out.println("Total number of methods " + total);
 		
-		for(int i = (includeBorders? 0 : 10); i <= (includeBorders? 100 : 90); i += 10) {
+		for(int i = (includeBorders? 0 : 10); i <= (includeBorders ? 100 : 90); i += 10) {
 			counter = 1;
 			randomList.clear();
 			Random random = new Random(seed); 
-			while(randomList.size() < total*i/100) {
+			while(randomList.size() < total * i / 100) {
 				int n = random.nextInt(total) + 1;
 				if(!randomList.contains(n)) {
 					randomList.add(n);
@@ -279,7 +279,7 @@ public static void generatRandomSpecifiedProgramsForBubbleSort(final int width, 
 			
 			final TreeCodeGenerator cg = new BubbleCodeGenerator();
 			
-			String name = "BubbleSortDepth"+(depth)+"Width"+(width)+"P"+ (i == 100? "9" : "") + i;
+			String name = "BubbleSortDepth" + (depth) + "Width" + (width) + "P" + (i == 100 ? "9" : "") + i;
 			
 			File f = new File(path + "/" + seed);
 			f.mkdir();
