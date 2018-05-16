@@ -12,8 +12,6 @@ import java.util.Set;
 import org.key_project.util.collection.ImmutableSet;
 
 import de.tubs.mt.FileControl;
-import de.tubs.mt.Incrementer;
-import de.tubs.mt.CallGenerator;
 import de.tubs.mt.CallGenerator.Program;
 import de.uka.ilkd.key.control.KeYEnvironment;
 import de.uka.ilkd.key.java.abstraction.KeYJavaType;
@@ -29,37 +27,22 @@ import de.uka.ilkd.key.util.KeYTypeUtil;
 import de.uka.ilkd.key.util.MiscTools;
 
 public class VerificationEffortMain {
-/**
-	public enum Program {
-		ADD, BUBBLESORT
-	}
-	**/
+
+	
 	private Program program;
+	private List<Integer> result = new ArrayList<Integer>();
 	private int width;
 	private int depth;
 	private boolean contracting = true;
 	private int runs;
+	private boolean completeSpec;
 
-	public VerificationEffortMain(Program p, int width, int depth, int runs) {
+	public VerificationEffortMain(Program p, int width, int depth, int runs, boolean completeSpec) {
 		this.program = p;
 		this.width = width;
 		this.depth = depth;
 		this.runs = runs;
-	}
-
-	/**
-	 * @return the program
-	 */
-	public Program getProgram() {
-		return program;
-	}
-
-	/**
-	 * @param program
-	 *            the program to set
-	 */
-	public void setProgram(Program program) {
-		this.program = program;
+		this.completeSpec = completeSpec;
 	}
 
 	/**
@@ -108,84 +91,24 @@ public class VerificationEffortMain {
 	}
 	
 	
-	public void generateProgram(int seed) {
-		CallGenerator.callFullSpecifiedProgramGenerator(Program.ADD, seed, width, depth);	
-	}
-	
-
-
-
-	public List<Integer> verifySingleProgram(Program p, boolean c, int seed) {
-		generateProgram(seed);
-
-		contracting = c;
-
-		List<Integer> result = new ArrayList<Integer>();
-
-		for (VerificationResult v : verify(FileControl.getTmpPath().getPath() + "/" + seed + "/", Arrays.asList("a1"))) {
-			result.add(v.getStatistics().nodes);
-			System.out.println("Closed? " + v.isClosed());
-		}
-		return result;
-	}
-	
 	
 	
 	public List<Integer> verifyProgram(int seed, int run) {
-		return (program == Program.ADD ? verifyAddProgram(seed, run) : verifyBubbleSortProgram(seed, run));
-	}
-
-	/**
-	 * List for ADD
-	 * 
-	 * @param seed
-	 * @param run
-	 * @return
-	 */
-	public List<Integer> verifyAddProgram(int seed, int run) {
-		CallGenerator.callRandomSpecifiedProgramGenerator(Program.ADD, width, depth, seed, run);
-
-		List<Integer> result = new ArrayList<Integer>();
-
-		for (VerificationResult v : verify(FileControl.getTmpPath().getPath() + "/" + seed + "/", Arrays.asList("a1"))) {
+		String whitelist = completeSpec ? "a1" : "execute";
+		for (VerificationResult v : verify(FileControl.getTmpPath().getPath() + "/" + seed + "/", Arrays.asList(whitelist))) {
 			result.add(v.getStatistics().nodes);
 			System.out.println("Closed? " + v.isClosed());
 		}
-		
 		return result;
 	}
-
-	/**
-	 * List for Bubblesort
-	 * 
-	 * @param seed
-	 * @param run
-	 * @return
-	 */
-	public List<Integer> verifyBubbleSortProgram(int seed, int run) {
-		try {
-			Incrementer.generatRandomSpecifiedProgramsForBubbleSort(width, depth, seed, FileControl.getTmpPath().getPath(),
-					(run > 0 ? false : true));
-		} catch (FileNotFoundException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-
-		List<Integer> result = new ArrayList<Integer>();
-
-		for (VerificationResult v : verify(FileControl.getTmpPath().getPath() + "/" + seed + "/", Arrays.asList("execute"))) {
-			result.add(v.getStatistics().nodes);
-		}
-
-		return result;
-	}
-
+	
 	
 	
 	public List<VerificationResult> verify(String folder) {
 		return verify(folder, null);
 	}
 
+	
 	public List<VerificationResult> verify(String folder, List<String> whitelist) {
 		List<File> classPaths = null; // Optionally: Additional specifications
 										// for API classes

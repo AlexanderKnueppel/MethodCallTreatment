@@ -24,8 +24,8 @@ public class Launcher {
 	static Program program = Program.ADD;
 	static int width = 3;
 	static int depth = 2;
-	static boolean completeSpec = false; // used for method inlining vs contracting
-	static boolean contracting = false;
+	static boolean completeSpec = true; // used for method inlining vs contracting
+	static boolean contracting = true;
 	static VerificationEffortMain executer;
 
 	/**
@@ -44,7 +44,7 @@ public class Launcher {
 		}
 
 		// for(int d = depth; d <= 30; ++d) {
-		executer = new VerificationEffortMain(program, width, depth, runs);
+		executer = new VerificationEffortMain(program, width, depth, runs, completeSpec);
 
 		try {
 			FileControl.initStructure();
@@ -89,13 +89,12 @@ public class Launcher {
 
 			
 			if (!completeSpec) {
-				CallGenerator.callRandomSpecifiedProgramGenerator(program, width, depth, seed, i);
-				effort = executer.verifyProgram(seed, i);
+				CallGenerator.callRandomSpecifiedProgramGenerator(program, width, depth, seed, i);;
 			} else {
 				CallGenerator.callFullSpecifiedProgramGenerator(program, seed, width, depth);
-				effort = executer.verifySingleProgram(program, contracting, seed);
 			}
-
+			
+			effort = executer.verifyProgram(seed, i);
 			
 			
 			// Only first run needs to compute verification effort for 0% and 100%
