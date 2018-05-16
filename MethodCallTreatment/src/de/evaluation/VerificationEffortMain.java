@@ -2,7 +2,6 @@ package de.evaluation;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -12,7 +11,10 @@ import java.util.Set;
 
 import org.key_project.util.collection.ImmutableSet;
 
+import de.tubs.mt.FileControl;
 import de.tubs.mt.Incrementer;
+import de.tubs.mt.CallGenerator;
+import de.tubs.mt.CallGenerator.Program;
 import de.uka.ilkd.key.control.KeYEnvironment;
 import de.uka.ilkd.key.java.abstraction.KeYJavaType;
 import de.uka.ilkd.key.logic.op.IObserverFunction;
@@ -27,24 +29,19 @@ import de.uka.ilkd.key.util.KeYTypeUtil;
 import de.uka.ilkd.key.util.MiscTools;
 
 public class VerificationEffortMain {
-
+/**
 	public enum Program {
 		ADD, BUBBLESORT
 	}
-
-	private static Program p;
-	private static String tmp_folder = "tmp";
-	private String resultsTXT = "Results.txt";
+	**/
 	private Program program;
-	private String path;
 	private int width;
 	private int depth;
 	private boolean contracting = true;
 	private int runs;
 
-	public VerificationEffortMain(Program p, String path, int width, int depth, int runs) {
+	public VerificationEffortMain(Program p, int width, int depth, int runs) {
 		this.program = p;
-		this.path = path;
 		this.width = width;
 		this.depth = depth;
 		this.runs = runs;
@@ -63,21 +60,6 @@ public class VerificationEffortMain {
 	 */
 	public void setProgram(Program program) {
 		this.program = program;
-	}
-
-	/**
-	 * @return the path
-	 */
-	public String getPath() {
-		return path;
-	}
-
-	/**
-	 * @param path
-	 *            the path to set
-	 */
-	public void setPath(String path) {
-		this.path = path;
 	}
 
 	/**
@@ -124,73 +106,33 @@ public class VerificationEffortMain {
 	public void setRuns(int runs) {
 		this.runs = runs;
 	}
-
-	public File getTmpPath() {
-		return new File(path.replaceAll("/", "") + "/" + tmp_folder.replaceAll("/", "") + "/");
-	}
-
-	public File getTopPath() {
-		return new File(path.replaceAll("/", "") + "/");
-	}
-
-	public File getResultHandle() {
-		return new File(path.replaceAll("/", "") + "/" + resultsTXT);
+	
+	
+	public void generateProgram(int seed) {
+		CallGenerator.callFullSpecifiedProgramGenerator(Program.ADD, seed, width, depth);	
 	}
 	
 
-	public static void deleteRecursevly(File f) {
-		if (f.isDirectory()) {
-			for (File subFile : f.listFiles()) {
-				deleteRecursevly(subFile);
-			}
-		}
-		f.delete();
-	}
-	
 
-	public void initStructure() throws IOException {
-		File tmp = getTmpPath();
 
-		if (tmp.exists()) {
-			deleteRecursevly(tmp);
-		}
-
-		tmp.mkdirs();
-
-		if (!getResultHandle().exists())
-			getResultHandle().createNewFile();
-	}
-	
-	
-	public void generateProgram() {
-		try {
-			if (p == Program.BUBBLESORT)
-				Incrementer.generateFullySpecifiedProgramBubble(width, depth, 1000, getTmpPath().getPath());
-			else
-				Incrementer.generateFullySpecifiedProgramAdd(width, depth, 1000, getTmpPath().getPath());
-		} catch (FileNotFoundException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}	
-	}
-	
-
-	public List<Integer> verifyProgram(int seed, int run) {
-		return (program == Program.ADD ? verifyAddProgram(seed, run) : verifyBubbleSortProgram(seed, run));
-	}
-
-	public List<Integer> verifySingleProgram(Program p, boolean c) {
-		generateProgram();
+	public List<Integer> verifySingleProgram(Program p, boolean c, int seed) {
+		generateProgram(seed);
 
 		contracting = c;
 
 		List<Integer> result = new ArrayList<Integer>();
 
-		for (VerificationResult v : verify(getTmpPath().getPath() + "/" + 1000 + "/", Arrays.asList("a1"))) {
+		for (VerificationResult v : verify(FileControl.getTmpPath().getPath() + "/" + seed + "/", Arrays.asList("a1"))) {
 			result.add(v.getStatistics().nodes);
 			System.out.println("Closed? " + v.isClosed());
 		}
 		return result;
+	}
+	
+	
+	
+	public List<Integer> verifyProgram(int seed, int run) {
+		return (program == Program.ADD ? verifyAddProgram(seed, run) : verifyBubbleSortProgram(seed, run));
 	}
 
 	/**
@@ -201,17 +143,11 @@ public class VerificationEffortMain {
 	 * @return
 	 */
 	public List<Integer> verifyAddProgram(int seed, int run) {
-		try {
-			Incrementer.generatRandomSpecifiedProgramsForAdd(width, depth, seed, getTmpPath().getPath(),
-					(run > 0 ? false : true));
-		} catch (FileNotFoundException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
+		CallGenerator.callRandomSpecifiedProgramGenerator(Program.ADD, width, depth, seed, run);
 
 		List<Integer> result = new ArrayList<Integer>();
 
-		for (VerificationResult v : verify(getTmpPath().getPath() + "/" + seed + "/", Arrays.asList("a1"))) {
+		for (VerificationResult v : verify(FileControl.getTmpPath().getPath() + "/" + seed + "/", Arrays.asList("a1"))) {
 			result.add(v.getStatistics().nodes);
 			System.out.println("Closed? " + v.isClosed());
 		}
@@ -228,7 +164,7 @@ public class VerificationEffortMain {
 	 */
 	public List<Integer> verifyBubbleSortProgram(int seed, int run) {
 		try {
-			Incrementer.generatRandomSpecifiedProgramsForBubbleSort(width, depth, seed, getTmpPath().getPath(),
+			Incrementer.generatRandomSpecifiedProgramsForBubbleSort(width, depth, seed, FileControl.getTmpPath().getPath(),
 					(run > 0 ? false : true));
 		} catch (FileNotFoundException e1) {
 			// TODO Auto-generated catch block
@@ -237,7 +173,7 @@ public class VerificationEffortMain {
 
 		List<Integer> result = new ArrayList<Integer>();
 
-		for (VerificationResult v : verify(getTmpPath().getPath() + "/" + seed + "/", Arrays.asList("execute"))) {
+		for (VerificationResult v : verify(FileControl.getTmpPath().getPath() + "/" + seed + "/", Arrays.asList("execute"))) {
 			result.add(v.getStatistics().nodes);
 		}
 

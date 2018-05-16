@@ -1,6 +1,5 @@
 package de.launch;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
@@ -12,66 +11,48 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import de.evaluation.VerificationEffortMain;
-import de.evaluation.VerificationEffortMain.Program;
+import de.tubs.mt.CallGenerator;
+import de.tubs.mt.CallGenerator.Program;
+import de.tubs.mt.FileControl;
 
 public class Launcher {
 
-	static final String PATH = "Results";
-	static final String FILE = PATH + "/cache.txt";
 
 	static boolean caching = true;
 
-	static int runs = 10;
-	static Program p = Program.ADD;
-	static int width = 5;
-	static int depth = 3;
+	static int runs = 3;
+	static Program program = Program.ADD;
+	static int width = 3;
+	static int depth = 2;
 	static boolean completeSpec = false; // used for method inlining vs contracting
 	static boolean contracting = false;
-	
 	static VerificationEffortMain executer;
 
-	
-	static void createFile() {
-		if (!new File(PATH).exists())
-			new File(PATH).mkdir();
-
-		if (caching && !new File(FILE).exists()) {
-			try {
-				new File(FILE).createNewFile();
-			} catch (IOException e2) {
-				// TODO Auto-generated catch block
-				e2.printStackTrace();
-			}
-		}
-	}
-
-	
 	/**
 	 * call:
 	 * 
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		
 
 		if (completeSpec) {
 			runs = 1;
 		}
 
-		createFile();
+		if (caching) {
+			FileControl.createFile();
+		}
+
 		// for(int d = depth; d <= 30; ++d) {
-		executer = new VerificationEffortMain(p, PATH, width, depth, runs);
+		executer = new VerificationEffortMain(program, width, depth, runs);
 
 		try {
-			executer.initStructure();
+			FileControl.initStructure();
 		} catch (IOException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 
-		
-		
-		
 		List<String> lines = new LinkedList<String>();
 		lines.add(executer.toString());
 		if (completeSpec)
@@ -79,17 +60,17 @@ public class Launcher {
 		lines.add("=============================================================");
 
 		System.out.println(lines.get(0) + "\n" + lines.get(1) + "\n\n");
-		
-		
+
 		
 		if (caching) {
 			try {
-				Files.write(Paths.get(FILE), lines, Charset.forName("UTF-8"), StandardOpenOption.APPEND);
+				Files.write(Paths.get(FileControl.FILE), lines, Charset.forName("UTF-8"), StandardOpenOption.APPEND);
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
+		
 
 		long start = System.currentTimeMillis();
 
@@ -106,12 +87,17 @@ public class Launcher {
 
 			List<Integer> effort = null;
 
+			
 			if (!completeSpec) {
+				CallGenerator.callRandomSpecifiedProgramGenerator(program, width, depth, seed, i);
 				effort = executer.verifyProgram(seed, i);
 			} else {
-				effort = executer.verifySingleProgram(p, contracting);
+				CallGenerator.callFullSpecifiedProgramGenerator(program, seed, width, depth);
+				effort = executer.verifySingleProgram(program, contracting, seed);
 			}
 
+			
+			
 			// Only first run needs to compute verification effort for 0% and 100%
 			if (i == 0) {
 				effortInlining = effort.get(0);
@@ -133,7 +119,8 @@ public class Launcher {
 
 			if (caching) {
 				try {
-					Files.write(Paths.get(FILE), Arrays.asList(result), Charset.forName("UTF-8"), StandardOpenOption.APPEND);
+					Files.write(Paths.get(FileControl.FILE), Arrays.asList(result), Charset.forName("UTF-8"),
+							StandardOpenOption.APPEND);
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -144,7 +131,8 @@ public class Launcher {
 		lines.add("\n");
 
 		try {
-			Files.write(Paths.get(executer.getResultHandle().getPath()), lines, Charset.forName("UTF-8"), StandardOpenOption.APPEND);
+			Files.write(Paths.get(FileControl.getResultHandle().getPath()), lines, Charset.forName("UTF-8"),
+					StandardOpenOption.APPEND);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

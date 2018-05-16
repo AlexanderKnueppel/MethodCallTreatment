@@ -5,9 +5,10 @@ import java.io.IOException;
 
 public abstract class FileControl {
 	
-	private static String path;
-	private static String resultsTXT = "Results.txt";
-	private static String tmp_folder = "tmp";
+	private static final String resultsTXT = "Results.txt";
+	private static final String tmp_folder = "tmp";
+	public static final String PATH = "Results";
+	public static final String FILE = PATH + "/cache.txt";
 	
 	
 	public static void initStructure() throws IOException {
@@ -33,18 +34,34 @@ public abstract class FileControl {
 		f.delete();
 	}
 	
+	public static void createFile() {
+		if (!new File(PATH).exists())
+			new File(PATH).mkdir();
+
+		if (!new File(FILE).exists()) {
+			try {
+				new File(FILE).createNewFile();
+			} catch (IOException e2) {
+				// TODO Auto-generated catch block
+				e2.printStackTrace();
+			}
+		}
+	}
+	
 	public static File getResultHandle() {
-		return new File(path.replaceAll("/", "") + "/" + resultsTXT);
+		return new File(PATH.replaceAll("/", "") + "/" + resultsTXT);
 	}
 	
 	public static File getTmpPath() {
-		return new File(path.replaceAll("/", "") + "/" + tmp_folder.replaceAll("/", "") + "/");
+		return new File(PATH.replaceAll("/", "") + "/" + tmp_folder.replaceAll("/", "") + "/");
 	}
 	
-	public File getTopPath() {
-		return new File(path.replaceAll("/", "") + "/");
+	public static File getTopPath() {
+		return new File(PATH.replaceAll("/", "") + "/");
 	}
 
-	
+	public static String getPath() {
+		return PATH;
+	}
 
 }
