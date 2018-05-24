@@ -20,11 +20,11 @@ public class Launcher {
 
 	static boolean caching = true;
 
-	static int runs = 3;
+	static int runs = 1;
 	static Program program = Program.ADD;
 	static int width = 3;
 	static int depth = 2;
-	static boolean completeSpec = true; // used for method inlining vs contracting
+	static boolean completeSpec = false; // used for method inlining vs contracting
 	static boolean contracting = false;
 	static VerificationEffortMain executer;
 
