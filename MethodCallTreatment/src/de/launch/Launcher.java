@@ -20,7 +20,7 @@ public class Launcher {
 
 	static boolean caching = true;
 
-	static int runs = 1;
+	static int runs = 5;
 	static Program program = Program.ADD;
 	static int width = 3;
 	static int depth = 2;
