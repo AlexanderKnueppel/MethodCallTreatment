@@ -95,7 +95,7 @@ public class VerificationEffortMain {
 	
 	
 	public List<Integer> verifyProgram(int seed, int run) {
-		String whitelist = completeSpec ? "a1" : "execute";
+		String whitelist = completeSpec ? "a1" : (program == Program.ADD ? "a1" : "execute");
 		for (VerificationResult v : verify(FileControl.getTmpPath().getPath() + "/" + seed + "/", Arrays.asList(whitelist))) {
 			result.add(v.getStatistics().nodes);
 			System.out.println("Closed? " + v.isClosed());

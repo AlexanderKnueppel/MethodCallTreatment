@@ -27,11 +27,9 @@ public class Launcher {
 	static boolean contracting = false;
 	static VerificationEffortMain executer;
 
-	/**
-	 * call:
-	 * 
-	 * @param args
-	 */
+
+	
+	
 	public static void main(String[] args) {
 
 		
