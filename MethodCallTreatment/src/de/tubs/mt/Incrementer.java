@@ -221,7 +221,7 @@ public class Incrementer {
 		int total = totalNumberOfMethods(width, depth);
 		System.out.println("Total number of methods " + total);
 		
-		for(int i = (includeBorders? 0 : 10); i <= (includeBorders? 100 : 90); i += 10) {
+		for(int i = (includeBorders ? 0 : 10); i <= (includeBorders? 100 : 90); i += 10) {
 			counter = 1;
 			randomList.clear();
 			Random random = new Random(seed); 

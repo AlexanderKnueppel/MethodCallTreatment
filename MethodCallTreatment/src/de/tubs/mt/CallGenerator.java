@@ -15,7 +15,7 @@ public abstract class CallGenerator {
 	 * @param width
 	 * @param depth
 	 */
-	public static void callFullSpecifiedProgramGenerator(Program program, int seed, int width, int depth) {
+	public static void callFullSpecifiedProgramGenerator(Program program, int width, int depth, int seed) {
 		try {
 			if (program == Program.BUBBLESORT)
 				Incrementer.generateFullySpecifiedProgramBubble(width, depth, seed, FileControl.getTmpPath().getPath());

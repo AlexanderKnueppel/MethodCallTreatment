@@ -19,12 +19,11 @@ public class Launcher {
 
 
 	static boolean caching = true;
-
-	static int runs = 5;
+	static int runs = 2;
 	static Program program = Program.ADD;
 	static int width = 3;
 	static int depth = 2;
-	static boolean completeSpec = false; // used for method inlining vs contracting
+	static boolean completeSpec = true; // used for method inlining vs contracting
 	static boolean contracting = false;
 	static VerificationEffortMain executer;
 
@@ -35,6 +34,7 @@ public class Launcher {
 	 */
 	public static void main(String[] args) {
 
+		
 		if (completeSpec) {
 			runs = 1;
 		}
@@ -83,6 +83,7 @@ public class Launcher {
 							- TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(diff)));
 
 			System.out.println("Run " + (i + 1) + " [Time: " + currentTime + "]");
+			
 			int seed = Math.abs((int) System.currentTimeMillis());
 
 			List<Integer> effort = null;
@@ -91,7 +92,7 @@ public class Launcher {
 			if (!completeSpec) {
 				CallGenerator.callRandomSpecifiedProgramGenerator(program, width, depth, seed, i);;
 			} else {
-				CallGenerator.callFullSpecifiedProgramGenerator(program, seed, width, depth);
+				CallGenerator.callFullSpecifiedProgramGenerator(program, width, depth, seed);
 			}
 			
 			effort = executer.verifyProgram(seed, i);
