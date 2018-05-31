@@ -36,7 +36,7 @@ public class Launcher {
 	private boolean saveXls;
 	private String javaFilePath;
 	private List<String> lines;
-	private List<Integer> xlsList = new ArrayList<Integer>();
+	private List<Integer> xlsList;
 
 	public void setParameter(Program program, int runs, int width, int depth, boolean completeSpec, boolean contracting,
 			boolean caching, boolean isToDepth, boolean saveXls, String javaFilePath) {
@@ -54,6 +54,8 @@ public class Launcher {
 	}
 
 	public void executeLauncher() throws Exception {
+		
+		xlsList = new ArrayList<Integer>();
 
 		if (caching) {
 			FileControl.createFile();
