@@ -10,69 +10,97 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import javax.swing.WindowConstants;
+
 import de.evaluation.VerificationEffortMain;
+
 import de.tubs.mt.CallGenerator;
 import de.tubs.mt.CallGenerator.Program;
 import de.tubs.mt.FileControl;
+import de.tubs.mt.codeanalyze.MethodPrinter;
 
 public class Launcher {
 
-
-	static boolean caching = true;
-	static int runs = 2;
-	static Program program = Program.ADD;
-	static int width = 3;
-	static int depth = 2;
-	static boolean completeSpec = true; // used for method inlining vs contracting
-	static boolean contracting = false;
-	static VerificationEffortMain executer;
-
-
+	private VerificationEffortMain executer;
+	private Program program;
+	private int runs;
+	private int width;
+	private int depth;
+	private int toDepth;
+	private boolean completeSpec;
+	private boolean contracting;
+	private boolean caching;
+	private boolean isToDepth;
+	private String javaFilePath;
+	private List<String> lines;
 	
 	
-	public static void main(String[] args) {
+	public void setParameter(Program program, int runs, int width, int depth, boolean completeSpec,
+			boolean contracting, boolean caching, boolean isToDepth, String javaFilePath) {
+		this.program = program; 
+		this.runs = completeSpec ? 1 : runs;
+		this.width = width;
+		this.depth = isToDepth ? 1 : depth;
+		this.toDepth = depth;
+		this.completeSpec = completeSpec;
+		this.contracting = contracting;
+		this.caching = caching;
+		this.isToDepth = isToDepth;
+		this.javaFilePath = javaFilePath;
+	}
+	
 
-		
-		if (completeSpec) {
-			runs = 1;
-		}
+	public void executeLauncher() throws Exception {
 
 		if (caching) {
 			FileControl.createFile();
 		}
 
-		// for(int d = depth; d <= 30; ++d) {
-		executer = new VerificationEffortMain(program, width, depth, runs, completeSpec, contracting);
+		for (int d = depth; d <= toDepth; d++) {
+			depth = d;
 
-		try {
+			executer = new VerificationEffortMain(program, width, depth, runs, completeSpec, contracting);
+
 			FileControl.initStructure();
-		} catch (IOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
 
-		List<String> lines = new LinkedList<String>();
-		lines.add(executer.toString());
-		if (completeSpec)
-			lines.add("(Verification Effort for " + (contracting ? "Method Contracting" : "Method Inlining") + ")");
-		lines.add("=============================================================");
+			lines = new LinkedList<String>();
+			lines.add(executer.toString());
 
-		System.out.println(lines.get(0) + "\n" + lines.get(1) + "\n\n");
+			if (completeSpec)
+				lines.add("(Verification Effort for " + (contracting ? "Method Contracting" : "Method Inlining") + ")");
+			lines.add("=============================================================");
 
-		
-		if (caching) {
+			System.out.println(lines.get(0) + "\n" + lines.get(1) + "\n\n");
+
+			if (caching) {
+				try {
+					Files.write(Paths.get(FileControl.FILE), lines, Charset.forName("UTF-8"),
+							StandardOpenOption.APPEND);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+
+			runGenerateAndVerify();
+
+			lines.add("\n");
+
 			try {
-				Files.write(Paths.get(FileControl.FILE), lines, Charset.forName("UTF-8"), StandardOpenOption.APPEND);
+				Files.write(Paths.get(FileControl.getResultHandle().getPath()), lines, Charset.forName("UTF-8"),
+						StandardOpenOption.APPEND);
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
-		
+	}
 
+	
+	private void runGenerateAndVerify() throws Exception {
 		long start = System.currentTimeMillis();
-
-		int effortInlining = 0, effortContracting = 0;
+		int effortInlining = 0;
+		int effortContracting = 0;
 
 		for (int i = 0; i < runs; ++i) {
 			long diff = System.currentTimeMillis() - start;
@@ -81,21 +109,15 @@ public class Launcher {
 							- TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(diff)));
 
 			System.out.println("Run " + (i + 1) + " [Time: " + currentTime + "]");
-			
+
 			int seed = Math.abs((int) System.currentTimeMillis());
 
 			List<Integer> effort = null;
 
-			
-			if (!completeSpec) {
-				CallGenerator.callRandomSpecifiedProgramGenerator(program, width, depth, seed, i);;
-			} else {
-				CallGenerator.callFullSpecifiedProgramGenerator(program, width, depth, seed);
-			}
-			
+			generateProgram(seed, i);
+
 			effort = executer.verifyProgram(seed, i);
-			
-			
+
 			// Only first run needs to compute verification effort for 0% and 100%
 			if (i == 0) {
 				effortInlining = effort.get(0);
@@ -125,17 +147,25 @@ public class Launcher {
 				}
 			}
 		}
-
-		lines.add("\n");
-
-		try {
-			Files.write(Paths.get(FileControl.getResultHandle().getPath()), lines, Charset.forName("UTF-8"),
-					StandardOpenOption.APPEND);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		// }
 	}
+	
+	private void generateProgram(int seed, int run) throws Exception {
+		if (program == Program.OWN) {
+			MethodPrinter.recreateJavaFile(javaFilePath, seed);
+		} else {
+			if (!completeSpec) {
+				CallGenerator.callRandomSpecifiedProgramGenerator(program, width, depth, seed, run);
+			} else {
+				CallGenerator.callFullSpecifiedProgramGenerator(program, width, depth, seed);
+			}
+		}	
+	}
+	
 
+	public static void main(String[] args) {
+		Launcher launcher = new Launcher();
+		UILaunch uil = new UILaunch(launcher);
+		uil.setVisible(true);
+		uil.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+	}
 }

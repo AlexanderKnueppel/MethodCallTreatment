@@ -5,7 +5,7 @@ import java.io.FileNotFoundException;
 public abstract class CallGenerator {
 
 	public static enum Program {
-		ADD, BUBBLESORT
+		ADD, BUBBLESORT, OWN
 	}
 
 	/**

@@ -2,17 +2,18 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7"/>
-	<classpathentry kind="lib" path="./libs/antlr.jar"/>
-	<classpathentry kind="lib" path="./libs/bcel-6.1.jar"/>
-	<classpathentry kind="lib" path="./libs/key.core.example.jar"/>
-	<classpathentry kind="lib" path="./libs/key.core.jar"/>
-	<classpathentry kind="lib" path="./libs/key.core.proof_references.jar"/>
-	<classpathentry kind="lib" path="./libs/key.core.symbolic_execution.example.jar"/>
-	<classpathentry kind="lib" path="./libs/key.core.symbolic_execution.jar"/>
-	<classpathentry kind="lib" path="./libs/key.core.testgen.jar"/>
-	<classpathentry kind="lib" path="./libs/key.removegenerics.jar"/>
-	<classpathentry kind="lib" path="./libs/key.ui.jar"/>
-	<classpathentry kind="lib" path="./libs/key.util.jar"/>
-	<classpathentry kind="lib" path="./libs/recoderKey.jar"/>
+	<classpathentry kind="lib" path="libs/antlr.jar"/>
+	<classpathentry kind="lib" path="libs/bcel-6.1.jar"/>
+	<classpathentry kind="lib" path="libs/key.core.example.jar"/>
+	<classpathentry kind="lib" path="libs/key.core.jar"/>
+	<classpathentry kind="lib" path="libs/key.core.proof_references.jar"/>
+	<classpathentry kind="lib" path="libs/key.core.symbolic_execution.example.jar"/>
+	<classpathentry kind="lib" path="libs/key.core.symbolic_execution.jar"/>
+	<classpathentry kind="lib" path="libs/key.core.testgen.jar"/>
+	<classpathentry kind="lib" path="libs/key.removegenerics.jar"/>
+	<classpathentry kind="lib" path="libs/key.ui.jar"/>
+	<classpathentry kind="lib" path="libs/key.util.jar"/>
+	<classpathentry kind="lib" path="libs/recoderKey.jar"/>
+	<classpathentry kind="lib" path="libs/javaparser/javaparser-core-3.6.8-SNAPSHOT.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

@@ -1,7 +1,14 @@
 package de.tubs.mt;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.nio.charset.Charset;
+import java.nio.file.StandardOpenOption;
+import java.util.List;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 public abstract class FileControl {
 	
@@ -9,6 +16,7 @@ public abstract class FileControl {
 	private static final String tmp_folder = "tmp";
 	public static final String PATH = "Results";
 	public static final String FILE = PATH + "/cache.txt";
+	private static File testclassesPath = new File("Testclasses"); 
 	
 	
 	public static void initStructure() throws IOException {
@@ -62,6 +70,18 @@ public abstract class FileControl {
 
 	public static String getPath() {
 		return PATH;
+	}
+	
+	public static FileInputStream getFileInput(String input) throws FileNotFoundException {
+		return new FileInputStream(input);
+	}
+	
+	public static void printFile(String output, List<String> lines) throws IOException {
+		Files.write(Paths.get(output), lines, Charset.forName("UTF-8"), StandardOpenOption.CREATE);
+	}
+	
+	public static File getTestclassesPath() {
+		return testclassesPath;
 	}
 
 }
