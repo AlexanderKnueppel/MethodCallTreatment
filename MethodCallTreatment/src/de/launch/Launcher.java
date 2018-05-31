@@ -5,6 +5,7 @@ import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
@@ -16,6 +17,7 @@ import de.evaluation.VerificationEffortMain;
 
 import de.tubs.mt.CallGenerator;
 import de.tubs.mt.CallGenerator.Program;
+import de.tubs.mt.ExcelFile;
 import de.tubs.mt.FileControl;
 import de.tubs.mt.codeanalyze.MethodPrinter;
 
@@ -31,24 +33,25 @@ public class Launcher {
 	private boolean contracting;
 	private boolean caching;
 	private boolean isToDepth;
+	private boolean saveXls;
 	private String javaFilePath;
 	private List<String> lines;
-	
-	
-	public void setParameter(Program program, int runs, int width, int depth, boolean completeSpec,
-			boolean contracting, boolean caching, boolean isToDepth, String javaFilePath) {
-		this.program = program; 
+	private List<Integer> xlsList = new ArrayList<Integer>();
+
+	public void setParameter(Program program, int runs, int width, int depth, boolean completeSpec, boolean contracting,
+			boolean caching, boolean isToDepth, boolean saveXls, String javaFilePath) {
+		this.program = program;
 		this.runs = completeSpec ? 1 : runs;
 		this.width = width;
-		this.depth = isToDepth ? 1 : depth;
+		this.depth = isToDepth && program != Program.OWN ? 1 : depth;
 		this.toDepth = depth;
 		this.completeSpec = completeSpec;
 		this.contracting = contracting;
 		this.caching = caching;
 		this.isToDepth = isToDepth;
+		this.saveXls = saveXls;
 		this.javaFilePath = javaFilePath;
 	}
-	
 
 	public void executeLauncher() throws Exception {
 
@@ -94,13 +97,23 @@ public class Launcher {
 				e.printStackTrace();
 			}
 		}
+		
+		if (saveXls) {
+			try {
+				ExcelFile.createTable(xlsList, contracting ? "contracting" : "inlining");
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
 	}
 
-	
 	private void runGenerateAndVerify() throws Exception {
 		long start = System.currentTimeMillis();
 		int effortInlining = 0;
 		int effortContracting = 0;
+		
 
 		for (int i = 0; i < runs; ++i) {
 			long diff = System.currentTimeMillis() - start;
@@ -128,14 +141,16 @@ public class Launcher {
 			}
 
 			String result = "";
+			
 			for (Integer nodes : effort) {
 				result += nodes + ",";
+				xlsList.add(nodes);
 			}
 			result = result.substring(0, result.length() - 1);
 
 			lines.add(result);
 
-			System.out.println(result);
+			System.out.println(result + "\n\n");
 
 			if (caching) {
 				try {
@@ -148,7 +163,7 @@ public class Launcher {
 			}
 		}
 	}
-	
+
 	private void generateProgram(int seed, int run) throws Exception {
 		if (program == Program.OWN) {
 			MethodPrinter.recreateJavaFile(javaFilePath, seed);
@@ -158,9 +173,8 @@ public class Launcher {
 			} else {
 				CallGenerator.callFullSpecifiedProgramGenerator(program, width, depth, seed);
 			}
-		}	
+		}
 	}
-	
 
 	public static void main(String[] args) {
 		Launcher launcher = new Launcher();

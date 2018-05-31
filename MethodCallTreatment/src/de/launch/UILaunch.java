@@ -262,9 +262,10 @@ public class UILaunch extends JFrame {
 		boolean contracting = chckbxContracting.isSelected();
 		boolean caching = chckbxCaching.isSelected();
 		boolean isToDepth = chckbxFromTo.isSelected();
+		boolean isXls = chckbxCreatexmsl.isSelected();
 		String javaFilePath = textFieldsearch.getText();
 		
-		launcher.setParameter(program, runs, width, depth, completeSpec, contracting, caching, isToDepth,  javaFilePath);
+		launcher.setParameter(program, runs, width, depth, completeSpec, contracting, caching, isToDepth, isXls, javaFilePath);
 		launcher.executeLauncher();
 	}
 

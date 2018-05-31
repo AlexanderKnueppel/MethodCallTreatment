@@ -83,5 +83,9 @@ public abstract class FileControl {
 	public static File getTestclassesPath() {
 		return testclassesPath;
 	}
+	
+	public static String getExcelPath(String verifyEffort) {
+		return PATH + "/results_" + verifyEffort + ".xls";
+	}
 
 }
