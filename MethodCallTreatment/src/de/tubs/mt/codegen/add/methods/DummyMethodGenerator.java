@@ -34,9 +34,6 @@ public class DummyMethodGenerator implements MethodGenerator{
 			comingIncrease = comingIncrease * width + width;
 		}
 		
-		if(!Incrementer.randomList.contains(Incrementer.counter)) {
-			m.getJML().include = false;
-		}
 		m.getJML().addRequires("i < "+(Integer.MAX_VALUE-comingIncrease));
 		m.getJML().addEnsures("\\result == \\old(i)+"+comingIncrease);
 		

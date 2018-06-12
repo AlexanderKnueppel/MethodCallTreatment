@@ -44,10 +44,6 @@ public class LeaflessBubbleLayerGenerator implements MethodGenerator {
 			comingIncrease = comingIncrease * width + width;
 		}
 		
-		if(!Incrementer.randomList.contains(Incrementer.counter)) {
-			System.out.println(Incrementer.randomList + "\n" + Incrementer.counter + "\n" + number);
-			m.getJML().include = false;
-		}
 		m.getJML().addRequires("pos >= 0 && pos + "+offset+" < a.length");
 		m.getJML().addRequires("(pos > 0 ==>(\\forall int y; 0 <= y && y < a.length - pos; a[y] <= a[a.length - pos]))");
 		m.getJML().addRequires("(\\forall int z; a.length - pos <= z && z < a.length -1; a[z] <= a[z+1])");

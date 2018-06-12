@@ -37,9 +37,6 @@ public class TinyMethodGenerator implements MethodGenerator{
 		}
 		
 		
-		if(!Incrementer.jmlWhiteList.contains(currentDepth)) {
-			m.getJML().include = false;
-		}
 		m.getJML().addRequires("i < "+(Integer.MAX_VALUE-comingIncrease));
 		m.getJML().addEnsures("\\result == \\old(i)+"+comingIncrease);
 		

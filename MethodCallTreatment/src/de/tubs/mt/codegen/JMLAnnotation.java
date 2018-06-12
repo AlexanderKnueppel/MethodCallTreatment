@@ -5,7 +5,6 @@ import java.util.List;
 
 public class JMLAnnotation {
 	
-	public boolean include = true;
 
 	private List<String> requires = new ArrayList<>();
 	private List<String> ensures = new ArrayList<>();
@@ -18,8 +17,6 @@ public class JMLAnnotation {
 	}
 	
 	public String generateCode(){
-		if(!include) return "";
-		
 		StringBuilder sb = new StringBuilder();
 		sb.append("	/*@ public normal_behavior\n");
 		for (String req : requires) {
@@ -31,5 +28,4 @@ public class JMLAnnotation {
 		sb.append("	  @*/\n");
 		return sb.toString();
 	}
-
 }

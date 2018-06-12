@@ -16,10 +16,7 @@ public class LeafMethodGenerator implements MethodGenerator {
 		TextCode tc = new TextCode();
 		tc.setCode("		return i;");
 		m.addCode(tc);
-		if(!Incrementer.jmlWhiteList.contains(0)) {
-			m.getJML().include = false;
-		}
-		
+
 		m.getJML().addEnsures("\\result == \\old(i)");
 		return m;
 	}
