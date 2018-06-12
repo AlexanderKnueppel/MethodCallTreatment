@@ -92,12 +92,10 @@ public class VerificationEffortMain {
 	}
 	
 	
-	
-	
 	public List<Integer> verifyProgram(int seed, int run) {
 		String whitelist = completeSpec ? "a1" : (program == Program.ADD ? "a1" : "execute");
 
-		for (VerificationResult v : verify(FileControl.getTmpPath().getPath() + "/" + seed + "/", program == Program.OWN ? null : Arrays.asList(whitelist))) {
+		for (VerificationResult v : verify(FileControl.getTmpPath().getPath() + "/" + seed + "/", program == Program.OWN && !completeSpec ? null : Arrays.asList(whitelist))) {
 			result.add(v.getStatistics().nodes);
 			System.out.println("Closed? " + v.isClosed());
 		}
@@ -154,14 +152,15 @@ public class VerificationEffortMain {
 							ImmutableSet<Contract> contracts = env.getSpecificationRepository().getContracts(type,
 									target);
 							for (Contract contract : contracts) {
+								System.out.println("Contract    =====   "  + contract.getTarget().toString().split("::")[1]);
 								proofContracts.add(contract);
 							}
 						}
 					}
 				}
-
+				
+				
 				for (Contract contract : proofContracts) {
-
 					if (whitelist != null) {
 						if (!whitelist.contains(contract.getTarget().toString().split("::")[1])) {
 							System.out.println("Skipped: " + (contract.getTarget().toString().split("::")[1]));

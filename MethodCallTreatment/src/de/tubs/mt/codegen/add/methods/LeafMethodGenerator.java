@@ -17,6 +17,7 @@ public class LeafMethodGenerator implements MethodGenerator {
 		tc.setCode("		return i;");
 		m.addCode(tc);
 
+		
 		m.getJML().addEnsures("\\result == \\old(i)");
 		return m;
 	}

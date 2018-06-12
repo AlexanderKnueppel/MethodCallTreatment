@@ -44,14 +44,16 @@ public abstract class TreeCodeGenerator implements CodeGenerator {
 			MethodGenerator firstMethodGenerator = getNextMethodGenerator();
 			Method firstMethod = firstMethodGenerator.getMethod(currentDepth, number, depth, width, blattMethod);
 	
+			
 			if(getExecutionMethodGenerator() != null){
 				generatedMethods.add(getExecutionMethodGenerator().getMethod(0, 0, depth, width, firstMethod));
 			}
 			
 			generatedMethods.add(blattMethod);
-	
+			
 			openMethods.get(0).add(firstMethod);
 			generatedMethods.add(firstMethod);
+			
 			while (currentDepth < depth) {
 				while (!openMethods.get(0).isEmpty()) {
 					while (openMethods.get(0).get(0).getNumberOfOpenMethods() != 0) {
@@ -84,6 +86,7 @@ public abstract class TreeCodeGenerator implements CodeGenerator {
 			bw.flush();
 		}
 	}
+
 	
 	protected abstract MethodGenerator getNextMethodGenerator();
 	protected abstract MethodGenerator getLeafMethodGenerator();

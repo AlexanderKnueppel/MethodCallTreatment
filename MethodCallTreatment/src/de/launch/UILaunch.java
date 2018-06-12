@@ -65,14 +65,14 @@ public class UILaunch extends JFrame {
 		chckbxContracting.setSelected(true);
 		chckbxCreatexmsl = new JCheckBox("create .xls");
 		textFieldruns = new JTextField();
-		textFieldruns.setText("2");
+		textFieldruns.setText("1");
 		textFieldruns.setColumns(10);
 
 		JLabel lblRuns = new JLabel("Runs");
 		JLabel lblWidth = new JLabel("Width");
 
 		textFieldwidth = new JTextField();
-		textFieldwidth.setText("3");
+		textFieldwidth.setText("2");
 		textFieldwidth.setColumns(10);
 
 		chckbxFromTo = new JCheckBox("from 1 to depth");
@@ -80,7 +80,7 @@ public class UILaunch extends JFrame {
 		JLabel lblDepth = new JLabel("Depth");
 
 		textFielddepth = new JTextField();
-		textFielddepth.setText("3");
+		textFielddepth.setText("2");
 		textFielddepth.setColumns(10);
 
 		textFieldinfo = new JTextField();

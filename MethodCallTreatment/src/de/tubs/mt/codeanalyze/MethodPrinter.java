@@ -29,7 +29,7 @@ public abstract class MethodPrinter {
         CompilationUnit cu = JavaParser.parse(in);
         List<Comment> lc = cu.getComments();
         
-        cu.getAllContainedComments().get(2).remove();
+        //cu.getAllContainedComments().get(2).remove();
         
         /**
         for (Comment child : cu.getAllContainedComments()) {

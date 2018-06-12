@@ -217,28 +217,28 @@ public class Incrementer {
 		generatRandomSpecifiedProgramsForAdd(width, depth, seed, path, true);
 	}
 	public static void generatRandomSpecifiedProgramsForAdd(final int width, final int depth, int seed, String path, boolean includeBorders) throws FileNotFoundException {
-		
-		int total = totalNumberOfMethods(width, depth);
+		jmlWhiteList = getComplete(depth);
+		int total = totalNumberOfMethods(width, depth) + 1;
 		System.out.println("Total number of methods " + total);
 		
-		for(int i = (includeBorders ? 0 : 10); i <= (includeBorders? 100 : 90); i += 10) {
+		//for(int i = (includeBorders ? 0 : 10); i <= (includeBorders ? 100 : 90); i += 10) {
 			counter = 1;
 			randomList.clear();
 			Random random = new Random(seed); 
-			while(randomList.size() < total*i/100) {
+			while(randomList.size() < total) {
 				int n = random.nextInt(total) + 1;
 				if(!randomList.contains(n)) {
 					randomList.add(n);
 				}
 			}
-			randomList.add(1);
+			//randomList.add(1);
 			Collections.sort(randomList);
-			System.out.println(i + "%: " + randomList);
+			System.out.println(100 + "%: " + randomList);
 			
 			
 			TreeCodeGenerator cg = new BroadCodeGenerator();
 			
-			String name = "AddDepth"+(depth)+"Width"+(width)+"P"+ (i == 100? "9" : "") + i;
+			String name = "AddDepth" + (depth) + "Width" + (width) + "P" + (100 == 100 ? "9" : "") + 100;
 			
 			File f = new File(path + "/" + seed);
 			f.mkdir();
@@ -252,9 +252,7 @@ public class Incrementer {
 				e.printStackTrace();
 			}
 
-			
-			//System.out.println("created: " + f.getAbsolutePath());
-		}
+		//}
 		
 	}
 	
@@ -273,6 +271,7 @@ public static void generatRandomSpecifiedProgramsForBubbleSort(final int width, 
 					randomList.add(n);
 				}
 			}
+			
 			//randomList.add(1);
 			Collections.sort(randomList);
 			System.out.println(i + "%: " + randomList);
@@ -296,52 +295,5 @@ public static void generatRandomSpecifiedProgramsForBubbleSort(final int width, 
 			System.out.println("created: " + f.getAbsolutePath());
 		}
 		
-	}
-
-	public static void main(final String[] args) throws IOException {
-		
-		//execute(final int width, final int depth, int iter, String path);
-		
-		execute2(8, 7, 1, "complete");
-//		for(int i = 0; i < 6; ++i) {
-//			System.out.println(getSophisticatedStrategy1(i, 10));
-//			System.out.println(getTopDownStrategy(i, 10, 3));
-//		}
-		
-		//generatRandomSpecifiedProgramsForAdd(2, 5, 10000, "");
-		//generatRandomSpecifiedProgramsForBubbleSort(2, 5, 10000, ".", true);
-		/* Choose Strategy */
-		//jmlWhiteList = getTopDownStrategy(1,  Integer.parseInt(args[0]), Integer.parseInt(args[1]));
-		//jmlWhiteList = getSophisticatedStrategy1(0,  Integer.parseInt(args[0]));
-		
-		//final CodeGenerator cg = new BubbleCodeGenerator();
-		//final TreeCodeGenerator cg = new TinyCodeGenerator();
-//		final PipedOutputStream pos = new PipedOutputStream();
-//		InputStream is = new PipedInputStream(pos);
-		
-//		File f = new File("TinyCode.java");
-//		f.delete();
-//		final FileOutputStream fos = new FileOutputStream(f);
-//		
-//		new Thread(new Runnable() {
-//			
-//			@Override
-//			public void run() {
-//				try {
-//					cg.generateCode(fos, Integer.parseInt(args[0]), Integer.parseInt(args[1]));
-//				} catch (NumberFormatException | IOException e) {
-//					e.printStackTrace();
-//				}
-//			}
-//		}).start();
-//
-//		System.out.println(f.getAbsolutePath());
-//		try (BufferedReader br = new BufferedReader(new InputStreamReader(is));
-//				BufferedWriter bw = new Bu) {
-//			String line;
-//			while ((line = br.readLine()) != null) {
-//				System.out.println(line);
-//			}
-//		}
 	}
 }
