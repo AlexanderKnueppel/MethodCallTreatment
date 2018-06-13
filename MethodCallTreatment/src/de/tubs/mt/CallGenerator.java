@@ -8,25 +8,6 @@ public abstract class CallGenerator {
 		ADD, BUBBLESORT, OWN
 	}
 
-	/**
-	 * full specified, runs = 1, completeSpec = true
-	 * 
-	 * @param seed
-	 * @param width
-	 * @param depth
-	 */
-	public static void callFullSpecifiedProgramGenerator(Program program, int width, int depth, int seed) {
-		try {
-			if (program == Program.BUBBLESORT)
-				Incrementer.generateFullySpecifiedProgramBubble(width, depth, seed, FileControl.getTmpPath().getPath());
-			else
-				Incrementer.generateFullySpecifiedProgramAdd(width, depth, seed, FileControl.getTmpPath().getPath());
-		} catch (FileNotFoundException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-	}
-
 	
 	/**
 	 * random specified, runs >=1, completeSpec = false
@@ -36,14 +17,13 @@ public abstract class CallGenerator {
 	 * @param depth
 	 * @param seed
 	 */
-	public static void callRandomSpecifiedProgramGenerator(Program program, int width, int depth, int seed, int run) {
+	public static void callProgramGenerator(Program program, int width, int depth, int seed, int run) {
 		try {
 			if (program == Program.ADD) {
-				Incrementer.generatRandomSpecifiedProgramsForAdd(width, depth, seed, FileControl.getTmpPath().getPath(),
-						(run > 0 ? false : true));
+				Incrementer.generateProgramForAdd(width, depth, seed, FileControl.getPrepPath().getPath());
 			} else {
-				Incrementer.generatRandomSpecifiedProgramsForBubbleSort(width, depth, seed,
-						FileControl.getTmpPath().getPath(), (run > 0 ? false : true));
+				Incrementer.generateProgramForBubbleSort(width, depth, seed,
+						FileControl.getPrepPath().getPath());
 			}
 		} catch (FileNotFoundException e1) {
 			// TODO Auto-generated catch block

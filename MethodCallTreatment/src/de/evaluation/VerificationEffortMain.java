@@ -92,12 +92,12 @@ public class VerificationEffortMain {
 	}
 	
 	
-	public List<Integer> verifyProgram(int seed, int run) {
-		String whitelist = completeSpec ? "a1" : (program == Program.ADD ? "a1" : "execute");
+	public List<Integer> verifyProgram(int seed, int run, String whitelist) {
 
-		for (VerificationResult v : verify(FileControl.getTmpPath().getPath() + "/" + seed + "/", program == Program.OWN && !completeSpec ? null : Arrays.asList(whitelist))) {
+		for (VerificationResult v : verify(FileControl.getExecPath().getPath() + "/" + seed + "/", Arrays.asList(whitelist))) {
 			result.add(v.getStatistics().nodes);
-			System.out.println("Closed? " + v.isClosed());
+
+			System.out.println("\nClosed? " + v.isClosed());
 		}
 		return result;
 	}
@@ -116,6 +116,7 @@ public class VerificationEffortMain {
 									// specifications for Java API
 		List<File> includes = null; // Optionally: Additional includes to
 									// consider
+		
 
 		File location = new File(folder);
 
@@ -136,7 +137,6 @@ public class VerificationEffortMain {
 
 			// Load source code
 			KeYEnvironment<?> env = KeYEnvironment.load(location, classPaths, bootClassPath, includes);
-
 			// env.getLoadedProof() returns the performed proof if a *.proof
 			// file is loaded
 			try {
@@ -152,18 +152,17 @@ public class VerificationEffortMain {
 							ImmutableSet<Contract> contracts = env.getSpecificationRepository().getContracts(type,
 									target);
 							for (Contract contract : contracts) {
-								System.out.println("Contract    =====   "  + contract.getTarget().toString().split("::")[1]);
 								proofContracts.add(contract);
 							}
 						}
 					}
 				}
 				
-				
+				System.out.print("Skipped: ");
 				for (Contract contract : proofContracts) {
 					if (whitelist != null) {
 						if (!whitelist.contains(contract.getTarget().toString().split("::")[1])) {
-							System.out.println("Skipped: " + (contract.getTarget().toString().split("::")[1]));
+							System.out.print((contract.getTarget().toString().split("::")[1]) + " ");
 							continue;
 						}
 					}
@@ -211,7 +210,6 @@ public class VerificationEffortMain {
 			System.out.println("Exception at '" + location + "':");
 			e.printStackTrace();
 		}
-
 		return resultList;
 	}
 

@@ -21,20 +21,33 @@ sourceSets {
 
 dependencies {
     compile files('libs/antlr.jar')
-    compile files('libs/key.core.jar')
+    compile files('libs/key.core.proof_references.jar')
+    compile files('libs/key.ui.jar')
+    compile files('libs/bcel-6.1.jar')
+    compile files('libs/key.core.symbolic_execution.example.jar')
     compile files('libs/key.util.jar')
+    compile files('libs/key.core.symbolic_execution.jar')
+    compile files('libs/key.core.example.jar')
+    compile files('libs/key.core.testgen.jar')
+    compile files('libs/recoderKey.jar')
+    compile files('libs/key.core.jar')
+    compile files('libs/key.removegenerics.jar')
+    compile files('libs/javaparser/javaparser-core-3.6.8-SNAPSHOT.jar')
+    compile files('libs/javaparser/javaparser-core-3.6.8-SNAPSHOT-sources.jar')
+    compile files('libs/poi/commons-codec-1.10.jar')
+    compile files('libs/poi/commons-collections4-4.1.jar')
+    compile files('libs/poi/poi-3.17.jar')
 
 }
 
 
-/*
+
 jar {
     manifest {
-        attributes 'Main-Class': 'de.userinterface.UserInterface'
+        attributes 'Main-Class': 'de.launch.Launcher'
     }
 }
 
 
-mainClassName = "de.userinterface.UserInterface"
+mainClassName = "de.launch.Launcher"
 
-*/

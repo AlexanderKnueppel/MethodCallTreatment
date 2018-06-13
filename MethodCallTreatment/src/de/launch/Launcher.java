@@ -9,8 +9,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
-
 import javax.swing.WindowConstants;
 
 import de.evaluation.VerificationEffortMain;
@@ -20,6 +18,7 @@ import de.tubs.mt.CallGenerator.Program;
 import de.tubs.mt.ExcelFile;
 import de.tubs.mt.FileControl;
 import de.tubs.mt.codeanalyze.MethodPrinter;
+import de.tubs.mt.codeanalyze.PrepMethod;
 
 public class Launcher {
 
@@ -29,6 +28,7 @@ public class Launcher {
 	private int width;
 	private int depth;
 	private int toDepth;
+	private int seed;
 	private boolean completeSpec;
 	private boolean contracting;
 	private boolean caching;
@@ -37,6 +37,7 @@ public class Launcher {
 	private String javaFilePath;
 	private List<String> lines;
 	private List<Integer> xlsList;
+	private String name;
 
 	public void setParameter(Program program, int runs, int width, int depth, boolean completeSpec, boolean contracting,
 			boolean caching, boolean isToDepth, boolean saveXls, String javaFilePath) {
@@ -51,10 +52,11 @@ public class Launcher {
 		this.isToDepth = isToDepth;
 		this.saveXls = saveXls;
 		this.javaFilePath = javaFilePath;
+		this.name = program == Program.OWN ? javaFilePath : ((program == Program.ADD ? "AddDepth" : "BubbleSortDepth") + (depth) + "Width" + (width) + ".java");
 	}
 
-	public void executeLauncher() throws Exception {
-		
+	public void executeLauncher(String whitelist, List<PrepMethod> methodList, int startP, int endP, int gran) throws Exception {
+		FileControl.rebuildExecPath();
 		xlsList = new ArrayList<Integer>();
 
 		if (caching) {
@@ -66,7 +68,7 @@ public class Launcher {
 
 			executer = new VerificationEffortMain(program, width, depth, runs, completeSpec, contracting);
 
-			FileControl.initStructure();
+			//FileControl.initStructure();
 
 			lines = new LinkedList<String>();
 			lines.add(executer.toString());
@@ -86,9 +88,14 @@ public class Launcher {
 					e.printStackTrace();
 				}
 			}
+			System.out.println("Whitelist/Starter: " + whitelist);
+			//TODO seed = runs
+			for(int i = startP; i <= endP; i += gran) {
+				MethodPrinter.recreateJavaFile(0, i, name, whitelist, methodList);
+				runVerify(whitelist);
 
-			runGenerateAndVerify();
-
+			}
+			
 			lines.add("\n");
 
 			try {
@@ -99,7 +106,7 @@ public class Launcher {
 				e.printStackTrace();
 			}
 		}
-		
+
 		if (saveXls) {
 			try {
 				ExcelFile.createTable(xlsList, contracting ? "contracting" : "inlining");
@@ -108,30 +115,18 @@ public class Launcher {
 				e.printStackTrace();
 			}
 		}
-		
 	}
 
-	private void runGenerateAndVerify() throws Exception {
-		long start = System.currentTimeMillis();
+	public void runVerify(String whitelist) throws Exception {
 		int effortInlining = 0;
 		int effortContracting = 0;
-		
 
 		for (int i = 0; i < runs; ++i) {
-			long diff = System.currentTimeMillis() - start;
-			String currentTime = String.format("%d min, %d sec", TimeUnit.MILLISECONDS.toMinutes(diff),
-					TimeUnit.MILLISECONDS.toSeconds(diff)
-							- TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(diff)));
-
-			System.out.println("Run " + (i + 1) + " [Time: " + currentTime + "]");
-
-			int seed = Math.abs((int) System.currentTimeMillis());
-
+			seed = i;
 			List<Integer> effort = null;
 
-			generateProgram(seed, i);
 
-			effort = executer.verifyProgram(seed, i);
+			effort = executer.verifyProgram(seed, i, whitelist);
 
 			// Only first run needs to compute verification effort for 0% and 100%
 			if (i == 0) {
@@ -143,16 +138,18 @@ public class Launcher {
 			}
 
 			String result = "";
-			
+
 			for (Integer nodes : effort) {
 				result += nodes + ",";
 				xlsList.add(nodes);
 			}
+
 			result = result.substring(0, result.length() - 1);
 
+			
 			lines.add(result);
 
-			System.out.println(result + "\n\n");
+			System.out.println(result + "\n");
 
 			if (caching) {
 				try {
@@ -166,16 +163,19 @@ public class Launcher {
 		}
 	}
 
-	private void generateProgram(int seed, int run) throws Exception {
-		if (program == Program.OWN) {
-			MethodPrinter.recreateJavaFile(javaFilePath, seed);
-		} else {
-			if (!completeSpec) {
-				CallGenerator.callRandomSpecifiedProgramGenerator(program, width, depth, seed, run);
+	//TODO check runs and seed 
+	public List<PrepMethod> runGenerate() throws Exception {
+		FileControl.initStructure();
+		for (int i = 0; i < runs; i++) {
+			seed = i;
+			if (program == Program.OWN) {
+				MethodPrinter.moveOwnJavaClassToPrep(javaFilePath, seed);
 			} else {
-				CallGenerator.callFullSpecifiedProgramGenerator(program, width, depth, seed);
+				CallGenerator.callProgramGenerator(program, width, depth, seed, runs);
+
 			}
 		}
+		return MethodPrinter.getMethodList(name, seed);
 	}
 
 	public static void main(String[] args) {

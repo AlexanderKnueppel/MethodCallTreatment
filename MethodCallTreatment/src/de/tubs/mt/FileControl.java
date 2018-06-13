@@ -14,6 +14,8 @@ public abstract class FileControl {
 	
 	private static final String resultsTXT = "Results.txt";
 	private static final String tmp_folder = "tmp";
+	private static final String prep_folder = "prep";
+	private static final String exec_folder = "exec";
 	public static final String PATH = "Results";
 	public static final String FILE = PATH + "/cache.txt";
 	private static File testclassesPath = new File("Testclasses"); 
@@ -27,10 +29,32 @@ public abstract class FileControl {
 		}
 
 		tmp.mkdirs();
-
+		
+		rebuildExecPath();
+		
+		rebuildPrepPath();
+		
+		
 		if (!getResultHandle().exists()) {
 			getResultHandle().createNewFile();
 		}
+	}
+	
+	public static void rebuildPrepPath() {
+		File prep = getPrepPath();
+		if(prep.exists()) {
+			System.out.println("delete");
+			deleteRecursevly(prep);
+		}
+		prep.mkdirs();
+	}
+	
+	public static void rebuildExecPath() {
+		File exec = getExecPath();
+		if(exec.exists()) {
+			deleteRecursevly(exec);
+		}
+		exec.mkdir();
 	}
 	
 	public static void deleteRecursevly(File f) {
@@ -62,6 +86,14 @@ public abstract class FileControl {
 	
 	public static File getTmpPath() {
 		return new File(PATH.replaceAll("/", "") + "/" + tmp_folder.replaceAll("/", "") + "/");
+	}
+	
+	public static File getPrepPath() {
+		return new File(PATH.replaceAll("/", "") + "/" + tmp_folder.replaceAll("/", "") + "/" + prep_folder.replaceAll("/", "") + "/");
+	}
+	
+	public static File getExecPath() {
+		return new File(PATH.replaceAll("/", "") + "/" + tmp_folder.replaceAll("/", "") + "/" + exec_folder.replaceAll("/", "") + "/");
 	}
 	
 	public static File getTopPath() {
