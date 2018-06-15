@@ -34,15 +34,13 @@ public class VerificationEffortMain {
 	private int depth;
 	private boolean contracting;
 	private int runs;
-	private boolean completeSpec;
 
 
-	public VerificationEffortMain(Program p, int width, int depth, int runs, boolean completeSpec, boolean contracting) {
+	public VerificationEffortMain(Program p, int width, int depth, int runs, boolean contracting) {
 		this.program = p;
 		this.width = width;
 		this.depth = depth;
 		this.runs = runs;
-		this.completeSpec = completeSpec;
 		this.contracting = contracting;
 	}
 
@@ -92,7 +90,7 @@ public class VerificationEffortMain {
 	}
 	
 	
-	public List<Integer> verifyProgram(int seed, int run, String whitelist) {
+	public List<Integer> verifyProgram(int seed, String whitelist) {
 
 		for (VerificationResult v : verify(FileControl.getExecPath().getPath() + "/" + seed + "/", Arrays.asList(whitelist))) {
 			result.add(v.getStatistics().nodes);
@@ -211,15 +209,5 @@ public class VerificationEffortMain {
 			e.printStackTrace();
 		}
 		return resultList;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.lang.Object#toString()
-	 */
-	@Override
-	public String toString() {
-		return "Verifying... [program=" + program + ", width=" + width + ", depth=" + depth + ", runs=" + runs + "]";
 	}
 }

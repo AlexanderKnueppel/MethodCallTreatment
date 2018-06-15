@@ -77,6 +77,8 @@ public abstract class MethodPrinter {
 		Files.write(Paths.get(FileControl.getPrepPath().getPath() + "/" + seed + "/" + input), lines,
 				Charset.forName("UTF-8"), StandardOpenOption.CREATE);
 	}
+	
+	public static List<PrepMethod> whiteList = new ArrayList<PrepMethod>();
 
 	/**
 	 * 
@@ -88,7 +90,7 @@ public abstract class MethodPrinter {
 	 * @param methodList
 	 * @throws IOException
 	 */
-	public static void recreateJavaFile(int seed, final int perc, String methodName, String whitelist, List<PrepMethod> methodList)
+	public static void recreateJavaFile(int seed, int prepSeed, final int perc, String methodName, String starter, List<PrepMethod> methodList, boolean randomized)
 			throws IOException {
 		FileControl.rebuildExecPath();
 		int size = methodList.size();
@@ -97,14 +99,32 @@ public abstract class MethodPrinter {
 		try {
 			int delMethods = perc != 0 ? ((int) (size - Math.floor(size * perc / 100))) : size - 1;
 			delMethods = delMethods == size ? delMethods - (blackSize + 1) : delMethods - blackSize;
-			List<String> blacklist = getJMLBlackList(methodList, whitelist, delMethods);
+			List<String> blacklist = getJMLBlackList(methodList, starter, delMethods);
 			System.out.println("Blacklist for " + perc + "% Spec " + blacklist.toString());
-			deleteJML(blacklist, seed, methodName, perc);
+			fillWhitelist(methodList, blacklist);
+			deleteJML(blacklist, seed, prepSeed, methodName, perc);
+			if(randomized) {
+				whiteList.clear();
+			}
+			
 
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	
+	private static void fillWhitelist(List<PrepMethod> methodList, List<String> blacklist) {
+		System.out.print("Whitelist: ");
+		for(PrepMethod pm : methodList) {
+			if(!blacklist.contains(pm.name)) {
+				whiteList.add(pm);
+				System.out.print(pm.name + " ");
+			}
+			
+		}
+		System.out.println();
+		
 	}
 
 	private static int getBlackSize(List<PrepMethod> methodList) {
@@ -122,7 +142,7 @@ public abstract class MethodPrinter {
 	 * @param delMethods
 	 * @return
 	 */
-	private static List<String> getJMLBlackList(List<PrepMethod> methodList, String whitelist, int delMethods) {
+	private static List<String> getJMLBlackList(List<PrepMethod> methodList, String starter, int delMethods) {
 		int tmp = 0;
 		int next;
 		int size = methodList.size();
@@ -135,8 +155,8 @@ public abstract class MethodPrinter {
 
 		while (tmp != delMethods) {
 			next = (int) (Math.random() * size);
-			if (methodList.get(next).jml && !methodList.get(next).name.equals(whitelist)
-					&& !blackList.contains(methodList.get(next).name)) {
+			if (methodList.get(next).jml && !methodList.get(next).name.equals(starter)
+					&& !blackList.contains(methodList.get(next).name) && !whiteList.contains(methodList.get(next))) {
 				blackList.add(methodList.get(next).name);
 				tmp++;
 			}
@@ -153,8 +173,8 @@ public abstract class MethodPrinter {
 	 * @param percent
 	 * @throws IOException
 	 */
-	private static void deleteJML(List<String> blacklist, int seed, String methodName, int percent) throws IOException {
-		FileInputStream in = new FileInputStream(FileControl.getPrepPath().getPath() + "/" + seed + "/" + methodName);
+	private static void deleteJML(List<String> blacklist, int seed, int prepSeed,  String methodName, int percent) throws IOException {
+		FileInputStream in = new FileInputStream(FileControl.getPrepPath().getPath() + "/" + prepSeed + "/" + methodName);
 		CompilationUnit cu = JavaParser.parse(in);
 
 		NodeList<TypeDeclaration<?>> types = cu.getTypes();

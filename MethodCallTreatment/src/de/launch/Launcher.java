@@ -28,8 +28,6 @@ public class Launcher {
 	private int width;
 	private int depth;
 	private int toDepth;
-	private int seed;
-	private boolean completeSpec;
 	private boolean contracting;
 	private boolean caching;
 	private boolean isToDepth;
@@ -38,24 +36,32 @@ public class Launcher {
 	private List<String> lines;
 	private List<Integer> xlsList;
 	private String name;
+	private String results;
 
-	public void setParameter(Program program, int runs, int width, int depth, boolean completeSpec, boolean contracting,
-			boolean caching, boolean isToDepth, boolean saveXls, String javaFilePath) {
+	public void setParameter(Program program, int runs, int width, int depth, boolean contracting, boolean caching,
+			boolean isToDepth, boolean saveXls, String javaFilePath) {
 		this.program = program;
-		this.runs = completeSpec ? 1 : runs;
+		this.runs = runs;
 		this.width = width;
 		this.depth = isToDepth && program != Program.OWN ? 1 : depth;
 		this.toDepth = depth;
-		this.completeSpec = completeSpec;
 		this.contracting = contracting;
 		this.caching = caching;
 		this.isToDepth = isToDepth;
 		this.saveXls = saveXls;
 		this.javaFilePath = javaFilePath;
-		this.name = program == Program.OWN ? javaFilePath : ((program == Program.ADD ? "AddDepth" : "BubbleSortDepth") + (depth) + "Width" + (width) + ".java");
+		this.name = program == Program.OWN ? javaFilePath
+				: ((program == Program.ADD ? "AddDepth" : "BubbleSortDepth") + (depth) + "Width" + (width) + ".java");
+	}
+	
+	private String getDepthDependedName(int d) {
+		return program == Program.OWN ? javaFilePath
+				: ((program == Program.ADD ? "AddDepth" : "BubbleSortDepth") + (d) + "Width" + (width) + ".java");
+		
 	}
 
-	public void executeLauncher(String whitelist, List<PrepMethod> methodList, int startP, int endP, int gran) throws Exception {
+	public void executeLauncher(String starter, int startP, int endP, int gran,
+			boolean randomized) throws Exception {
 		FileControl.rebuildExecPath();
 		xlsList = new ArrayList<Integer>();
 
@@ -63,48 +69,49 @@ public class Launcher {
 			FileControl.createFile();
 		}
 
-		for (int d = depth; d <= toDepth; d++) {
-			depth = d;
+		lines = new LinkedList<String>();
 
-			executer = new VerificationEffortMain(program, width, depth, runs, completeSpec, contracting);
+		lines.add("\n(Verification Effort for " + (contracting ? "Method Contracting" : "Method Inlining") + ")");
+		lines.add("[program=" + program + ", width=" + width + ", depthStart=" + depth + ", depthEnd=" + toDepth + ", runs=" + runs
+				+ ", StartSpecification, Endspecification, Granulation (%) = " + startP + ", " + endP + ", " + gran
+				+ "]");
+		lines.add("==========================================================================================");
 
-			//FileControl.initStructure();
+		for (int seed = 1; seed <= runs; seed++) {
+			lines.add("--run " + seed);
+			for (int d = depth; d <= toDepth; d++) {
+				executer = new VerificationEffortMain(program, width, d, runs, contracting);
 
-			lines = new LinkedList<String>();
-			lines.add(executer.toString());
+				System.out.println(lines.get(0) + "\n" + lines.get(1) + "\n\n");
 
-			if (completeSpec)
-				lines.add("(Verification Effort for " + (contracting ? "Method Contracting" : "Method Inlining") + ")");
-			lines.add("=============================================================");
-
-			System.out.println(lines.get(0) + "\n" + lines.get(1) + "\n\n");
-
-			if (caching) {
-				try {
-					Files.write(Paths.get(FileControl.FILE), lines, Charset.forName("UTF-8"),
-							StandardOpenOption.APPEND);
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+				if (caching) {
+					try {
+						Files.write(Paths.get(FileControl.FILE), lines, Charset.forName("UTF-8"),
+								StandardOpenOption.APPEND);
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 				}
-			}
-			System.out.println("Whitelist/Starter: " + whitelist);
-			//TODO seed = runs
-			for(int i = startP; i <= endP; i += gran) {
-				MethodPrinter.recreateJavaFile(0, i, name, whitelist, methodList);
-				runVerify(whitelist);
+				System.out.println("Whitelist/Starter: " + starter);
+				MethodPrinter.whiteList.clear();
+				// TODO seed = runs
+				for (int i = startP; i <= endP; i += gran) {
+					MethodPrinter.recreateJavaFile(seed, d, i, getDepthDependedName(d), starter, MethodPrinter.getMethodList(getDepthDependedName(d), d), randomized);
+					runVerify(starter, seed);
+				}
+
+				lines.add("----depth " + d + ": " + results);
 
 			}
-			
-			lines.add("\n");
-
-			try {
-				Files.write(Paths.get(FileControl.getResultHandle().getPath()), lines, Charset.forName("UTF-8"),
-						StandardOpenOption.APPEND);
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+		}
+		
+		try {
+			Files.write(Paths.get(FileControl.getResultHandle().getPath()), lines, Charset.forName("UTF-8"),
+					StandardOpenOption.APPEND);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 
 		if (saveXls) {
@@ -116,66 +123,54 @@ public class Launcher {
 			}
 		}
 	}
+	
+	
+	public void runVerify(String whitelist, int seed) throws Exception {
+		List<Integer> effort = null;
 
-	public void runVerify(String whitelist) throws Exception {
-		int effortInlining = 0;
-		int effortContracting = 0;
+		effort = executer.verifyProgram(seed, whitelist);
 
-		for (int i = 0; i < runs; ++i) {
-			seed = i;
-			List<Integer> effort = null;
+		results = "";
 
+		for (Integer nodes : effort) {
+			results += nodes + ",";
+			xlsList.add(nodes);
+		}
 
-			effort = executer.verifyProgram(seed, i, whitelist);
+		results = results.substring(0, results.length() - 1);
 
-			// Only first run needs to compute verification effort for 0% and 100%
-			if (i == 0) {
-				effortInlining = effort.get(0);
-				effortContracting = effort.get(effort.size() - 1);
-			} else {
-				effort.add(0, effortInlining);
-				effort.add(effortContracting);
-			}
+		// lines.add(results);
 
-			String result = "";
+		System.out.println(results + "\n");
 
-			for (Integer nodes : effort) {
-				result += nodes + ",";
-				xlsList.add(nodes);
-			}
-
-			result = result.substring(0, result.length() - 1);
-
-			
-			lines.add(result);
-
-			System.out.println(result + "\n");
-
-			if (caching) {
-				try {
-					Files.write(Paths.get(FileControl.FILE), Arrays.asList(result), Charset.forName("UTF-8"),
-							StandardOpenOption.APPEND);
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+		if (caching) {
+			try {
+				Files.write(Paths.get(FileControl.FILE), Arrays.asList(results), Charset.forName("UTF-8"),
+						StandardOpenOption.APPEND);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
 		}
 	}
 
-	//TODO check runs and seed 
+	/**
+	 * 
+	 * @return
+	 * @throws Exception
+	 */
 	public List<PrepMethod> runGenerate() throws Exception {
 		FileControl.initStructure();
-		for (int i = 0; i < runs; i++) {
-			seed = i;
+		int seed;
+		for (seed = depth; seed <= toDepth; seed++) {
 			if (program == Program.OWN) {
 				MethodPrinter.moveOwnJavaClassToPrep(javaFilePath, seed);
+				return MethodPrinter.getMethodList(name, seed);
 			} else {
-				CallGenerator.callProgramGenerator(program, width, depth, seed, runs);
-
+				CallGenerator.callProgramGenerator(program, width, seed, seed, runs);
 			}
 		}
-		return MethodPrinter.getMethodList(name, seed);
+		return MethodPrinter.getMethodList(getDepthDependedName(depth), depth);
 	}
 
 	public static void main(String[] args) {

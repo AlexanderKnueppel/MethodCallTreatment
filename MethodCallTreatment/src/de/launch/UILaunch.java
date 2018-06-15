@@ -34,6 +34,7 @@ import javax.swing.JList;
 import javax.swing.SpringLayout;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.event.ListSelectionEvent;
+import javax.swing.JToggleButton;
 
 public class UILaunch extends JFrame {
 
@@ -47,10 +48,10 @@ public class UILaunch extends JFrame {
 	private JTextField textFieldStarterM;
 	private JTextField textFieldSpecPerc;
 	private JCheckBox chckbxCaching;
-	private JCheckBox chckbxCompletespec;
 	private JCheckBox chckbxContracting;
 	private JCheckBox chckbxCreatexmsl;
 	private JCheckBox chckbxFromTo;
+	private JCheckBox chckbxRandomized;
 	private JButton btnGenerate;
 	private JCheckBox chckbxChooseExistingJava;
 	private JButton btnSearch;
@@ -91,9 +92,6 @@ public class UILaunch extends JFrame {
 		chckbxCaching = new JCheckBox("caching");
 		chckbxCaching.setBackground(UIManager.getColor("textInactiveText"));
 		chckbxCaching.setSelected(true);
-		chckbxCompletespec = new JCheckBox("completeSpec");
-		chckbxCompletespec.setBackground(UIManager.getColor("textHighlight"));
-		chckbxCompletespec.setSelected(true);
 		chckbxContracting = new JCheckBox("contracting");
 		chckbxContracting.setBackground(UIManager.getColor("textHighlight"));
 		chckbxContracting.setSelected(true);
@@ -126,6 +124,8 @@ public class UILaunch extends JFrame {
 		comboBoxGranulation = new JComboBox();
 		comboBoxGranulation.setModel(new DefaultComboBoxModel(new String[] {"1", "5", "10", "15", "20", "30", "40", "50"}));
 		comboBoxGranulation.setSelectedIndex(2);
+		
+		chckbxRandomized = new JCheckBox("Randomized");
 
 		GroupLayout gl_panel_1 = new GroupLayout(panel_1);
 		gl_panel_1.setHorizontalGroup(
@@ -138,34 +138,33 @@ public class UILaunch extends JFrame {
 						.addGroup(gl_panel_1.createSequentialGroup()
 							.addContainerGap()
 							.addGroup(gl_panel_1.createParallelGroup(Alignment.LEADING)
-								.addComponent(chckbxContracting)
 								.addGroup(gl_panel_1.createSequentialGroup()
-									.addGroup(gl_panel_1.createParallelGroup(Alignment.LEADING)
-										.addGroup(gl_panel_1.createSequentialGroup()
-											.addComponent(chckbxCaching)
-											.addGap(78)
-											.addComponent(lblRuns)
-											.addGap(7)
-											.addComponent(textFieldruns, GroupLayout.PREFERRED_SIZE, 54, GroupLayout.PREFERRED_SIZE))
-										.addComponent(chckbxCompletespec))
-									.addGap(72)
-									.addGroup(gl_panel_1.createParallelGroup(Alignment.LEADING)
-										.addComponent(lblSetSpecification)
-										.addComponent(lblGranulation))
-									.addPreferredGap(ComponentPlacement.UNRELATED)
-									.addGroup(gl_panel_1.createParallelGroup(Alignment.LEADING, false)
-										.addComponent(comboBoxGranulation, 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-										.addComponent(textFieldStartPercent, GroupLayout.DEFAULT_SIZE, 50, Short.MAX_VALUE))
-									.addPreferredGap(ComponentPlacement.UNRELATED)
-									.addComponent(lblTo, GroupLayout.PREFERRED_SIZE, 31, GroupLayout.PREFERRED_SIZE)
-									.addGap(4)
-									.addComponent(textFieldEndPercent, GroupLayout.PREFERRED_SIZE, 59, GroupLayout.PREFERRED_SIZE))))
+									.addComponent(chckbxCaching)
+									.addGap(78)
+									.addComponent(lblRuns)
+									.addGap(7)
+									.addComponent(textFieldruns, GroupLayout.PREFERRED_SIZE, 54, GroupLayout.PREFERRED_SIZE))
+								.addComponent(chckbxContracting))
+							.addGap(72)
+							.addGroup(gl_panel_1.createParallelGroup(Alignment.LEADING)
+								.addComponent(lblSetSpecification)
+								.addComponent(lblGranulation))
+							.addPreferredGap(ComponentPlacement.UNRELATED)
+							.addGroup(gl_panel_1.createParallelGroup(Alignment.LEADING, false)
+								.addComponent(comboBoxGranulation, 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+								.addComponent(textFieldStartPercent, GroupLayout.DEFAULT_SIZE, 50, Short.MAX_VALUE))
+							.addPreferredGap(ComponentPlacement.UNRELATED)
+							.addComponent(lblTo, GroupLayout.PREFERRED_SIZE, 31, GroupLayout.PREFERRED_SIZE)
+							.addGap(4)
+							.addComponent(textFieldEndPercent, GroupLayout.PREFERRED_SIZE, 59, GroupLayout.PREFERRED_SIZE)
+							.addGap(43)
+							.addComponent(chckbxRandomized))
 						.addGroup(gl_panel_1.createSequentialGroup()
 							.addContainerGap()
-							.addComponent(chckbxCreatexmsl))
+							.addComponent(textFieldinfo, GroupLayout.PREFERRED_SIZE, 866, GroupLayout.PREFERRED_SIZE))
 						.addGroup(gl_panel_1.createSequentialGroup()
 							.addContainerGap()
-							.addComponent(textFieldinfo, GroupLayout.PREFERRED_SIZE, 866, GroupLayout.PREFERRED_SIZE)))
+							.addComponent(chckbxCreatexmsl)))
 					.addContainerGap(24, Short.MAX_VALUE))
 		);
 		gl_panel_1.setVerticalGroup(
@@ -181,19 +180,19 @@ public class UILaunch extends JFrame {
 						.addComponent(lblSetSpecification)
 						.addComponent(textFieldStartPercent, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 						.addComponent(lblTo)
-						.addComponent(textFieldEndPercent, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+						.addComponent(textFieldEndPercent, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(chckbxRandomized))
 					.addGap(4)
 					.addGroup(gl_panel_1.createParallelGroup(Alignment.LEADING)
 						.addGroup(gl_panel_1.createSequentialGroup()
-							.addComponent(chckbxCompletespec)
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(chckbxContracting)
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(chckbxCreatexmsl))
+							.addGap(5)
+							.addComponent(chckbxContracting))
 						.addGroup(gl_panel_1.createParallelGroup(Alignment.BASELINE)
 							.addComponent(lblGranulation)
 							.addComponent(comboBoxGranulation, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
-					.addPreferredGap(ComponentPlacement.RELATED, 71, Short.MAX_VALUE)
+					.addPreferredGap(ComponentPlacement.UNRELATED)
+					.addComponent(chckbxCreatexmsl)
+					.addPreferredGap(ComponentPlacement.RELATED, 85, Short.MAX_VALUE)
 					.addComponent(textFieldinfo, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 					.addContainerGap())
 		);
@@ -457,8 +456,9 @@ public class UILaunch extends JFrame {
 		int startP = Integer.parseInt(textFieldStartPercent.getText());
 		int endP = Integer.parseInt(textFieldEndPercent.getText());
 		int gran = Integer.parseInt(comboBoxGranulation.getSelectedItem().toString());
+		boolean randomized = chckbxRandomized.isSelected();
 
-		launcher.executeLauncher(whitelist, methodList, startP, endP, gran);
+		launcher.executeLauncher(whitelist, startP, endP, gran, randomized);
 		
 	}
 	
@@ -471,7 +471,6 @@ public class UILaunch extends JFrame {
 		int runs = Integer.parseInt(textFieldruns.getText());
 		int width = Integer.parseInt(textFieldwidth.getText());
 		int depth = Integer.parseInt(textFielddepth.getText());
-		boolean completeSpec = chckbxCompletespec.isSelected();
 		boolean contracting = chckbxContracting.isSelected();
 		boolean caching = chckbxCaching.isSelected();
 		boolean isToDepth = chckbxFromTo.isSelected();
@@ -479,7 +478,7 @@ public class UILaunch extends JFrame {
 		String javaFilePath = textFieldsearch.getText();
 
 
-		launcher.setParameter(program, runs, width, depth, completeSpec, contracting, caching, isToDepth, isXls,
+		launcher.setParameter(program, runs, width, depth, contracting, caching, isToDepth, isXls,
 				javaFilePath);	
 	}
 
