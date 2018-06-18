@@ -17,6 +17,7 @@ import de.tubs.mt.CallGenerator;
 import de.tubs.mt.CallGenerator.Program;
 import de.tubs.mt.ExcelFile;
 import de.tubs.mt.FileControl;
+import de.tubs.mt.ResultsForXY;
 import de.tubs.mt.codeanalyze.MethodPrinter;
 import de.tubs.mt.codeanalyze.PrepMethod;
 
@@ -37,6 +38,8 @@ public class Launcher {
 	private List<Integer> xlsList;
 	private String name;
 	private String results;
+	private List<ResultsForXY> rfxy = new ArrayList<>();
+	private int tmpresult;
 
 	public void setParameter(Program program, int runs, int width, int depth, boolean contracting, boolean caching,
 			boolean isToDepth, boolean saveXls, String javaFilePath) {
@@ -64,6 +67,7 @@ public class Launcher {
 			boolean randomized) throws Exception {
 		FileControl.rebuildExecPath();
 		xlsList = new ArrayList<Integer>();
+		rfxy.clear();
 
 		if (caching) {
 			FileControl.createFile();
@@ -99,6 +103,7 @@ public class Launcher {
 				for (int i = startP; i <= endP; i += gran) {
 					MethodPrinter.recreateJavaFile(seed, d, i, getDepthDependedName(d), starter, MethodPrinter.getMethodList(getDepthDependedName(d), d), randomized);
 					runVerify(starter, seed);
+					rfxy.add(new ResultsForXY(seed, d, i, tmpresult));
 				}
 
 				lines.add("----depth " + d + ": " + results);
@@ -136,11 +141,9 @@ public class Launcher {
 			results += nodes + ",";
 			xlsList.add(nodes);
 		}
+		tmpresult = effort.get(effort.size() - 1);
 
 		results = results.substring(0, results.length() - 1);
-
-		// lines.add(results);
-
 		System.out.println(results + "\n");
 
 		if (caching) {
@@ -152,6 +155,10 @@ public class Launcher {
 				e.printStackTrace();
 			}
 		}
+	}
+	
+	public List<ResultsForXY> getResultsForXY() {
+		return rfxy;
 	}
 
 	/**
