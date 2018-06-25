@@ -1,10 +1,6 @@
 package de.tubs.mt.codegen.bubble;
 
 import de.tubs.mt.codegen.TreeCodeGenerator;
-import de.tubs.mt.codegen.bubble.methods.BubbleExecutionLayerGenerator;
-import de.tubs.mt.codegen.bubble.methods.BubbleLayerGenerator;
-import de.tubs.mt.codegen.bubble.methods.BubbleLeafGenerator;
-import de.tubs.mt.codegen.bubble.methods.LeaflessBubbleLayerGenerator;
 import de.tubs.mt.codegen.methods.MethodGenerator;
 
 public class BubbleCodeGenerator extends TreeCodeGenerator{

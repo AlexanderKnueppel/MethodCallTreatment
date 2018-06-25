@@ -1,4 +1,4 @@
-package de.tubs.mt.codegen.add.methods;
+package de.tubs.mt.codegen.add;
 
 import java.util.Arrays;
 

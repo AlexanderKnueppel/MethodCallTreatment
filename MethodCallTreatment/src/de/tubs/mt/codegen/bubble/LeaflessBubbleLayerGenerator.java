@@ -1,4 +1,4 @@
-package de.tubs.mt.codegen.bubble.methods;
+package de.tubs.mt.codegen.bubble;
 
 import java.util.Arrays;
 

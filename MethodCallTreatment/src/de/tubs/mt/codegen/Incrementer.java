@@ -13,8 +13,6 @@ import de.tubs.mt.codegen.bubble.BubbleCodeGenerator;
 
 public class Incrementer {
 
-	public static List<Integer> jmlWhiteList = new ArrayList<Integer>();
-	public static List<Integer> randomList = new ArrayList<Integer>();
 	public static int counter = 0;
 
 	public static int numberOfMethods(int level, int width) {
@@ -28,19 +26,7 @@ public class Incrementer {
 		return res;
 	}
 
-	public static List<Integer> getComplete(int depth) {
-		List<Integer> res = new ArrayList<Integer>();
-		for (int i = 0; i <= depth; ++i) {
-			res.add(i);
-		}
 
-		return res;
-	}
-
-	public static List<Integer> getOnlyTop() {
-		List<Integer> res = new ArrayList<Integer>();
-		return res;
-	}
 
 
 	public static void generateProgramForAdd(final int width, final int depth, int seed, String path)

@@ -100,13 +100,9 @@ public class VerificationEffortMain {
 	}
 	
 	
-	
-	public List<VerificationResult> verify(String folder) {
-		return verify(folder, null);
-	}
 
 	
-	public List<VerificationResult> verify(String folder, List<String> whitelist) {
+	private List<VerificationResult> verify(String folder, List<String> whitelist) {
 		List<File> classPaths = null; // Optionally: Additional specifications
 										// for API classes
 		File bootClassPath = null; // Optionally: Different default

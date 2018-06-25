@@ -16,7 +16,7 @@ public class Method {
 	private List<MethodCallCode> openMethodCalls = new ArrayList<>();
 	private List<MethodCallCode> methodCalls = new ArrayList<>();
 	private JMLAnnotation jml = new JMLAnnotation();
-	int nextOpenMethodCall = 0;
+	private int nextOpenMethodCall = 0;
 	private String name;
 	private List<Variable> variables;
 

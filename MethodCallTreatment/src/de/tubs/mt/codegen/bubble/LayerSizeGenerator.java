@@ -1,4 +1,4 @@
-package de.tubs.mt.codegen.bubble.methods;
+package de.tubs.mt.codegen.bubble;
 
 public class LayerSizeGenerator {
 	

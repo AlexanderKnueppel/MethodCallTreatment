@@ -1,6 +1,5 @@
 package de.tubs.mt.codegen.add;
 
-import de.tubs.mt.codegen.add.methods.DummyMethodGenerator;
 import de.tubs.mt.codegen.methods.MethodGenerator;
 
 

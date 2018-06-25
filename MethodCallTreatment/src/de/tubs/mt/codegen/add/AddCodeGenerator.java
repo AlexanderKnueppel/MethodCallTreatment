@@ -1,7 +1,6 @@
 package de.tubs.mt.codegen.add;
 
 import de.tubs.mt.codegen.TreeCodeGenerator;
-import de.tubs.mt.codegen.add.methods.LeafMethodGenerator;
 import de.tubs.mt.codegen.methods.MethodGenerator;
 
 public abstract class AddCodeGenerator extends TreeCodeGenerator{
