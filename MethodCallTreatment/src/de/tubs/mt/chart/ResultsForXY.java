@@ -1,4 +1,4 @@
-package de.tubs.mt;
+package de.tubs.mt.chart;
 
 import java.util.List;
 

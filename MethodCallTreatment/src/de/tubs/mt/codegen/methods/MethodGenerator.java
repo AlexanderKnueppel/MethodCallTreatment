@@ -1,6 +1,5 @@
 package de.tubs.mt.codegen.methods;
 
-import java.util.List;
 
 public interface MethodGenerator {
 

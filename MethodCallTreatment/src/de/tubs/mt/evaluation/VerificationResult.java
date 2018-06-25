@@ -1,4 +1,4 @@
-package de.evaluation;
+package de.tubs.mt.evaluation;
 
 import de.uka.ilkd.key.proof.Statistics;
 

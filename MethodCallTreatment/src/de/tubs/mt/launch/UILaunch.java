@@ -1,4 +1,4 @@
-package de.launch;
+package de.tubs.mt.launch;
 
 import javax.swing.JFrame;
 import javax.swing.GroupLayout;
@@ -11,12 +11,12 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import org.jfree.data.xy.XYSeries;
 
 import de.tubs.mt.FileControl;
-import de.tubs.mt.ResultsForXY;
-import de.tubs.mt.XYChart;
-import de.tubs.mt.XYChart.Chart;
 import de.tubs.mt.codeanalyze.MethodPrinter;
 import de.tubs.mt.codeanalyze.PrepMethod;
 import de.tubs.mt.CallGenerator.Program;
+import de.tubs.mt.chart.ResultsForXY;
+import de.tubs.mt.chart.XYChart;
+import de.tubs.mt.chart.XYChart.Chart;
 
 import javax.swing.JLabel;
 import javax.swing.JCheckBox;
