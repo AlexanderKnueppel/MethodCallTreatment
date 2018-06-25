@@ -2,7 +2,7 @@ package de.tubs.mt.codegen.bubble.methods;
 
 import java.util.Arrays;
 
-import de.tubs.mt.Incrementer;
+import de.tubs.mt.codegen.Incrementer;
 import de.tubs.mt.codegen.methods.Method;
 import de.tubs.mt.codegen.methods.MethodGenerator;
 import de.tubs.mt.codegen.structure.MethodCallCode;

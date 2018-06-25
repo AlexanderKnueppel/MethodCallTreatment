@@ -10,8 +10,8 @@ import java.util.Set;
 
 import org.key_project.util.collection.ImmutableSet;
 
-import de.tubs.mt.FileControl;
-import de.tubs.mt.CallGenerator.Program;
+import de.tubs.mt.codegen.CallGenerator.Program;
+import de.tubs.mt.files.FileControl;
 import de.uka.ilkd.key.control.KeYEnvironment;
 import de.uka.ilkd.key.java.abstraction.KeYJavaType;
 import de.uka.ilkd.key.logic.op.IObserverFunction;
@@ -28,7 +28,7 @@ import de.uka.ilkd.key.util.MiscTools;
 public class VerificationEffortMain {
 
 	
-	private Program program;
+
 	private List<Integer> result = new ArrayList<Integer>();
 	private int width;
 	private int depth;
@@ -37,7 +37,6 @@ public class VerificationEffortMain {
 
 
 	public VerificationEffortMain(Program p, int width, int depth, int runs, boolean contracting) {
-		this.program = p;
 		this.width = width;
 		this.depth = depth;
 		this.runs = runs;

@@ -1,4 +1,4 @@
-package de.tubs.mt;
+package de.tubs.mt.codegen;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -7,14 +7,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-
-import de.tubs.mt.codegen.CodeGenerator;
-import de.tubs.mt.codegen.TreeCodeGenerator;
-import de.tubs.mt.codegen.add.AddCodeGenerator;
 import de.tubs.mt.codegen.add.BroadCodeGenerator;
-import de.tubs.mt.codegen.add.CrossCodeGenerator;
-import de.tubs.mt.codegen.add.TinyCodeGenerator;
 import de.tubs.mt.codegen.bubble.BubbleCodeGenerator;
+
 
 public class Incrementer {
 

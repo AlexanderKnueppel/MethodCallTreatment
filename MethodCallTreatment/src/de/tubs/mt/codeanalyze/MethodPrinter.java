@@ -19,7 +19,7 @@ import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.body.TypeDeclaration;
 import com.github.javaparser.ast.comments.Comment;
 
-import de.tubs.mt.FileControl;
+import de.tubs.mt.files.FileControl;
 
 public abstract class MethodPrinter {
 

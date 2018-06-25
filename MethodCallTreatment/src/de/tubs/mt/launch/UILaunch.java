@@ -10,10 +10,10 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 
 import org.jfree.data.xy.XYSeries;
 
-import de.tubs.mt.FileControl;
 import de.tubs.mt.codeanalyze.MethodPrinter;
 import de.tubs.mt.codeanalyze.PrepMethod;
-import de.tubs.mt.CallGenerator.Program;
+import de.tubs.mt.codegen.CallGenerator.Program;
+import de.tubs.mt.files.FileControl;
 import de.tubs.mt.chart.ResultsForXY;
 import de.tubs.mt.chart.XYChart;
 import de.tubs.mt.chart.XYChart.Chart;

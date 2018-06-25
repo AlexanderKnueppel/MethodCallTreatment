@@ -2,7 +2,7 @@ package de.tubs.mt.codegen.add.methods;
 
 import java.util.Arrays;
 
-import de.tubs.mt.Incrementer;
+import de.tubs.mt.codegen.Incrementer;
 import de.tubs.mt.codegen.methods.Method;
 import de.tubs.mt.codegen.methods.MethodGenerator;
 import de.tubs.mt.codegen.structure.TextCode;
