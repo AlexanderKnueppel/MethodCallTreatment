@@ -12,11 +12,11 @@ import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.axis.CategoryAxis;
 import org.jfree.chart.axis.NumberAxis;
+import org.jfree.chart.axis.NumberTickUnit;
 import org.jfree.chart.labels.BoxAndWhiskerToolTipGenerator;
 import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.data.statistics.BoxAndWhiskerCategoryDataset;
 import org.jfree.data.statistics.DefaultBoxAndWhiskerCategoryDataset;
-import org.jfree.data.xy.XYDataset;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.ui.RefineryUtilities;
 import org.jfree.chart.plot.XYPlot;
@@ -25,20 +25,16 @@ import org.jfree.chart.plot.CategoryPlot;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.data.xy.XYSeriesCollection;
 import org.jfree.chart.renderer.category.BoxAndWhiskerRenderer;
-import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
+
 
 public class XYChart extends JFrame {
-
-	private JFreeChart barChart;
-	private JFreeChart lineChart;
-	private JFreeChart bubbleChart;
 
 	private String chartTitle;
 	private List<List<ResultsForXY>> rfxy;
 	private List<String> propertiesList;
 
 	public static enum Chart {
-		LINE, BAR, BOXPLOT, BUBBLE
+		LINE, BAR, BOXPLOT
 	}
 
 	public XYChart(String applicationTitle, String chartTitle, List<List<ResultsForXY>> resultLists,
@@ -47,18 +43,26 @@ public class XYChart extends JFrame {
 		this.chartTitle = chartTitle;
 		this.rfxy = resultLists;
 		this.propertiesList = propertiesList;
-
+		
+		JFreeChart chartPLot = null;
+		
 		if (chart.equals(Chart.LINE)) {
-			showLineChart(merge);
+			chartPLot = getLineChart(merge);
 		} else if (chart.equals(Chart.BAR)) {
-			showBarChart();
+			chartPLot = getBarChart();
 		} else if (chart.equals(Chart.BOXPLOT)) {
-			showBoxPlot();
+			chartPLot = getBoxPlot();
 		}
+		
+		ChartPanel chartPanel = new ChartPanel(chartPLot);
+        setContentPane(chartPanel);
+		RefineryUtilities.centerFrameOnScreen(this);
+		pack();
+		setVisible(true);
 
 	}
 
-	private void showBoxPlot() {
+	private JFreeChart getBoxPlot() {
 		BoxAndWhiskerCategoryDataset dataset = createBoxPlotDataset();
 		CategoryAxis xAxis = new CategoryAxis("Specification [%]");
         NumberAxis yAxis = new NumberAxis("Verification effort [proof-steps]");
@@ -68,19 +72,9 @@ public class XYChart extends JFrame {
         renderer.setFillBox(true);
         renderer.setToolTipGenerator(new BoxAndWhiskerToolTipGenerator());
         CategoryPlot plot = new CategoryPlot(dataset, xAxis, yAxis, renderer);
+
+        return new JFreeChart("Box-and-Whisker Demo", new Font("SansSerif", Font.BOLD, 12), plot, true);
         
-        final JFreeChart chart = new JFreeChart(
-                "Box-and-Whisker Demo",
-                new Font("SansSerif", Font.BOLD, 12),
-                plot,
-                true
-            );
-        
-        ChartPanel chartPanel = new ChartPanel(chart);
-        setContentPane(chartPanel);
-		RefineryUtilities.centerFrameOnScreen(this);
-		pack();
-		setVisible(true);
 
 	}
 
@@ -143,31 +137,24 @@ public class XYChart extends JFrame {
 	}
 
 	
-	private void showLineChart(boolean merge) {
+	private JFreeChart getLineChart(boolean merge) {
 		JFreeChart xylineChart = ChartFactory.createXYLineChart(chartTitle, "Call Depth", "Proof Steps",
 				createLineDataset(merge), PlotOrientation.VERTICAL, true, true, false);
+		
+		// Create an NumberAxis
+		NumberAxis xAxis = new NumberAxis();
+		xAxis.setTickUnit(new NumberTickUnit(1));
+		xAxis.setAutoRangeIncludesZero(false);
+		xAxis.setLabel("Depth");
 
-		ChartPanel chartPanel = new ChartPanel(xylineChart);
-		chartPanel.setPreferredSize(new java.awt.Dimension(560, 367));
-		final XYPlot plot = xylineChart.getXYPlot();
-
-		XYLineAndShapeRenderer renderer = new XYLineAndShapeRenderer();
-
-		int tmp = rfxy.size() - 1;
-		for (int i = merge ? 0 : tmp; i <= tmp; i++) {
-			renderer.setSeriesStroke(i, new BasicStroke(1.5f));
-			renderer.setSeriesShapesVisible(i, true);
-		}
-
-		plot.setRenderer(renderer);
-		setContentPane(chartPanel);
-		RefineryUtilities.centerFrameOnScreen(this);
-		pack();
-		setVisible(true);
+		// Assign it to the chart
+		XYPlot plot = (XYPlot) xylineChart.getPlot();
+		plot.setDomainAxis(xAxis);
+		return xylineChart;
 
 	}
 
-	private XYDataset createLineDataset(boolean merge) {
+	private XYSeriesCollection createLineDataset(boolean merge) {
 
 		final XYSeriesCollection dataset = new XYSeriesCollection();
 
@@ -175,7 +162,7 @@ public class XYChart extends JFrame {
 			List<ResultsForXY> results = rfxy.get(rfxy.size()-1);
 			XYSeries contract = new XYSeries(propertiesList.get(propertiesList.size()-1));
 			for (ResultsForXY result : results) {
-				contract.add(result.getDepth(), result.getResults());
+				contract.add((Number) result.getDepth(), result.getResults());
 			}
 			dataset.addSeries(contract);
 		} else {
@@ -183,7 +170,7 @@ public class XYChart extends JFrame {
 			for (List<ResultsForXY> results : rfxy) {
 				XYSeries contract = new XYSeries(propertiesList.get(tmp));
 				for (ResultsForXY result : results) {
-					contract.add(result.getDepth(), result.getResults());
+					contract.add((Number) result.getDepth(), result.getResults());
 				}
 				dataset.addSeries(contract);
 				tmp++;
@@ -192,18 +179,12 @@ public class XYChart extends JFrame {
 		return dataset;
 	}
 
-	private void showBarChart() {
-		barChart = ChartFactory.createBarChart3D("Contract Driven Statistics", "Specification (%)", "Proof-Steps",
+	private JFreeChart getBarChart() {
+		return ChartFactory.createBarChart3D("Contract Driven Statistics", "Specification (%)", "Proof-Steps",
 				createBarDataset(), PlotOrientation.VERTICAL, true, true, false);
-		ChartPanel chartPanel = new ChartPanel(barChart);
-		chartPanel.setPreferredSize(new java.awt.Dimension(560, 367));
-		setContentPane(chartPanel);
-		RefineryUtilities.centerFrameOnScreen(this);
-		pack();
-		setVisible(true);
-
 	}
 
+	
 	private DefaultCategoryDataset createBarDataset() {
 		final DefaultCategoryDataset dataset = new DefaultCategoryDataset();
 		List<ResultsForXY> results = rfxy.get(rfxy.size() - 1);

@@ -10,23 +10,9 @@ import java.util.List;
 import de.tubs.mt.codegen.methods.Method;
 import de.tubs.mt.codegen.methods.MethodGenerator;
 
-public abstract class TreeCodeGenerator implements CodeGenerator {
+public abstract class TreeCodeGenerator {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 6288821848405175951L;
 
-	public TreeCodeGenerator() {
-		super();
-	}
-
-	@Override
-	public void generateCode(OutputStream stream, int depth, int width) throws IOException {
-		generateCode(stream, depth, width, "Test");
-	}
-
-	@Override
 	public void generateCode(OutputStream stream, int depth, int width, String name) throws IOException {
 	
 		try (BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(stream))) {

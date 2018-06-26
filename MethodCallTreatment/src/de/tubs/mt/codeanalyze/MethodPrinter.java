@@ -49,7 +49,6 @@ public abstract class MethodPrinter {
 			}
 
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
@@ -78,8 +77,9 @@ public abstract class MethodPrinter {
 				Charset.forName("UTF-8"), StandardOpenOption.CREATE);
 	}
 	
-	public static List<PrepMethod> whiteList = new ArrayList<PrepMethod>();
-
+	//public static List<PrepMethod> whiteList = new ArrayList<PrepMethod>();
+	public static List<String> whiteList = new ArrayList<String>();
+	public static String starterMethod;
 	/**
 	 * 
 	 * @param seed
@@ -95,6 +95,7 @@ public abstract class MethodPrinter {
 		FileControl.rebuildExecPath();
 		int size = methodList.size();
 		int blackSize = getBlackSize(methodList);
+		starterMethod = starter;
 
 		try {
 			int delMethods = perc != 0 ? ((int) (size - Math.floor(size * perc / 100))) : size - 1;
@@ -106,8 +107,6 @@ public abstract class MethodPrinter {
 			if(randomized) {
 				whiteList.clear();
 			}
-			
-
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -115,16 +114,13 @@ public abstract class MethodPrinter {
 	}
 	
 	private static void fillWhitelist(List<PrepMethod> methodList, List<String> blacklist) {
-		System.out.print("Whitelist: ");
+		//System.out.print("Whitelist: ");
 		for(PrepMethod pm : methodList) {
-			if(!blacklist.contains(pm.name)) {
-				whiteList.add(pm);
-				System.out.print(pm.name + " ");
-			}
-			
-		}
-		System.out.println();
-		
+			if(!blacklist.contains(pm.name) && !whiteList.contains(pm.name) && !pm.name.equals(starterMethod)) {
+				whiteList.add(pm.name);
+			}	
+		}	
+		System.out.println("Whitelist: " + whiteList.toString());
 	}
 
 	private static int getBlackSize(List<PrepMethod> methodList) {
@@ -156,7 +152,7 @@ public abstract class MethodPrinter {
 		while (tmp != delMethods) {
 			next = (int) (Math.random() * size);
 			if (methodList.get(next).jml && !methodList.get(next).name.equals(starter)
-					&& !blackList.contains(methodList.get(next).name) && !whiteList.contains(methodList.get(next))) {
+					&& !blackList.contains(methodList.get(next).name) && !whiteList.contains(methodList.get(next).name)) {
 				blackList.add(methodList.get(next).name);
 				tmp++;
 			}

@@ -5,7 +5,6 @@ import de.tubs.mt.codegen.methods.MethodGenerator;
 
 public class BubbleCodeGenerator extends TreeCodeGenerator{
 
-	private static final long serialVersionUID = 3916047168088510651L;
 
 	@Override
 	protected MethodGenerator getNextMethodGenerator() {

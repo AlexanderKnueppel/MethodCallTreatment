@@ -66,6 +66,7 @@ public class Launcher {
 			boolean randomized) throws Exception {
 		FileControl.rebuildExecPath();
 		xlsList = new ArrayList<Integer>();
+		
 		rfxy.clear();
 
 		if (caching) {
@@ -83,6 +84,8 @@ public class Launcher {
 		for (int seed = 1; seed <= runs; seed++) {
 			lines.add("--run " + seed);
 			for (int d = depth; d <= toDepth; d++) {
+				MethodPrinter.whiteList.clear();
+				MethodPrinter.whiteList.add(starter);
 				executer = new VerificationEffortMain(program, width, d, runs, contracting);
 
 				System.out.println(lines.get(0) + "\n" + lines.get(1) + "\n\n");
@@ -96,17 +99,15 @@ public class Launcher {
 						e.printStackTrace();
 					}
 				}
-				System.out.println("Whitelist/Starter: " + starter);
-				MethodPrinter.whiteList.clear();
-				// TODO seed = runs
+				
 				for (int i = startP; i <= endP; i += gran) {
 					MethodPrinter.recreateJavaFile(seed, d, i, getDepthDependedName(d), starter, MethodPrinter.getMethodList(getDepthDependedName(d), d), randomized);
 					runVerify(starter, seed);
 					rfxy.add(new ResultsForXY(seed, d, i, tmpresult));
+					
 				}
-
+				
 				lines.add("----depth " + d + ": " + results);
-
 			}
 		}
 		
