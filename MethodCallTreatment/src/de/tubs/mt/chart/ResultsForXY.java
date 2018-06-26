@@ -1,6 +1,5 @@
 package de.tubs.mt.chart;
 
-import java.util.List;
 
 public class ResultsForXY {
 	

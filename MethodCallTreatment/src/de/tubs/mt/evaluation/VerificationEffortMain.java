@@ -10,7 +10,6 @@ import java.util.Set;
 
 import org.key_project.util.collection.ImmutableSet;
 
-import de.tubs.mt.codegen.CallGenerator.Program;
 import de.tubs.mt.files.FileControl;
 import de.uka.ilkd.key.control.KeYEnvironment;
 import de.uka.ilkd.key.java.abstraction.KeYJavaType;

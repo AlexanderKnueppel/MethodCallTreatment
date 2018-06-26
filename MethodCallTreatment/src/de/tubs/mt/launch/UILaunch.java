@@ -14,6 +14,7 @@ import de.tubs.mt.codeanalyze.MethodPrinter;
 import de.tubs.mt.codeanalyze.PrepMethod;
 import de.tubs.mt.codegen.CallGenerator.Program;
 import de.tubs.mt.files.FileControl;
+import de.tubs.mt.chart.ExcelFile;
 import de.tubs.mt.chart.ResultsForXY;
 import de.tubs.mt.chart.XYChart;
 import de.tubs.mt.chart.XYChart.Chart;
@@ -32,6 +33,7 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
@@ -54,9 +56,7 @@ public class UILaunch extends JFrame {
 	private JTextField textFieldinfo;
 	private JTextField textFieldStarterM;
 	private JTextField textFieldSpecPerc;
-	private JCheckBox chckbxCaching;
 	private JCheckBox chckbxContracting;
-	private JCheckBox chckbxCreatexmsl;
 	private JCheckBox chckbxFromTo;
 	private JCheckBox chckbxRandomized;
 	private JCheckBox chckbxMergeIntoLast;
@@ -100,15 +100,9 @@ public class UILaunch extends JFrame {
 		panel_1.setBackground(UIManager.getColor("Button.darkShadow"));
 		JLabel lblOptions = new JLabel("Options");
 		lblOptions.setFont(new Font("Dialog", Font.BOLD | Font.ITALIC, 14));
-
-		chckbxCaching = new JCheckBox("caching");
-		chckbxCaching.setBackground(UIManager.getColor("Button.darkShadow"));
-		chckbxCaching.setSelected(true);
 		chckbxContracting = new JCheckBox("contracting");
 		chckbxContracting.setBackground(UIManager.getColor("Button.darkShadow"));
 		chckbxContracting.setSelected(true);
-		chckbxCreatexmsl = new JCheckBox("create .xls");
-		chckbxCreatexmsl.setBackground(UIManager.getColor("Button.darkShadow"));
 		textFieldruns = new JTextField();
 		textFieldruns.setText("1");
 		textFieldruns.setColumns(10);
@@ -139,60 +133,82 @@ public class UILaunch extends JFrame {
 
 		JPanel panel_3 = new JPanel();
 		panel_3.setBackground(UIManager.getColor("MenuItem.selectionBackground"));
+		
+		JButton btnCreateExcelFile = new JButton("Create Excel File");
+		btnCreateExcelFile.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				createExcelFile();
+			}
+		});
 
 		GroupLayout gl_panel_1 = new GroupLayout(panel_1);
-		gl_panel_1.setHorizontalGroup(gl_panel_1.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_panel_1.createSequentialGroup().addGroup(gl_panel_1.createParallelGroup(Alignment.LEADING)
-						.addGroup(gl_panel_1.createSequentialGroup().addGap(124).addComponent(lblOptions))
-						.addGroup(gl_panel_1.createSequentialGroup().addContainerGap()
-								.addGroup(gl_panel_1.createParallelGroup(Alignment.LEADING)
-										.addGroup(gl_panel_1.createSequentialGroup().addComponent(chckbxContracting)
-												.addGap(51).addComponent(lblRuns).addGap(7).addComponent(textFieldruns,
-														GroupLayout.PREFERRED_SIZE, 54, GroupLayout.PREFERRED_SIZE))
-										.addComponent(chckbxCreatexmsl).addComponent(chckbxCaching))
-								.addGap(72)
-								.addGroup(gl_panel_1.createParallelGroup(Alignment.LEADING, false)
-										.addGroup(gl_panel_1.createSequentialGroup()
-												.addGroup(gl_panel_1.createParallelGroup(Alignment.LEADING)
-														.addComponent(lblSetSpecification).addComponent(lblGranulation))
-												.addPreferredGap(ComponentPlacement.UNRELATED)
-												.addGroup(gl_panel_1.createParallelGroup(Alignment.LEADING, false)
-														.addComponent(comboBoxGranulation, 0, GroupLayout.DEFAULT_SIZE,
-																Short.MAX_VALUE)
-														.addComponent(textFieldStartPercent, GroupLayout.DEFAULT_SIZE,
-																50, Short.MAX_VALUE))
-												.addPreferredGap(ComponentPlacement.UNRELATED)
-												.addComponent(lblTo, GroupLayout.PREFERRED_SIZE, 31,
-														GroupLayout.PREFERRED_SIZE)
-												.addGap(4).addComponent(textFieldEndPercent, GroupLayout.PREFERRED_SIZE,
-														59, GroupLayout.PREFERRED_SIZE))
-										.addComponent(panel_3, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE,
-												Short.MAX_VALUE))
-								.addGap(43).addComponent(chckbxRandomized)))
-						.addContainerGap(89, Short.MAX_VALUE)));
-		gl_panel_1.setVerticalGroup(gl_panel_1.createParallelGroup(Alignment.LEADING).addGroup(gl_panel_1
-				.createSequentialGroup().addContainerGap().addComponent(lblOptions).addGap(
-						39)
-				.addGroup(gl_panel_1.createParallelGroup(Alignment.BASELINE).addComponent(lblRuns)
-						.addComponent(textFieldruns, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
-								GroupLayout.PREFERRED_SIZE)
+		gl_panel_1.setHorizontalGroup(
+			gl_panel_1.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_panel_1.createSequentialGroup()
+					.addGroup(gl_panel_1.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_panel_1.createSequentialGroup()
+							.addGap(124)
+							.addComponent(lblOptions))
+						.addGroup(gl_panel_1.createSequentialGroup()
+							.addGroup(gl_panel_1.createParallelGroup(Alignment.LEADING)
+								.addGroup(gl_panel_1.createSequentialGroup()
+									.addContainerGap()
+									.addComponent(chckbxContracting)
+									.addGap(51)
+									.addComponent(lblRuns)
+									.addGap(7)
+									.addComponent(textFieldruns, GroupLayout.PREFERRED_SIZE, 54, GroupLayout.PREFERRED_SIZE))
+								.addGroup(gl_panel_1.createSequentialGroup()
+									.addGap(40)
+									.addComponent(btnCreateExcelFile)))
+							.addGap(72)
+							.addGroup(gl_panel_1.createParallelGroup(Alignment.LEADING, false)
+								.addGroup(gl_panel_1.createSequentialGroup()
+									.addGroup(gl_panel_1.createParallelGroup(Alignment.LEADING)
+										.addComponent(lblSetSpecification)
+										.addComponent(lblGranulation))
+									.addPreferredGap(ComponentPlacement.UNRELATED)
+									.addGroup(gl_panel_1.createParallelGroup(Alignment.LEADING, false)
+										.addComponent(comboBoxGranulation, 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+										.addComponent(textFieldStartPercent, GroupLayout.DEFAULT_SIZE, 50, Short.MAX_VALUE))
+									.addPreferredGap(ComponentPlacement.UNRELATED)
+									.addComponent(lblTo, GroupLayout.PREFERRED_SIZE, 31, GroupLayout.PREFERRED_SIZE)
+									.addGap(4)
+									.addComponent(textFieldEndPercent, GroupLayout.PREFERRED_SIZE, 59, GroupLayout.PREFERRED_SIZE))
+								.addComponent(panel_3, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+							.addGap(43)
+							.addComponent(chckbxRandomized)))
+					.addContainerGap(89, Short.MAX_VALUE))
+		);
+		gl_panel_1.setVerticalGroup(
+			gl_panel_1.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_panel_1.createSequentialGroup()
+					.addContainerGap()
+					.addComponent(lblOptions)
+					.addGap(39)
+					.addGroup(gl_panel_1.createParallelGroup(Alignment.BASELINE)
+						.addComponent(lblRuns)
+						.addComponent(textFieldruns, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 						.addComponent(lblSetSpecification)
-						.addComponent(textFieldStartPercent, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
-								GroupLayout.PREFERRED_SIZE)
+						.addComponent(textFieldStartPercent, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 						.addComponent(lblTo)
-						.addComponent(textFieldEndPercent, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
-								GroupLayout.PREFERRED_SIZE)
-						.addComponent(chckbxRandomized).addComponent(chckbxContracting))
-				.addGroup(gl_panel_1.createParallelGroup(Alignment.LEADING).addGroup(gl_panel_1.createSequentialGroup()
-						.addGap(4)
-						.addGroup(gl_panel_1.createParallelGroup(Alignment.BASELINE).addComponent(lblGranulation)
-								.addComponent(comboBoxGranulation, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
-										GroupLayout.PREFERRED_SIZE)))
-						.addGroup(gl_panel_1.createSequentialGroup().addGap(18).addComponent(chckbxCreatexmsl)))
-				.addPreferredGap(ComponentPlacement.RELATED)
-				.addGroup(gl_panel_1.createParallelGroup(Alignment.LEADING).addComponent(chckbxCaching)
-						.addComponent(panel_3, GroupLayout.DEFAULT_SIZE, 132, Short.MAX_VALUE))
-				.addContainerGap()));
+						.addComponent(textFieldEndPercent, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(chckbxRandomized)
+						.addComponent(chckbxContracting))
+					.addGroup(gl_panel_1.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_panel_1.createSequentialGroup()
+							.addGap(4)
+							.addGroup(gl_panel_1.createParallelGroup(Alignment.BASELINE)
+								.addComponent(lblGranulation)
+								.addComponent(comboBoxGranulation, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(panel_3, GroupLayout.DEFAULT_SIZE, 132, Short.MAX_VALUE)
+							.addContainerGap())
+						.addGroup(Alignment.TRAILING, gl_panel_1.createSequentialGroup()
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(btnCreateExcelFile)
+							.addGap(32))))
+		);
 
 		JButton btnShowXychart = new JButton("Show Chart");
 		btnShowXychart.addActionListener(new ActionListener() {
@@ -506,6 +522,18 @@ public class UILaunch extends JFrame {
 		
 	}
 	
+	private void createExcelFile() {
+		int width = Integer.parseInt(textFieldwidth.getText());
+		boolean contracting = chckbxContracting.isSelected();
+		String name = (contracting ? "contracting_" : "inlining_") + "width" + width;
+		try {
+			ExcelFile.createTable(resultLists, name);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
 	private void clearData() {
 		resultLists.clear();
 		textFieldinfo.setText("Resultlist is empty.");
@@ -555,12 +583,10 @@ public class UILaunch extends JFrame {
 		int width = Integer.parseInt(textFieldwidth.getText());
 		int depth = Integer.parseInt(textFielddepth.getText());
 		boolean contracting = chckbxContracting.isSelected();
-		boolean caching = chckbxCaching.isSelected();
 		boolean isToDepth = chckbxFromTo.isSelected();
-		boolean isXls = chckbxCreatexmsl.isSelected();
 		String javaFilePath = textFieldsearch.getText();
 
-		launcher.setParameter(program, runs, width, depth, contracting, caching, isToDepth, isXls, javaFilePath);
+		launcher.setParameter(program, runs, width, depth, contracting, isToDepth, javaFilePath);
 	}
 
 	private void executeGenerate() throws Exception {

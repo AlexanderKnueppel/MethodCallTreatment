@@ -1,4 +1,4 @@
-package de.tubs.mt.files;
+package de.tubs.mt.chart;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -13,6 +13,8 @@ import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Row;
 
+import de.tubs.mt.files.FileControl;
+
 public abstract class ExcelFile {
 
 	private static HSSFCellStyle createStyleForTitle(HSSFWorkbook workbook) {
@@ -23,7 +25,11 @@ public abstract class ExcelFile {
 		return style;
 	}
 
-	public static void createTable(List<Integer> list, String verifyEffort) throws IOException {
+	public static void createTable(List<List<ResultsForXY>> resultLists, String verifyEffort) throws IOException {
+		
+		List<ResultsForXY> results = resultLists.get(resultLists.size()-1);
+		List<Integer> specList = DataPrep.getSpecList(results);
+		List<Integer> depthList = DataPrep.getDepthList(results);
 
 		HSSFWorkbook workbook = new HSSFWorkbook();
 		HSSFSheet sheet = workbook.createSheet("Employees sheet");
@@ -36,35 +42,38 @@ public abstract class ExcelFile {
 
 		row = sheet.createRow(rownum);
 
-		// Depth
+		// Specification
 		cell = row.createCell(0, CellType.STRING);
-		cell.setCellValue("call depth ");
+		cell.setCellValue("Specification [%] ");
 		cell.setCellStyle(style);
 
-		// Proof-Steps Contracting
-		cell = row.createCell(1, CellType.STRING);
-		cell.setCellValue("proof steps " + verifyEffort);
-		cell.setCellStyle(style);
 
 		
-		int depth = 1;
+		int depthTmp = 1;
+		for (int i = depthList.get(0) ; i <= depthList.get(depthList.size()-1); i++) {
+			cell = row.createCell(depthTmp, CellType.STRING);
+			cell.setCellValue("Depth " + i);
+			cell.setCellStyle(style);
+			depthTmp++;
+		}
 
 		
-		// Data
-		for (int proofsteps : list) {
+		
+		for (int spec : specList) {
 			rownum++;
 			row = sheet.createRow(rownum);
-
-			// Proof-Steps Inlining
 			cell = row.createCell(0, CellType.NUMERIC);
-			cell.setCellValue(depth);
+			cell.setCellValue(spec);
+			depthTmp = 1;
+			
+			for (int depth : depthList) {
+				cell = row.createCell(depthTmp, CellType.NUMERIC);
+				cell.setCellValue(DataPrep.getResultForSpecDepthList(results, spec, depth).get(0));
+				depthTmp++;
+			}
 
-			// Proof-Steps Contracting
-			cell = row.createCell(1, CellType.NUMERIC);
-			cell.setCellValue(proofsteps);
-
-			depth++;
 		}
+		
 
 		File file = new File(FileControl.getExcelPath(verifyEffort));
 		file.getParentFile().mkdirs();
