@@ -36,12 +36,11 @@ public class VerificationEffortMain {
 	private int runs;
 
 
-	public VerificationEffortMain(Program p, int width, int depth, int runs, boolean contracting) {
+	public VerificationEffortMain(int width, boolean contracting) {
 		this.width = width;
-		this.depth = depth;
-		this.runs = runs;
 		this.contracting = contracting;
 	}
+	
 
 	/**
 	 * @return the width
@@ -90,10 +89,9 @@ public class VerificationEffortMain {
 	
 	
 	public List<Integer> verifyProgram(int seed, String whitelist) {
-
+		result.clear();
 		for (VerificationResult v : verify(FileControl.getExecPath().getPath() + "/" + seed + "/", Arrays.asList(whitelist))) {
 			result.add(v.getStatistics().nodes);
-
 			System.out.println("\nClosed? " + v.isClosed());
 		}
 		return result;

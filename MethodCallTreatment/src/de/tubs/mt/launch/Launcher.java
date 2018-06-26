@@ -30,13 +30,12 @@ public class Launcher {
 	private int toDepth;
 	private boolean contracting;
 	private boolean caching;
-	private boolean isToDepth;
 	private boolean saveXls;
 	private String javaFilePath;
 	private List<String> lines;
 	private List<Integer> xlsList;
 	private String name;
-	private String results;
+	private String results = "";
 	private List<ResultsForXY> rfxy = new ArrayList<>();
 	private int tmpresult;
 
@@ -49,24 +48,25 @@ public class Launcher {
 		this.toDepth = depth;
 		this.contracting = contracting;
 		this.caching = caching;
-		this.isToDepth = isToDepth;
 		this.saveXls = saveXls;
 		this.javaFilePath = javaFilePath;
 		this.name = program == Program.OWN ? javaFilePath
 				: ((program == Program.ADD ? "AddDepth" : "BubbleSortDepth") + (depth) + "Width" + (width) + ".java");
 	}
 	
+	
 	private String getDepthDependedName(int d) {
 		return program == Program.OWN ? javaFilePath
 				: ((program == Program.ADD ? "AddDepth" : "BubbleSortDepth") + (d) + "Width" + (width) + ".java");
 		
 	}
+	
+	
 
 	public void executeLauncher(String starter, int startP, int endP, int gran,
 			boolean randomized) throws Exception {
 		FileControl.rebuildExecPath();
 		xlsList = new ArrayList<Integer>();
-		
 		rfxy.clear();
 
 		if (caching) {
@@ -80,14 +80,17 @@ public class Launcher {
 				+ ", StartSpecification, Endspecification, Granulation (%) = " + startP + ", " + endP + ", " + gran
 				+ "]");
 		lines.add("==========================================================================================");
-
+		
+		executer = new VerificationEffortMain(width, contracting);
+		
 		for (int seed = 1; seed <= runs; seed++) {
 			lines.add("--run " + seed);
+			executer.setRuns(seed);
 			for (int d = depth; d <= toDepth; d++) {
+				results = "";
 				MethodPrinter.whiteList.clear();
 				MethodPrinter.whiteList.add(starter);
-				executer = new VerificationEffortMain(program, width, d, runs, contracting);
-
+				executer.setDepth(d);
 				System.out.println(lines.get(0) + "\n" + lines.get(1) + "\n\n");
 
 				if (caching) {
@@ -132,29 +135,25 @@ public class Launcher {
 	
 	public void runVerify(String whitelist, int seed) throws Exception {
 		List<Integer> effort = null;
-
 		effort = executer.verifyProgram(seed, whitelist);
-
-		results = "";
-
+		
 		for (Integer nodes : effort) {
 			results += nodes + ",";
 			xlsList.add(nodes);
 		}
+		
 		tmpresult = effort.get(effort.size() - 1);
-
-		results = results.substring(0, results.length() - 1);
-		System.out.println(results + "\n");
+		System.out.println("Results: " + results + "\n");
 
 		if (caching) {
 			try {
 				Files.write(Paths.get(FileControl.FILE), Arrays.asList(results), Charset.forName("UTF-8"),
 						StandardOpenOption.APPEND);
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
+		
 	}
 	
 	public List<ResultsForXY> getResultsForXY() {

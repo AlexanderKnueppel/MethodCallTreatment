@@ -22,6 +22,9 @@ import com.github.javaparser.ast.comments.Comment;
 import de.tubs.mt.files.FileControl;
 
 public abstract class MethodPrinter {
+	
+	public static List<String> whiteList = new ArrayList<String>();
+	public static String starterMethod;
 
 	/**
 	 * 
@@ -77,9 +80,7 @@ public abstract class MethodPrinter {
 				Charset.forName("UTF-8"), StandardOpenOption.CREATE);
 	}
 	
-	//public static List<PrepMethod> whiteList = new ArrayList<PrepMethod>();
-	public static List<String> whiteList = new ArrayList<String>();
-	public static String starterMethod;
+	
 	/**
 	 * 
 	 * @param seed
@@ -106,15 +107,14 @@ public abstract class MethodPrinter {
 			deleteJML(blacklist, seed, prepSeed, methodName, perc);
 			if(randomized) {
 				whiteList.clear();
+				whiteList.add(starterMethod);
 			}
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 	
 	private static void fillWhitelist(List<PrepMethod> methodList, List<String> blacklist) {
-		//System.out.print("Whitelist: ");
 		for(PrepMethod pm : methodList) {
 			if(!blacklist.contains(pm.name) && !whiteList.contains(pm.name) && !pm.name.equals(starterMethod)) {
 				whiteList.add(pm.name);
@@ -151,8 +151,7 @@ public abstract class MethodPrinter {
 
 		while (tmp != delMethods) {
 			next = (int) (Math.random() * size);
-			if (methodList.get(next).jml && !methodList.get(next).name.equals(starter)
-					&& !blackList.contains(methodList.get(next).name) && !whiteList.contains(methodList.get(next).name)) {
+			if (methodList.get(next).jml && !blackList.contains(methodList.get(next).name) && !whiteList.contains(methodList.get(next).name)) {
 				blackList.add(methodList.get(next).name);
 				tmp++;
 			}
