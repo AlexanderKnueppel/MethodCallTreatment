@@ -11,6 +11,9 @@ import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+
+import org.apache.commons.io.FileUtils;
+
 import com.github.javaparser.JavaParser;
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.NodeList;
@@ -20,12 +23,27 @@ import com.github.javaparser.ast.body.TypeDeclaration;
 import com.github.javaparser.ast.comments.Comment;
 
 import de.tubs.mt.files.FileControl;
+import de.tubs.mt.files.ListFilesUtil;
 
 public abstract class MethodPrinter {
 	
 	public static List<String> whiteList = new ArrayList<String>();
 	public static String starterMethod;
-
+	public static List<PrepClasses> classList = new ArrayList<PrepClasses>();
+	
+	public static List<PrepClasses> getClassList(File input, int seed) {
+		classList.clear();
+		
+		if(input.isFile()) {
+			classList.add(new PrepClasses(input.getName(), getMethodList(input.getName(), seed)));
+		} else {
+			List<File> fileList = ListFilesUtil.listFilesAndFilesSubDirectories(input);
+			for(File file : fileList) {
+				classList.add(new PrepClasses(file.getName(), getMethodList(input.getName() + "/" + file.getName(), seed)));
+			}
+		}
+		return classList;
+	}
 	/**
 	 * 
 	 * @param input
@@ -64,20 +82,13 @@ public abstract class MethodPrinter {
 	 * @param seed
 	 * @throws Exception
 	 */
-	public static void moveOwnJavaClassToPrep(String input, int seed) throws Exception {
-		FileInputStream in = new FileInputStream("TestClasses/" + input);
-
-		CompilationUnit cu = JavaParser.parse(in);
-		List<Comment> lc = cu.getComments();
-
-		List<String> lines = new LinkedList<String>();
-		lines.add(cu.toString());
-
-		File f = new File(FileControl.getPrepPath().getPath() + "/" + seed);
-		f.mkdir();
-
-		Files.write(Paths.get(FileControl.getPrepPath().getPath() + "/" + seed + "/" + input), lines,
-				Charset.forName("UTF-8"), StandardOpenOption.CREATE);
+	public static void moveOwnJavaClassToPrep(File input, int seed) throws Exception {
+		File destFile = new File(FileControl.getPrepPath().getPath() + "/" + seed + "/" + input.getName());
+		if(input.isFile()) {
+			FileUtils.copyFile(input, destFile);
+		} else {
+			FileUtils.copyDirectory(input, destFile);	
+		}	
 	}
 	
 	

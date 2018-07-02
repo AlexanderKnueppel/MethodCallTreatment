@@ -1,14 +1,14 @@
 package de.tubs.mt.launch;
 
-import java.io.IOException;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import javax.swing.WindowConstants;
 
-import de.tubs.mt.chart.ExcelFile;
 import de.tubs.mt.chart.ResultsForXY;
 import de.tubs.mt.codeanalyze.MethodPrinter;
+import de.tubs.mt.codeanalyze.PrepClasses;
 import de.tubs.mt.codeanalyze.PrepMethod;
 import de.tubs.mt.codegen.CallGenerator;
 import de.tubs.mt.codegen.CallGenerator.Program;
@@ -24,7 +24,7 @@ public class Launcher {
 	private int depth;
 	private int toDepth;
 	private boolean contracting;
-	private String javaFilePath;
+	private File javaFilePath;
 	private List<String> lines;
 	private List<Integer> xlsList;
 	private String name;
@@ -33,7 +33,7 @@ public class Launcher {
 	private int tmpresult;
 
 	public void setParameter(Program program, int runs, int width, int depth, boolean contracting, boolean isToDepth,
-			String javaFilePath) {
+			File javaFilePath) {
 		this.program = program;
 		this.runs = runs;
 		this.width = width;
@@ -41,12 +41,12 @@ public class Launcher {
 		this.toDepth = depth;
 		this.contracting = contracting;
 		this.javaFilePath = javaFilePath;
-		this.name = program == Program.OWN ? javaFilePath
+		this.name = program == Program.OWN ? javaFilePath.getName()
 				: ((program == Program.ADD ? "AddDepth" : "BubbleSortDepth") + (depth) + "Width" + (width) + ".java");
 	}
 
 	private String getDepthDependedName(int d) {
-		return program == Program.OWN ? javaFilePath
+		return program == Program.OWN ? javaFilePath.getName()
 				: ((program == Program.ADD ? "AddDepth" : "BubbleSortDepth") + (d) + "Width" + (width) + ".java");
 
 	}
@@ -120,11 +120,19 @@ public class Launcher {
 		for (seed = depth; seed <= toDepth; seed++) {
 			if (program == Program.OWN) {
 				MethodPrinter.moveOwnJavaClassToPrep(javaFilePath, seed);
+				MethodPrinter.getClassList(javaFilePath, seed);
 				return MethodPrinter.getMethodList(name, seed);
 			} else {
 				CallGenerator.callProgramGenerator(program, width, seed, seed, runs);
 			}
 		}
+		File f = new File(FileControl.getPrepPath().getPath() + "/" + (seed-1) + "/" + getDepthDependedName(depth));
+		System.out.println(f.getAbsolutePath());
+		List<PrepClasses> classList = MethodPrinter.getClassList(f, (seed-1));
+		System.out.println(classList.toString());
+		
+		
+		
 		return MethodPrinter.getMethodList(getDepthDependedName(depth), depth);
 	}
 

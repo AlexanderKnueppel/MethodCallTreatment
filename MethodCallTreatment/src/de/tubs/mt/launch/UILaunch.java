@@ -33,6 +33,7 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -69,7 +70,7 @@ public class UILaunch extends JFrame {
 	private JPanel panel_2;
 	private JList listUI;
 
-	private String choosenFile;
+	private File choosenFile;
 	private JList list;
 	private JLabel lblNewLabel_1;
 	private ListSelectionListener selListener = new ListSelectionListener() {
@@ -586,7 +587,7 @@ public class UILaunch extends JFrame {
 		boolean isToDepth = chckbxFromTo.isSelected();
 		String javaFilePath = textFieldsearch.getText();
 
-		launcher.setParameter(program, runs, width, depth, contracting, isToDepth, javaFilePath);
+		launcher.setParameter(program, runs, width, depth, contracting, isToDepth, choosenFile);
 	}
 
 	private void executeGenerate() throws Exception {
@@ -610,6 +611,8 @@ public class UILaunch extends JFrame {
 	}
 
 	private void chooseInputFile() {
+		/**
+		
 		final JFileChooser fc = new JFileChooser("TestClasses");
 		fc.setCurrentDirectory(FileControl.getTestclassesPath());
 		fc.setAcceptAllFileFilterUsed(false);
@@ -622,6 +625,23 @@ public class UILaunch extends JFrame {
 			choosenFile = fc.getSelectedFile().getName();
 			textFieldsearch.setText(choosenFile);
 		}
+		
+		*/
+		
+        
+    final JFileChooser chooser = new JFileChooser(); 
+    chooser.setCurrentDirectory(new java.io.File("TestClasses/"));
+    chooser.setDialogTitle("choosertitle");
+    chooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
 
-	}
+    if (chooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) { 
+      System.out.println("getSelectedFile() : " +  chooser.getSelectedFile());
+		choosenFile = chooser.getSelectedFile();
+		textFieldsearch.setText(choosenFile.getName());
+      }
+    else {
+      System.out.println("No Selection ");
+      }
+     }
+		 
 }

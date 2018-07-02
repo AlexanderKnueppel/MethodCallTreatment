@@ -20,5 +20,6 @@
 	<classpathentry kind="lib" path="libs/poi/poi-3.17.jar"/>
 	<classpathentry kind="lib" path="libs/jchart/jcommon-1.0.0.jar"/>
 	<classpathentry kind="lib" path="libs/jchart/jfreechart-1.0.1.jar"/>
+	<classpathentry kind="lib" path="libs/apachecommons/commons-io-2.6.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
