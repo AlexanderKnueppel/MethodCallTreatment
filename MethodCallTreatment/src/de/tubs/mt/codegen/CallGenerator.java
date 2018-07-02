@@ -19,13 +19,13 @@ public abstract class CallGenerator {
 	 * @param depth
 	 * @param seed
 	 */
-	public static void callProgramGenerator(Program program, int width, int depth, int seed, int run) {
+	public static void callProgramGenerator(Program program, int width, int depth, int seed, int run, String name) {
 		try {
 			if (program == Program.ADD) {
-				Incrementer.generateProgramForAdd(width, depth, seed, FileControl.getPrepPath().getPath());
+				Incrementer.generateProgramForAdd(width, depth, seed, FileControl.getPrepPath().getPath(), name);
 			} else {
 				Incrementer.generateProgramForBubbleSort(width, depth, seed,
-						FileControl.getPrepPath().getPath());
+						FileControl.getPrepPath().getPath(), name);
 			}
 		} catch (FileNotFoundException e1) {
 			// TODO Auto-generated catch block

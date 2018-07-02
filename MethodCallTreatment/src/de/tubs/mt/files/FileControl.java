@@ -53,7 +53,6 @@ public abstract class FileControl {
 	private static void rebuildPrepPath() {
 		File prep = getPrepPath();
 		if(prep.exists()) {
-			System.out.println("delete");
 			deleteRecursevly(prep);
 		}
 		prep.mkdirs();

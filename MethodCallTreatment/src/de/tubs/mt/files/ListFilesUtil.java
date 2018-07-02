@@ -70,6 +70,7 @@ public abstract class ListFilesUtil {
 	 * 
 	 */
 	public static List<File> listFilesAndFilesSubDirectories(File directory) {
+		clearFileList();
 		File[] fList = directory.listFiles();
 		for (File file : fList) {
 			if (file.isFile()) {

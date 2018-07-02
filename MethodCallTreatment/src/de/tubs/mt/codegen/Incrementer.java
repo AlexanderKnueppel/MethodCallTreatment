@@ -29,7 +29,7 @@ public class Incrementer {
 
 
 
-	public static void generateProgramForAdd(final int width, final int depth, int seed, String path)
+	public static void generateProgramForAdd(final int width, final int depth, int seed, String path, String name)
 			throws FileNotFoundException {
 
 		int total = totalNumberOfMethods(width, depth) + 1;
@@ -39,7 +39,7 @@ public class Incrementer {
 
 		TreeCodeGenerator cg = new BroadCodeGenerator();
 
-		String name = "AddDepth" + (depth) + "Width" + (width);
+		//String name = "AddDepth" + (depth) + "Width" + (width);
 
 		File f = new File(path + "/" + seed);
 		f.mkdir();
@@ -57,7 +57,7 @@ public class Incrementer {
 	}
 
 	public static void generateProgramForBubbleSort(final int width, final int depth, int seed,
-			String path) throws FileNotFoundException {
+			String path, String name) throws FileNotFoundException {
 
 		int total = totalNumberOfMethods(width, depth) + 1;
 		System.out.println("Total number of methods " + total);
@@ -66,7 +66,7 @@ public class Incrementer {
 		
 		final TreeCodeGenerator cg = new BubbleCodeGenerator();
 
-		String name = "BubbleSortDepth" + (depth) + "Width" + (width);
+		//String name = "BubbleSortDepth" + (depth) + "Width" + (width);
 
 		File f = new File(path + "/" + seed);
 		f.mkdir();

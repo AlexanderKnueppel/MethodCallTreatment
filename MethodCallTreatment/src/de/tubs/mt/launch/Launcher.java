@@ -31,9 +31,12 @@ public class Launcher {
 	private String results = "";
 	private List<ResultsForXY> rfxy = new ArrayList<>();
 	private int tmpresult;
+	private String folder;
+	private boolean codebase = false;
+	private List<PrepMethod> methodList = new ArrayList<>();
 
 	public void setParameter(Program program, int runs, int width, int depth, boolean contracting, boolean isToDepth,
-			File javaFilePath) {
+			File javaFilePath, List<PrepClasses> classList, List<PrepMethod> methodList) {
 		this.program = program;
 		this.runs = runs;
 		this.width = width;
@@ -41,15 +44,23 @@ public class Launcher {
 		this.toDepth = depth;
 		this.contracting = contracting;
 		this.javaFilePath = javaFilePath;
-		this.name = program == Program.OWN ? javaFilePath.getName()
-				: ((program == Program.ADD ? "AddDepth" : "BubbleSortDepth") + (depth) + "Width" + (width) + ".java");
+		this.folder = (program == Program.OWN && javaFilePath.isDirectory()) ? ("/" + javaFilePath.getName()) : "";
+		this.name = program == Program.OWN  ? javaFilePath.getName()
+				: ((program == Program.ADD ? "AddDepth" : "BubbleSortDepth") + (depth) + "Width" + (width));
+		if(program == Program.OWN && javaFilePath.isDirectory()) {
+			this.codebase = true;
+		}
+		
+		this.methodList= methodList;
 	}
 
+	/**
 	private String getDepthDependedName(int d) {
 		return program == Program.OWN ? javaFilePath.getName()
 				: ((program == Program.ADD ? "AddDepth" : "BubbleSortDepth") + (d) + "Width" + (width) + ".java");
 
 	}
+	**/
 
 	public void executeLauncher(String starter, int startP, int endP, int gran, boolean randomized) throws Exception {
 		FileControl.rebuildExecPath();
@@ -76,9 +87,12 @@ public class Launcher {
 				executer.setDepth(d);
 				System.out.println(lines.get(0) + "\n" + lines.get(1) + "\n\n");
 
+				List<PrepMethod> pm = new ArrayList<PrepMethod>();
 				for (int i = startP; i <= endP; i += gran) {
-					MethodPrinter.recreateJavaFile(seed, d, i, getDepthDependedName(d), starter,
-							MethodPrinter.getMethodList(getDepthDependedName(d), d), randomized);
+					if(program != Program.OWN) {
+						pm = MethodPrinter.getMethodList(name +  ".java", d);
+					}
+					MethodPrinter.recreateJavaFile(seed, d, folder, i, starter, codebase ? methodList: pm, randomized);
 					runVerify(starter, seed);
 					rfxy.add(new ResultsForXY(seed, d, i, tmpresult));
 
@@ -95,7 +109,7 @@ public class Launcher {
 
 	private void runVerify(String whitelist, int seed) throws Exception {
 		List<Integer> effort = null;
-		effort = executer.verifyProgram(seed, whitelist);
+		effort = executer.verifyProgram(seed, whitelist, folder);
 
 		for (Integer nodes : effort) {
 			results += nodes + ",";
@@ -114,26 +128,21 @@ public class Launcher {
 	 * @return
 	 * @throws Exception
 	 */
-	public List<PrepMethod> runGenerate() throws Exception {
+	public List<PrepClasses> runGenerate() throws Exception {
 		FileControl.initStructure();
 		int seed;
 		for (seed = depth; seed <= toDepth; seed++) {
 			if (program == Program.OWN) {
 				MethodPrinter.moveOwnJavaClassToPrep(javaFilePath, seed);
-				MethodPrinter.getClassList(javaFilePath, seed);
-				return MethodPrinter.getMethodList(name, seed);
+				return MethodPrinter.getClassList(javaFilePath, seed);
 			} else {
-				CallGenerator.callProgramGenerator(program, width, seed, seed, runs);
+				CallGenerator.callProgramGenerator(program, width, seed, seed, runs, name);
 			}
 		}
-		File f = new File(FileControl.getPrepPath().getPath() + "/" + (seed-1) + "/" + getDepthDependedName(depth));
+		
+		File f = new File(FileControl.getPrepPath().getPath() + "/" + depth + "/" + name + ".java");
 		System.out.println(f.getAbsolutePath());
-		List<PrepClasses> classList = MethodPrinter.getClassList(f, (seed-1));
-		System.out.println(classList.toString());
-		
-		
-		
-		return MethodPrinter.getMethodList(getDepthDependedName(depth), depth);
+		return MethodPrinter.getClassList(f, depth); 
 	}
 
 	public static void main(String[] args) {

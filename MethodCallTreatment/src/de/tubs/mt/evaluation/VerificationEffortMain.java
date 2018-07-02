@@ -87,7 +87,7 @@ public class VerificationEffortMain {
 	}
 	
 	
-	public List<Integer> verifyProgram(int seed, String whitelist) {
+	public List<Integer> verifyProgram(int seed, String whitelist, String folder) {
 		result.clear();
 		for (VerificationResult v : verify(FileControl.getExecPath().getPath() + "/" + seed + "/", Arrays.asList(whitelist))) {
 			result.add(v.getStatistics().nodes);

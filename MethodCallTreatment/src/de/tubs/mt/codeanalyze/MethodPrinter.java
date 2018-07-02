@@ -25,25 +25,35 @@ import com.github.javaparser.ast.comments.Comment;
 import de.tubs.mt.files.FileControl;
 import de.tubs.mt.files.ListFilesUtil;
 
+
+
+
+
 public abstract class MethodPrinter {
-	
+
 	public static List<String> whiteList = new ArrayList<String>();
 	public static String starterMethod;
 	public static List<PrepClasses> classList = new ArrayList<PrepClasses>();
+	private static List<File> fileList = new ArrayList<File>();
+
+	
 	
 	public static List<PrepClasses> getClassList(File input, int seed) {
 		classList.clear();
-		
-		if(input.isFile()) {
+
+		if (input.isFile()) {
 			classList.add(new PrepClasses(input.getName(), getMethodList(input.getName(), seed)));
 		} else {
-			List<File> fileList = ListFilesUtil.listFilesAndFilesSubDirectories(input);
-			for(File file : fileList) {
-				classList.add(new PrepClasses(file.getName(), getMethodList(input.getName() + "/" + file.getName(), seed)));
+			fileList = ListFilesUtil.listFilesAndFilesSubDirectories(input);
+			for (File file : fileList) {
+				classList.add(
+						new PrepClasses(file.getName(), getMethodList(input.getName() + "/" + file.getName(), seed)));
 			}
 		}
+
 		return classList;
 	}
+
 	/**
 	 * 
 	 * @param input
@@ -84,14 +94,13 @@ public abstract class MethodPrinter {
 	 */
 	public static void moveOwnJavaClassToPrep(File input, int seed) throws Exception {
 		File destFile = new File(FileControl.getPrepPath().getPath() + "/" + seed + "/" + input.getName());
-		if(input.isFile()) {
+		if (input.isFile()) {
 			FileUtils.copyFile(input, destFile);
 		} else {
-			FileUtils.copyDirectory(input, destFile);	
-		}	
+			FileUtils.copyDirectory(input, destFile);
+		}
 	}
-	
-	
+
 	/**
 	 * 
 	 * @param seed
@@ -102,8 +111,8 @@ public abstract class MethodPrinter {
 	 * @param methodList
 	 * @throws IOException
 	 */
-	public static void recreateJavaFile(int seed, int prepSeed, final int perc, String methodName, String starter, List<PrepMethod> methodList, boolean randomized)
-			throws IOException {
+	public static void recreateJavaFile(int seed, int prepSeed, String folder, final int perc,
+			String starter, List<PrepMethod> methodList, boolean randomized) throws IOException {
 		FileControl.rebuildExecPath();
 		int size = methodList.size();
 		int blackSize = getBlackSize(methodList);
@@ -115,8 +124,8 @@ public abstract class MethodPrinter {
 			List<String> blacklist = getJMLBlackList(methodList, starter, delMethods);
 			System.out.println("Blacklist for " + perc + "% Spec " + blacklist.toString());
 			fillWhitelist(methodList, blacklist);
-			deleteJML(blacklist, seed, prepSeed, methodName, perc);
-			if(randomized) {
+			deleteJML(blacklist, seed, prepSeed, folder, perc);
+			if (randomized) {
 				whiteList.clear();
 				whiteList.add(starterMethod);
 			}
@@ -124,13 +133,13 @@ public abstract class MethodPrinter {
 			e.printStackTrace();
 		}
 	}
-	
+
 	private static void fillWhitelist(List<PrepMethod> methodList, List<String> blacklist) {
-		for(PrepMethod pm : methodList) {
-			if(!blacklist.contains(pm.name) && !whiteList.contains(pm.name) && !pm.name.equals(starterMethod)) {
+		for (PrepMethod pm : methodList) {
+			if (!blacklist.contains(pm.name) && !whiteList.contains(pm.name) && !pm.name.equals(starterMethod)) {
 				whiteList.add(pm.name);
-			}	
-		}	
+			}
+		}
 		System.out.println("Whitelist: " + whiteList.toString());
 	}
 
@@ -162,7 +171,8 @@ public abstract class MethodPrinter {
 
 		while (tmp != delMethods) {
 			next = (int) (Math.random() * size);
-			if (methodList.get(next).jml && !blackList.contains(methodList.get(next).name) && !whiteList.contains(methodList.get(next).name)) {
+			if (methodList.get(next).jml && !blackList.contains(methodList.get(next).name)
+					&& !whiteList.contains(methodList.get(next).name)) {
 				blackList.add(methodList.get(next).name);
 				tmp++;
 			}
@@ -179,35 +189,43 @@ public abstract class MethodPrinter {
 	 * @param percent
 	 * @throws IOException
 	 */
-	private static void deleteJML(List<String> blacklist, int seed, int prepSeed,  String methodName, int percent) throws IOException {
-		FileInputStream in = new FileInputStream(FileControl.getPrepPath().getPath() + "/" + prepSeed + "/" + methodName);
-		CompilationUnit cu = JavaParser.parse(in);
+	private static void deleteJML(List<String> blacklist, int seed, int prepSeed, String folder, int percent) throws IOException {
+		
+		
+		for (PrepClasses pc : classList) {
 
-		NodeList<TypeDeclaration<?>> types = cu.getTypes();
+			FileInputStream in = new FileInputStream(FileControl.getPrepPath().getPath() + "/" + prepSeed + folder + "/" + pc.name);
+			CompilationUnit cu = JavaParser.parse(in);
 
-		for (TypeDeclaration<?> type : types) {
-			NodeList<BodyDeclaration<?>> members = type.getMembers();
-			for (BodyDeclaration<?> member : members) {
-				if (member instanceof MethodDeclaration) {
-					MethodDeclaration method = (MethodDeclaration) member;
-					if (blacklist.contains(method.getName().asString())) {
-						method.removeComment();
+			NodeList<TypeDeclaration<?>> types = cu.getTypes();
+
+			for (TypeDeclaration<?> type : types) {
+				NodeList<BodyDeclaration<?>> members = type.getMembers();
+				for (BodyDeclaration<?> member : members) {
+					if (member instanceof MethodDeclaration) {
+						MethodDeclaration method = (MethodDeclaration) member;
+						if (blacklist.contains(method.getName().asString())) {
+							method.removeComment();
+						}
+
 					}
-
 				}
+
+				List<String> lines = new LinkedList<String>();
+				lines.add(cu.toString());
+
+				File f = new File(FileControl.getExecPath().getPath() + "/" + seed );
+				
+				if(!f.exists()) {
+					f.mkdir();
+				}
+
+				Files.write(Paths.get(FileControl.getExecPath().getPath() + "/" + seed + "/" + pc.name), lines,
+						Charset.forName("UTF-8"), StandardOpenOption.CREATE);
 			}
 
-			List<String> lines = new LinkedList<String>();
-			lines.add(cu.toString());
-
-			File f = new File(FileControl.getExecPath().getPath() + "/" + seed);
-			f.mkdir();
-			String name = "P" + percent + methodName;
-
-			Files.write(Paths.get(FileControl.getExecPath().getPath() + "/" + seed + "/" + name), lines,
-					Charset.forName("UTF-8"), StandardOpenOption.CREATE);
-
 		}
+
 	}
 
 	/**
