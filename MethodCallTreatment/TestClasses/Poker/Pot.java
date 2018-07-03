@@ -12,7 +12,7 @@ public  /* nullable_by_default */class  Pot {
   //@ public invariant 0 <= size;
 
   /** Max pot size. */
-  public static final double MAX_POT_SIZE = Double.MAX_VALUE;
+  public static final double MAX_POT_SIZE = 1.7976931348623157E308;
 
 	
 

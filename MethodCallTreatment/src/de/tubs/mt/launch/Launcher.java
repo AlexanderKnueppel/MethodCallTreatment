@@ -54,13 +54,6 @@ public class Launcher {
 		this.methodList= methodList;
 	}
 
-	/**
-	private String getDepthDependedName(int d) {
-		return program == Program.OWN ? javaFilePath.getName()
-				: ((program == Program.ADD ? "AddDepth" : "BubbleSortDepth") + (d) + "Width" + (width) + ".java");
-
-	}
-	**/
 
 	public void executeLauncher(String starter, int startP, int endP, int gran, boolean randomized) throws Exception {
 		FileControl.rebuildExecPath();
@@ -92,7 +85,10 @@ public class Launcher {
 					if(program != Program.OWN) {
 						pm = MethodPrinter.getMethodList(name +  ".java", d);
 					}
-					MethodPrinter.recreateJavaFile(seed, d, folder, i, starter, codebase ? methodList: pm, randomized);
+					if(program == Program.OWN && !codebase) {
+						pm = MethodPrinter.getMethodList(name, d);
+					}
+					MethodPrinter.recreateJavaFile(seed, d, folder, i, starter, codebase ? methodList : pm, randomized);
 					runVerify(starter, seed);
 					rfxy.add(new ResultsForXY(seed, d, i, tmpresult));
 

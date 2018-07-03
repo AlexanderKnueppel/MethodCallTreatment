@@ -101,6 +101,7 @@ public class VerificationEffortMain {
 	
 	private List<VerificationResult> verify(String folder, List<String> whitelist) {
 		List<File> classPaths = null; // Optionally: Additional specifications
+		//classPaths.add(new File("/home/neapel/Desktop/MethodCallTreat/MethodCallTreatment/MethodCallTreatment/TestClasses/lib_specs"));
 										// for API classes
 		File bootClassPath = null; // Optionally: Different default
 									// specifications for Java API
