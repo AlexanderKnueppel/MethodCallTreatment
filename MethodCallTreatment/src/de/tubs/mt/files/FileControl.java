@@ -31,22 +31,22 @@ public abstract class FileControl {
 	}
 	
 	
-	public static void initStructure() throws IOException {
+	public static void initStructure() {
 		File tmp = getTmpPath();
-
 		if (tmp.exists()) {
 			deleteRecursevly(tmp);
 		}
-
 		tmp.mkdirs();
-		
 		rebuildExecPath();
-		
 		rebuildPrepPath();
 		
-		
 		if (!getResultHandle().exists()) {
-			getResultHandle().createNewFile();
+			try {
+				getResultHandle().createNewFile();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 	}
 	
