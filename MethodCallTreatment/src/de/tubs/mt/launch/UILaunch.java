@@ -10,11 +10,11 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 
 import org.jfree.data.xy.XYSeries;
 
-import de.tubs.mt.codeanalyze.MethodPrinter;
+import de.tubs.mt.codeanalyze.ClassMethodHandler;
 import de.tubs.mt.codeanalyze.PrepClasses;
 import de.tubs.mt.codeanalyze.PrepMethod;
-import de.tubs.mt.codegen.CallGenerator.Program;
-import de.tubs.mt.files.FileControl;
+import de.tubs.mt.programfactory.IProgram;
+import de.tubs.mt.programfactory.ProgramFactory;
 import de.tubs.mt.chart.ExcelFile;
 import de.tubs.mt.chart.ResultsForXY;
 import de.tubs.mt.chart.XYChart;
@@ -40,11 +40,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
 import java.awt.event.ActionEvent;
+
 import javax.swing.JList;
 import javax.swing.SpringLayout;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.JToggleButton;
+
 import java.awt.SystemColor;
 
 public class UILaunch extends JFrame {
@@ -93,7 +95,7 @@ public class UILaunch extends JFrame {
 	private List<String> propertiesList =  new ArrayList<String>();
 
 	
-	
+	private IProgram program;
 	
 	public UILaunch(Launcher launcher) {
 		this.launcher = launcher;
@@ -588,9 +590,9 @@ public class UILaunch extends JFrame {
 
 	private void executeVerify() throws Exception {
 		textFieldinfo.setText("Start to run");
-		setParameter();
-		String whitelist = textFieldStarterM.getText();
-		if (whitelist.equals("")) {
+		//setParameter();
+		String starter = textFieldStarterM.getText();
+		if (starter.equals("")) {
 			textFieldinfo.setText("Choose a starter");
 			return;
 		}
@@ -601,7 +603,9 @@ public class UILaunch extends JFrame {
 		if(!chckbxSetSpecification.isSelected()) {
 			startP = endP;
 		}
-
+		program.verify(1, false, startP, endP, gran, starter);
+		
+/**
 		launcher.executeLauncher(whitelist, startP, endP, gran, randomized);
 
 		List<ResultsForXY> res = new ArrayList<>();
@@ -615,57 +619,50 @@ public class UILaunch extends JFrame {
 
 		System.out.println("---------Ready--------");
 		textFieldinfo.setText("Ready");
+		**/
 	}
 
 	private void setParameter() {
-		Program program = Program.OWN;
-		if (!chckbxChooseExistingJava.isSelected()) {
-			program = comboBox.getSelectedItem().toString() == "Add" ? Program.ADD : Program.BUBBLESORT;
-		}
-
-		int runs = Integer.parseInt(textFieldruns.getText());
+		String genProgram = comboBox.getSelectedItem().toString();
 		int width = Integer.parseInt(textFieldwidth.getText());
 		int depth = Integer.parseInt(textFielddepth.getText());
-		boolean contracting = chckbxContracting.isSelected();
 		boolean isToDepth = chckbxFromTo.isSelected();
-		String javaFilePath = textFieldsearch.getText();
-
-		launcher.setParameter(program, runs, width, depth, contracting, isToDepth, choosenFile, classList, methodList);
+		program.setParameters(width, depth, isToDepth, genProgram);
 	}
-
-	private void executeGenerate() throws Exception {
+	
+	private void showMethods() throws Exception{
 		methodList.clear();
 		classList.clear();
-		
-		setParameter();
-
 		comboBoxClasses.removeAll();
 		list.removeAll();
 		
 		List<String> classString = new ArrayList<String>();
-		classList = launcher.runGenerate();
+		classList = program.getClasses();
 		
-
 		for(PrepClasses  pc : classList) {
 			classString.add(pc.name);
-			methodList.addAll(pc.prepMethods);
-			
+			methodList.addAll(pc.prepMethods);	
 		}
 		
-		String properties = "Classes: " + classList.size() + "   Methods: " + methodList.size() + "   Spec: " + MethodPrinter.getSpecPercent(methodList) + "%";
-		
+		String properties = "Classes: " + classList.size() + "   Methods: " + methodList.size() + "   Spec: " + ClassMethodHandler.getSpecPercent(methodList) + "%";
 		comboBoxClasses.setModel(new DefaultComboBoxModel(classString.toArray()));
-		
 		lblSpecification.setText(properties);
-		textFieldEndPercent.setText("" + MethodPrinter.getSpecPercent(methodList));
-
+		textFieldEndPercent.setText("" + ClassMethodHandler.getSpecPercent(methodList));
 		setClassDependedMethods();
-		textFieldinfo.setText("Code generated");
+	}
 
+	private void executeGenerate() throws Exception {
+		String programType = "generated";
+		if (chckbxChooseExistingJava.isSelected()) {
+			programType = choosenFile.isFile() ? "single" : "codebase";
+		}
+		program = ProgramFactory.getProgram(programType);
+		setParameter();
+		program.prepare(choosenFile);
+		showMethods();
 	}
 	
 	private void setClassDependedMethods() {
-
 		String className = comboBoxClasses.getSelectedItem().toString();
 		methodVector.clear();
 		for(PrepClasses  pc : classList) {
@@ -690,7 +687,6 @@ public class UILaunch extends JFrame {
     chooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
 
     if (chooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) { 
-      System.out.println("getSelectedFile() : " +  chooser.getSelectedFile());
 		choosenFile = chooser.getSelectedFile();
 		textFieldsearch.setText(choosenFile.getName());
       }

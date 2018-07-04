@@ -11,9 +11,10 @@ public interface IProgram {
 	
 	public void prepare(File file);
 	
-	public void manipulate(int startPercentage, int endPercentage,  int granulation);
+	public void manipulate(int depth, int perc);
 	
-	public void verify(int runs, boolean contracting);
+	public void verify(int runs, boolean contracting, int startPercentage, int endPercentage,
+			int granulation, String starter);
 	
 	public List<PrepClasses> getClasses();
 

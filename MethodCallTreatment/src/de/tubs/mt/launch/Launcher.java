@@ -7,7 +7,7 @@ import java.util.List;
 import javax.swing.WindowConstants;
 
 import de.tubs.mt.chart.ResultsForXY;
-import de.tubs.mt.codeanalyze.MethodPrinter;
+import de.tubs.mt.codeanalyze.ClassMethodHandler;
 import de.tubs.mt.codeanalyze.PrepClasses;
 import de.tubs.mt.codeanalyze.PrepMethod;
 import de.tubs.mt.codegen.CallGenerator;
@@ -75,20 +75,20 @@ public class Launcher {
 			executer.setRuns(seed);
 			for (int d = depth; d <= toDepth; d++) {
 				results = "";
-				MethodPrinter.whiteList.clear();
-				MethodPrinter.whiteList.add(starter);
+				ClassMethodHandler.whiteList.clear();
+				ClassMethodHandler.whiteList.add(starter);
 				executer.setDepth(d);
 				System.out.println(lines.get(0) + "\n" + lines.get(1) + "\n\n");
 
 				List<PrepMethod> pm = new ArrayList<PrepMethod>();
 				for (int i = startP; i <= endP; i += gran) {
 					if(program != Program.OWN) {
-						pm = MethodPrinter.getMethodList(name +  ".java", d);
+						pm = ClassMethodHandler.getMethodList(name +  ".java", d);
 					}
 					if(program == Program.OWN && !codebase) {
-						pm = MethodPrinter.getMethodList(name, d);
+						pm = ClassMethodHandler.getMethodList(name, d);
 					}
-					MethodPrinter.recreateJavaFile(seed, d, folder, i, starter, codebase ? methodList : pm, randomized);
+					ClassMethodHandler.recreateJavaFile(seed, d, folder, i, starter, codebase ? methodList : pm, randomized);
 					runVerify(starter, seed);
 					rfxy.add(new ResultsForXY(seed, d, i, tmpresult));
 
@@ -119,27 +119,6 @@ public class Launcher {
 		return rfxy;
 	}
 
-	/**
-	 * 
-	 * @return
-	 * @throws Exception
-	 */
-	public List<PrepClasses> runGenerate() throws Exception {
-		FileControl.initStructure();
-		int seed;
-		for (seed = depth; seed <= toDepth; seed++) {
-			if (program == Program.OWN) {
-				MethodPrinter.moveOwnJavaClassToPrep(javaFilePath, seed);
-				return MethodPrinter.getClassList(javaFilePath, seed);
-			} else {
-				CallGenerator.callProgramGenerator(program, width, seed, seed, runs, name);
-			}
-		}
-		
-		File f = new File(FileControl.getPrepPath().getPath() + "/" + depth + "/" + name + ".java");
-		System.out.println(f.getAbsolutePath());
-		return MethodPrinter.getClassList(f, depth); 
-	}
 
 	public static void main(String[] args) {
 		Launcher launcher = new Launcher();
