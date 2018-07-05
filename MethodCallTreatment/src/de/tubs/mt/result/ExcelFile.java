@@ -1,4 +1,4 @@
-package de.tubs.mt.chart;
+package de.tubs.mt.result;
 
 import java.io.File;
 import java.io.FileOutputStream;

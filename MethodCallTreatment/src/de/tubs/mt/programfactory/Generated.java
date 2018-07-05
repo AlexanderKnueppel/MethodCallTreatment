@@ -2,26 +2,22 @@ package de.tubs.mt.programfactory;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import de.tubs.mt.chart.Results;
-import de.tubs.mt.chart.ChartResults;
 import de.tubs.mt.codeanalyze.JMLManipulator;
 import de.tubs.mt.codeanalyze.ClassMethodHandler;
 import de.tubs.mt.codeanalyze.PrepClasses;
 import de.tubs.mt.codeanalyze.PrepMethod;
 import de.tubs.mt.codegen.Incrementer;
-import de.tubs.mt.codegen.CallGenerator.Program;
 import de.tubs.mt.evaluation.VerificationEffortMain;
 import de.tubs.mt.files.FileControl;
+import de.tubs.mt.result.ResultHandler;
 
-public class Generated implements IProgram {
+class Generated implements IProgram {
 
 	private int width;
 	private int depth;
-	private boolean isToDepth;
 	private String program;
 	private String name;
 	private File prepPath;
@@ -34,7 +30,6 @@ public class Generated implements IProgram {
 			String program) {
 		this.width = width;
 		this.depth = depth;
-		this.isToDepth = isToDepth;
 		this.startDepth = isToDepth ? 1 : depth;
 		this.program = program;
 		this.name = program + "Width" + width;
@@ -81,9 +76,10 @@ public class Generated implements IProgram {
 	public void verify(int runs, boolean contracting, int startPercentage,
 			int endPercentage, int granulation, String starter) {
 		
-		Results.initResults(contracting);
+		ResultHandler.initResults(contracting);
 		for (int run = 1; run <= runs; run++) {
 			for (int dp = startDepth; dp <= depth; dp++) {
+				ResultHandler.clearResultList();
 				this.prepPath = new File(getDepthPrepPath(dp));
 				System.out.println("Run: " + run + "   Depth: " + dp);
 				pm = ClassMethodHandler.getMethodList(getDepthPrepPath(dp));
@@ -93,11 +89,11 @@ public class Generated implements IProgram {
 				for (int perc = endPercentage; perc >= startPercentage; perc -= granulation) {
 					manipulate(dp, perc);
 					List<Integer> effort =VerificationEffortMain.verifyProgram(FileControl.getExecPath().getPath(), starter, contracting);
-					Results.addResults(effort, run, dp, perc);
+					ResultHandler.addResults(effort, run, dp, perc);
 				}
 			}
 		}
-		Results.printResults();
+		ResultHandler.printResults();
 	}
 
 	@Override

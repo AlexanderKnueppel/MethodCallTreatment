@@ -31,7 +31,7 @@ import de.tubs.mt.files.ListFilesUtil;
 
 public abstract class ClassMethodHandler {
 
-	public static List<PrepClasses> classList = new ArrayList<PrepClasses>();
+	private static List<PrepClasses> classList = new ArrayList<PrepClasses>();
 	private static List<File> fileList = new ArrayList<File>();
 
 	

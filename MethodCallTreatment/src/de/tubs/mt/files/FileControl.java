@@ -1,8 +1,6 @@
 package de.tubs.mt.files;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.StandardOpenOption;
@@ -96,11 +94,6 @@ public abstract class FileControl {
 	
 	public static File getExecPath() {
 		return new File(RESULT_PATH.replaceAll("/", "") + "/" + tmp_folder.replaceAll("/", "") + "/" + exec_folder.replaceAll("/", "") + "/");
-	}
-	
-	
-	public static File getTestclassesPath() {
-		return testclassesPath;
 	}
 	
 	public static String getExcelPath(String verifyEffort) {

@@ -6,19 +6,18 @@ import javax.swing.GroupLayout.Alignment;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.UIManager;
-import javax.swing.filechooser.FileNameExtensionFilter;
 
-import org.jfree.data.xy.XYSeries;
 
 import de.tubs.mt.codeanalyze.ClassMethodHandler;
 import de.tubs.mt.codeanalyze.PrepClasses;
 import de.tubs.mt.codeanalyze.PrepMethod;
 import de.tubs.mt.programfactory.IProgram;
 import de.tubs.mt.programfactory.ProgramFactory;
-import de.tubs.mt.chart.ExcelFile;
-import de.tubs.mt.chart.ChartResults;
-import de.tubs.mt.chart.XYChart;
-import de.tubs.mt.chart.XYChart.Chart;
+import de.tubs.mt.result.ChartResults;
+import de.tubs.mt.result.ExcelFile;
+import de.tubs.mt.result.ResultHandler;
+import de.tubs.mt.result.XYChart;
+import de.tubs.mt.result.XYChart.Chart;
 
 import javax.swing.JLabel;
 import javax.swing.JCheckBox;
@@ -45,13 +44,12 @@ import javax.swing.JList;
 import javax.swing.SpringLayout;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.event.ListSelectionEvent;
-import javax.swing.JToggleButton;
+
 
 import java.awt.SystemColor;
 
 public class UILaunch extends JFrame {
 
-	private Launcher launcher;
 
 	private JTextField textFieldsearch;
 	private JTextField textFieldruns;
@@ -59,46 +57,44 @@ public class UILaunch extends JFrame {
 	private JTextField textFielddepth;
 	private JTextField textFieldinfo;
 	private JTextField textFieldStarterM;
+	private JTextField textFieldStartPercent;
+	private JLabel lblTo;
+	private JLabel lblSpecification;
+	private JLabel lblNewLabel_1;
 	private JCheckBox chckbxContracting;
 	private JCheckBox chckbxFromTo;
 	private JCheckBox chckbxRandomized;
 	private JCheckBox chckbxMergeIntoLast;
 	private JCheckBox chckbxSetSpecification;
-	private JButton btnGenerate;
 	private JCheckBox chckbxChooseExistingJava;
 	private JButton btnSearch;
+	private JButton btnGenerate;
 	private JComboBox comboBox;
 	private JComboBox comboBoxGranulation;
 	private JComboBox comboBoxChart;
 	private JComboBox comboBoxClasses;
 	private JPanel panel_2;
-	private JList listUI;
 	private Vector methodVector = new Vector<PrepMethod>();
 
 	private File choosenFile;
 	private JList list;
-	private JLabel lblNewLabel_1;
 	private ListSelectionListener selListener = new ListSelectionListener() {
 		public void valueChanged(ListSelectionEvent e) {
 			changeStarter();
 		}
 	};
-	private JTextField textFieldStartPercent;
-	private JLabel lblTo;
+
+	private XYChart xychart;
 	private JTextField textFieldEndPercent;
 	private List<PrepMethod> methodList = new ArrayList<PrepMethod>();
 	private List<PrepClasses> classList = new ArrayList<PrepClasses>();
-	private JLabel lblSpecification;
-	private XYChart xychart;
-
 	private ArrayList<List<ChartResults>> resultLists = new ArrayList<List<ChartResults>>();
 	private List<String> propertiesList =  new ArrayList<String>();
 
 	
 	private IProgram program;
 	
-	public UILaunch(Launcher launcher) {
-		this.launcher = launcher;
+	public UILaunch() {
 		this.setSize(1027, 626);
 		this.setLocation(200, 100);
 		getContentPane().setBackground(SystemColor.infoText);
@@ -546,6 +542,8 @@ public class UILaunch extends JFrame {
 		setTitle("Method Call Treatment");
 	}
 
+	
+	
 	private void createChart() {
 		String plot = comboBoxChart.getSelectedItem().toString();
 		Chart chart;
@@ -607,6 +605,19 @@ public class UILaunch extends JFrame {
 		int run = Integer.parseInt(textFieldruns.getText());
 		
 		program.verify(run, contract6ing, startP, endP, gran, starter);
+		
+		
+		List<ChartResults> res = new ArrayList<>();
+		res.addAll(ResultHandler.getResultsForXY());
+		resultLists.add(res);
+		if(chckbxContracting.isSelected()) {
+			propertiesList.add("Contracting-Width" + textFieldwidth.getText());
+		} else {
+			propertiesList.add("Inlining-Width" + textFieldwidth.getText());
+		}
+
+		System.out.println("---------Ready--------");
+		textFieldinfo.setText("Ready");
 		
 	}
 

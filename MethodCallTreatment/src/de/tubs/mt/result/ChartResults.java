@@ -1,4 +1,4 @@
-package de.tubs.mt.chart;
+package de.tubs.mt.result;
 
 
 public class ChartResults {

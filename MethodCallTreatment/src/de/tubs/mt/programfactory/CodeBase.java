@@ -13,12 +13,13 @@ import de.tubs.mt.codeanalyze.PrepClasses;
 import de.tubs.mt.codeanalyze.PrepMethod;
 import de.tubs.mt.evaluation.VerificationEffortMain;
 import de.tubs.mt.files.FileControl;
-import de.tubs.mt.files.ListFilesUtil;
+import de.tubs.mt.result.ResultHandler;
 
-public class CodeBase implements IProgram {
+
+class CodeBase implements IProgram {
 	
 	private File prepPath;
-	public static List<PrepClasses> classList = new ArrayList<PrepClasses>();
+	private List<PrepClasses> classList = new ArrayList<PrepClasses>();
 	private List<PrepMethod> pm = new ArrayList<PrepMethod>();
 
 	@Override
@@ -45,7 +46,9 @@ public class CodeBase implements IProgram {
 	@Override
 	public void verify(int runs, boolean contracting, int startPercentage, int endPercentage,
 			int granulation, String starter) {
+		ResultHandler.initResults(contracting);
 		for (int run = 1; run <= runs; run++) {
+			ResultHandler.clearResultList();
 			System.out.println("Run: " + run);
 			setMethodList();
 			JMLManipulator.setWhiteList(pm);
@@ -53,15 +56,16 @@ public class CodeBase implements IProgram {
 			JMLManipulator.clearBlackList();
 			for (int perc = endPercentage; perc >= startPercentage; perc -= granulation) {
 				manipulate(0, perc);
-				VerificationEffortMain.verifyProgram(FileControl.getExecPath()
+				List<Integer> effort = VerificationEffortMain.verifyProgram(FileControl.getExecPath()
 						.getPath(), starter, contracting);
+				ResultHandler.addResults(effort, run, 0, perc);
 
 			}
 		}
-		
+		ResultHandler.printResults();
 	}
 	
-	public void setMethodList() {
+	private void setMethodList() {
 		pm.clear();
 		classList = getClasses();
 		for(PrepClasses pc : classList) {

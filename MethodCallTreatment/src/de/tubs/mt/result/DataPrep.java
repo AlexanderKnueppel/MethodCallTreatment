@@ -1,4 +1,4 @@
-package de.tubs.mt.chart;
+package de.tubs.mt.result;
 
 import java.util.ArrayList;
 import java.util.List;

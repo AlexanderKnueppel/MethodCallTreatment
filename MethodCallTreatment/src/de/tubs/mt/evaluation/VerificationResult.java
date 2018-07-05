@@ -2,7 +2,7 @@ package de.tubs.mt.evaluation;
 
 import de.uka.ilkd.key.proof.Statistics;
 
-public class VerificationResult implements Comparable<VerificationResult> {
+class VerificationResult implements Comparable<VerificationResult> {
 	
 	private String target;
 	private String displayName;

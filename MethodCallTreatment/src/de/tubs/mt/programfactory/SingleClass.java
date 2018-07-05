@@ -7,15 +7,15 @@ import java.util.List;
 
 import org.apache.commons.io.FileUtils;
 
-import de.tubs.mt.chart.Results;
 import de.tubs.mt.codeanalyze.ClassMethodHandler;
 import de.tubs.mt.codeanalyze.JMLManipulator;
 import de.tubs.mt.codeanalyze.PrepClasses;
 import de.tubs.mt.codeanalyze.PrepMethod;
 import de.tubs.mt.evaluation.VerificationEffortMain;
 import de.tubs.mt.files.FileControl;
+import de.tubs.mt.result.ResultHandler;
 
-public class SingleClass implements IProgram {
+class SingleClass implements IProgram {
 
 	private File prepPath;
 	private List<PrepMethod> pm = new ArrayList<PrepMethod>();
@@ -44,7 +44,9 @@ public class SingleClass implements IProgram {
 	@Override
 	public void verify(int runs, boolean contracting, int startPercentage,
 			int endPercentage, int granulation, String starter) {
+		ResultHandler.initResults(contracting);
 		for (int run = 1; run <= runs; run++) {
+			ResultHandler.clearResultList();
 			System.out.println("Run: " + run);
 			pm = ClassMethodHandler.getMethodList(prepPath.getAbsolutePath());
 			JMLManipulator.setWhiteList(pm);
@@ -53,9 +55,10 @@ public class SingleClass implements IProgram {
 			for (int perc = endPercentage; perc >= startPercentage; perc -= granulation) {
 				manipulate(0, perc);
 				List<Integer> effort = VerificationEffortMain.verifyProgram(FileControl.getExecPath().getPath(), starter, contracting);
-				Results.addResults(effort);
+				ResultHandler.addResults(effort, run, 0, perc);
 			}
 		}
+		ResultHandler.printResults();
 	}
 
 	@Override
