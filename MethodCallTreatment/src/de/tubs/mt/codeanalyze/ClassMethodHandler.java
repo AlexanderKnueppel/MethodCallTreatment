@@ -31,8 +31,6 @@ import de.tubs.mt.files.ListFilesUtil;
 
 public abstract class ClassMethodHandler {
 
-	public static List<String> whiteList = new ArrayList<String>();
-	public static String starterMethod;
 	public static List<PrepClasses> classList = new ArrayList<PrepClasses>();
 	private static List<File> fileList = new ArrayList<File>();
 

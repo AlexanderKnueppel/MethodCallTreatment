@@ -34,7 +34,7 @@ public abstract class VerificationEffortMain {
 		for (VerificationResult v : verify(directory, Arrays.asList(starter),
 				contracting)) {
 			result.add(v.getStatistics().nodes);
-			System.out.println("\nClosed? " + v.isClosed() + "\n");
+			System.out.println("\nClosed? " + v.isClosed());
 		}
 		return result;
 	}

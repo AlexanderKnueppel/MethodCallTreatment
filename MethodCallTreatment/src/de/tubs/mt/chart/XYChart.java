@@ -30,14 +30,14 @@ import org.jfree.chart.renderer.category.BoxAndWhiskerRenderer;
 public class XYChart extends JFrame {
 
 	private String chartTitle;
-	private List<List<ResultsForXY>> rfxy;
+	private List<List<ChartResults>> rfxy;
 	private List<String> propertiesList;
 
 	public static enum Chart {
 		LINE, BAR, BOXPLOT
 	}
 
-	public XYChart(String applicationTitle, String chartTitle, List<List<ResultsForXY>> resultLists,
+	public XYChart(String applicationTitle, String chartTitle, List<List<ChartResults>> resultLists,
 			List<String> propertiesList, Chart chart, boolean merge) {
 		super(applicationTitle);
 		this.chartTitle = chartTitle;
@@ -80,7 +80,7 @@ public class XYChart extends JFrame {
 
 	private BoxAndWhiskerCategoryDataset createBoxPlotDataset() {
 		
-		List<ResultsForXY> results = rfxy.get(rfxy.size()-1);
+		List<ChartResults> results = rfxy.get(rfxy.size()-1);
 		List<Integer> specList = DataPrep.getSpecList(results);
 		List<Integer> depthList = DataPrep.getDepthList(results);
 		
@@ -120,17 +120,17 @@ public class XYChart extends JFrame {
 		final XYSeriesCollection dataset = new XYSeriesCollection();
 
 		if (!merge) {
-			List<ResultsForXY> results = rfxy.get(rfxy.size()-1);
+			List<ChartResults> results = rfxy.get(rfxy.size()-1);
 			XYSeries contract = new XYSeries(propertiesList.get(propertiesList.size()-1));
-			for (ResultsForXY result : results) {
+			for (ChartResults result : results) {
 				contract.add((Number) result.getDepth(), result.getResults());
 			}
 			dataset.addSeries(contract);
 		} else {
 			int tmp = 0;
-			for (List<ResultsForXY> results : rfxy) {
+			for (List<ChartResults> results : rfxy) {
 				XYSeries contract = new XYSeries(propertiesList.get(tmp));
-				for (ResultsForXY result : results) {
+				for (ChartResults result : results) {
 					contract.add((Number) result.getDepth(), result.getResults());
 				}
 				dataset.addSeries(contract);
@@ -148,8 +148,8 @@ public class XYChart extends JFrame {
 	
 	private DefaultCategoryDataset createBarDataset() {
 		final DefaultCategoryDataset dataset = new DefaultCategoryDataset();
-		List<ResultsForXY> results = rfxy.get(rfxy.size() - 1);
-		for (ResultsForXY result : results) {
+		List<ChartResults> results = rfxy.get(rfxy.size() - 1);
+		for (ChartResults result : results) {
 			dataset.addValue(result.getResults(), "Depth = " + String.valueOf(result.getDepth()),
 					String.valueOf(result.getSpec()));
 		}

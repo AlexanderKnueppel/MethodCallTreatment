@@ -16,7 +16,7 @@ import de.tubs.mt.codeanalyze.PrepMethod;
 import de.tubs.mt.programfactory.IProgram;
 import de.tubs.mt.programfactory.ProgramFactory;
 import de.tubs.mt.chart.ExcelFile;
-import de.tubs.mt.chart.ResultsForXY;
+import de.tubs.mt.chart.ChartResults;
 import de.tubs.mt.chart.XYChart;
 import de.tubs.mt.chart.XYChart.Chart;
 
@@ -91,7 +91,7 @@ public class UILaunch extends JFrame {
 	private JLabel lblSpecification;
 	private XYChart xychart;
 
-	private ArrayList<List<ResultsForXY>> resultLists = new ArrayList<List<ResultsForXY>>();
+	private ArrayList<List<ChartResults>> resultLists = new ArrayList<List<ChartResults>>();
 	private List<String> propertiesList =  new ArrayList<String>();
 
 	
@@ -603,23 +603,11 @@ public class UILaunch extends JFrame {
 		if(!chckbxSetSpecification.isSelected()) {
 			startP = endP;
 		}
-		program.verify(1, false, startP, endP, gran, starter);
+		boolean contract6ing = chckbxContracting.isSelected();
+		int run = Integer.parseInt(textFieldruns.getText());
 		
-/**
-		launcher.executeLauncher(whitelist, startP, endP, gran, randomized);
-
-		List<ResultsForXY> res = new ArrayList<>();
-		res.addAll(launcher.getResultsForXY());
-		resultLists.add(res);
-		if(chckbxContracting.isSelected()) {
-			propertiesList.add("Contracting-Width" + textFieldwidth.getText());
-		} else {
-			propertiesList.add("Inlining-Width" + textFieldwidth.getText());
-		}
-
-		System.out.println("---------Ready--------");
-		textFieldinfo.setText("Ready");
-		**/
+		program.verify(run, contract6ing, startP, endP, gran, starter);
+		
 	}
 
 	private void setParameter() {

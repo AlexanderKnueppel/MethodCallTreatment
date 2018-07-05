@@ -1,14 +1,14 @@
 package de.tubs.mt.chart;
 
 
-public class ResultsForXY {
+public class ChartResults {
 	
 	private int run;
 	private int depth;
 	private int spec;
 	private int result;
 	
-	public ResultsForXY(int run, int depth, int spec, int result) {
+	public ChartResults(int run, int depth, int spec, int result) {
 		this.run = run;
 		this.depth = depth;
 		this.spec = spec;

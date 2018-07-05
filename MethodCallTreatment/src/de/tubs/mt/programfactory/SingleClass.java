@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.apache.commons.io.FileUtils;
 
+import de.tubs.mt.chart.Results;
 import de.tubs.mt.codeanalyze.ClassMethodHandler;
 import de.tubs.mt.codeanalyze.JMLManipulator;
 import de.tubs.mt.codeanalyze.PrepClasses;
@@ -51,9 +52,8 @@ public class SingleClass implements IProgram {
 			JMLManipulator.clearBlackList();
 			for (int perc = endPercentage; perc >= startPercentage; perc -= granulation) {
 				manipulate(0, perc);
-				VerificationEffortMain.verifyProgram(FileControl.getExecPath()
-						.getPath(), starter, contracting);
-
+				List<Integer> effort = VerificationEffortMain.verifyProgram(FileControl.getExecPath().getPath(), starter, contracting);
+				Results.addResults(effort);
 			}
 		}
 	}

@@ -25,9 +25,9 @@ public abstract class ExcelFile {
 		return style;
 	}
 
-	public static void createTable(List<List<ResultsForXY>> resultLists, String verifyEffort) throws IOException {
+	public static void createTable(List<List<ChartResults>> resultLists, String verifyEffort) throws IOException {
 		
-		List<ResultsForXY> results = resultLists.get(resultLists.size()-1);
+		List<ChartResults> results = resultLists.get(resultLists.size()-1);
 		List<Integer> specList = DataPrep.getSpecList(results);
 		List<Integer> depthList = DataPrep.getDepthList(results);
 

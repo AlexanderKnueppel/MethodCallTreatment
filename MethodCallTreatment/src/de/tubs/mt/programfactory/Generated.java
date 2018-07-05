@@ -6,7 +6,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import de.tubs.mt.chart.ResultsForXY;
+import de.tubs.mt.chart.Results;
+import de.tubs.mt.chart.ChartResults;
 import de.tubs.mt.codeanalyze.JMLManipulator;
 import de.tubs.mt.codeanalyze.ClassMethodHandler;
 import de.tubs.mt.codeanalyze.PrepClasses;
@@ -26,6 +27,7 @@ public class Generated implements IProgram {
 	private File prepPath;
 	private int startDepth;
 	private List<PrepMethod> pm = new ArrayList<PrepMethod>();
+
 
 	@Override
 	public void setParameters(int width, int depth, boolean isToDepth,
@@ -78,7 +80,8 @@ public class Generated implements IProgram {
 	@Override
 	public void verify(int runs, boolean contracting, int startPercentage,
 			int endPercentage, int granulation, String starter) {
-
+		
+		Results.initResults(contracting);
 		for (int run = 1; run <= runs; run++) {
 			for (int dp = startDepth; dp <= depth; dp++) {
 				this.prepPath = new File(getDepthPrepPath(dp));
@@ -89,10 +92,12 @@ public class Generated implements IProgram {
 				JMLManipulator.clearBlackList();
 				for (int perc = endPercentage; perc >= startPercentage; perc -= granulation) {
 					manipulate(dp, perc);
-					VerificationEffortMain.verifyProgram(FileControl.getExecPath().getPath(), starter, contracting);
+					List<Integer> effort =VerificationEffortMain.verifyProgram(FileControl.getExecPath().getPath(), starter, contracting);
+					Results.addResults(effort, run, dp, perc);
 				}
 			}
 		}
+		Results.printResults();
 	}
 
 	@Override
