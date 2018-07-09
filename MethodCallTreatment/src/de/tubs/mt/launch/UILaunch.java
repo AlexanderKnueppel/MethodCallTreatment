@@ -47,6 +47,8 @@ import javax.swing.event.ListSelectionEvent;
 
 
 import java.awt.SystemColor;
+import java.awt.GridLayout;
+import javax.swing.border.BevelBorder;
 
 public class UILaunch extends JFrame {
 
@@ -58,7 +60,6 @@ public class UILaunch extends JFrame {
 	private JTextField textFieldinfo;
 	private JTextField textFieldStarterM;
 	private JTextField textFieldStartPercent;
-	private JLabel lblTo;
 	private JLabel lblSpecification;
 	private JLabel lblNewLabel_1;
 	private JCheckBox chckbxContracting;
@@ -93,230 +94,85 @@ public class UILaunch extends JFrame {
 
 	
 	private IProgram program;
+	private JLabel label;
+	private JLabel label_1;
+	private JLabel label_2;
+	private JLabel label_3;
+	private JLabel label_4;
+	private JLabel label_5;
+	private JLabel label_6;
+	private JLabel label_7;
+	private JLabel label_8;
+	private JLabel label_9;
+	private JLabel label_10;
+	private JLabel label_11;
+	private JLabel label_12;
+	private JLabel label_13;
+	private JLabel label_14;
+	private JLabel label_15;
+	private JLabel label_16;
+	private JLabel label_20;
+	private JLabel label_23;
+	private JLabel label_24;
+	private JLabel label_25;
+	private JLabel label_26;
+	private JLabel lblStatistics;
 	
 	public UILaunch() {
-		this.setSize(1027, 626);
+		this.setSize(1027, 665);
 		this.setLocation(200, 100);
 		getContentPane().setBackground(SystemColor.infoText);
 
-		JPanel panel = new JPanel();
-		panel.setBackground(UIManager.getColor("Button.darkShadow"));
-		JPanel panel_1 = new JPanel();
-		panel_1.setBackground(UIManager.getColor("Button.darkShadow"));
-		JLabel lblOptions = new JLabel("Options");
-		lblOptions.setFont(new Font("Dialog", Font.BOLD | Font.ITALIC, 14));
-		chckbxContracting = new JCheckBox("contracting");
-		chckbxContracting.setBackground(UIManager.getColor("Button.darkShadow"));
-		chckbxContracting.setSelected(true);
-		textFieldruns = new JTextField();
-		textFieldruns.setText("1");
-		textFieldruns.setColumns(10);
-
-		JLabel lblRuns = new JLabel("Runs");
-
-		textFieldStartPercent = new JTextField();
-		textFieldStartPercent.setEnabled(false);
-		textFieldStartPercent.setText("0");
-		textFieldStartPercent.setColumns(10);
-
-		lblTo = new JLabel("to");
-
-		textFieldEndPercent = new JTextField();
-		textFieldEndPercent.setEnabled(false);
-		textFieldEndPercent.setText("100");
-		textFieldEndPercent.setColumns(10);
-
-		JLabel lblGranulation = new JLabel("Granulation");
-
-		comboBoxGranulation = new JComboBox();
-		comboBoxGranulation
-				.setModel(new DefaultComboBoxModel(new String[] { "1", "5", "10", "15", "20", "30", "40", "50" }));
-		comboBoxGranulation.setSelectedIndex(2);
-
-		chckbxRandomized = new JCheckBox("Randomized");
-		chckbxRandomized.setBackground(UIManager.getColor("Button.darkShadow"));
-
-		JPanel panel_3 = new JPanel();
-		panel_3.setBackground(UIManager.getColor("MenuItem.selectionBackground"));
-		
-		chckbxSetSpecification = new JCheckBox("Set Specification");
-		chckbxSetSpecification.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				if(chckbxSetSpecification.isSelected()) {
-					textFieldStartPercent.setEnabled(true);
-					textFieldEndPercent.setEnabled(true);	
-				} else {
-					textFieldStartPercent.setEnabled(false);
-					textFieldEndPercent.setEnabled(false);
-				}
-			}
-		});
-		chckbxSetSpecification.setBackground(UIManager.getColor("Button.darkShadow"));
-
-		GroupLayout gl_panel_1 = new GroupLayout(panel_1);
-		gl_panel_1.setHorizontalGroup(
-			gl_panel_1.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_panel_1.createSequentialGroup()
-					.addGroup(gl_panel_1.createParallelGroup(Alignment.LEADING)
-						.addGroup(gl_panel_1.createSequentialGroup()
-							.addContainerGap()
-							.addGroup(gl_panel_1.createParallelGroup(Alignment.LEADING, false)
-								.addComponent(chckbxContracting)
-								.addGroup(gl_panel_1.createSequentialGroup()
-									.addGroup(gl_panel_1.createParallelGroup(Alignment.TRAILING, false)
-										.addGroup(gl_panel_1.createSequentialGroup()
-											.addComponent(chckbxSetSpecification)
-											.addPreferredGap(ComponentPlacement.RELATED))
-										.addGroup(Alignment.LEADING, gl_panel_1.createSequentialGroup()
-											.addComponent(textFieldStartPercent, GroupLayout.PREFERRED_SIZE, 45, GroupLayout.PREFERRED_SIZE)
-											.addPreferredGap(ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-											.addComponent(lblTo, GroupLayout.PREFERRED_SIZE, 31, GroupLayout.PREFERRED_SIZE)
-											.addGap(29)))
-									.addPreferredGap(ComponentPlacement.RELATED, 2, Short.MAX_VALUE)
-									.addComponent(textFieldEndPercent, GroupLayout.PREFERRED_SIZE, 59, GroupLayout.PREFERRED_SIZE)
-									.addGap(41))
-								.addGroup(gl_panel_1.createSequentialGroup()
-									.addGap(15)
-									.addComponent(lblGranulation)
-									.addPreferredGap(ComponentPlacement.UNRELATED)
-									.addComponent(comboBoxGranulation, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(chckbxRandomized))
-						.addGroup(gl_panel_1.createSequentialGroup()
-							.addGap(21)
-							.addComponent(lblRuns)
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(textFieldruns, GroupLayout.PREFERRED_SIZE, 54, GroupLayout.PREFERRED_SIZE)))
-					.addPreferredGap(ComponentPlacement.RELATED, 90, Short.MAX_VALUE)
-					.addComponent(panel_3, GroupLayout.PREFERRED_SIZE, 501, GroupLayout.PREFERRED_SIZE)
-					.addGap(65))
-				.addGroup(gl_panel_1.createSequentialGroup()
-					.addGap(124)
-					.addComponent(lblOptions)
-					.addContainerGap(840, Short.MAX_VALUE))
-		);
-		gl_panel_1.setVerticalGroup(
-			gl_panel_1.createParallelGroup(Alignment.LEADING)
-				.addGroup(Alignment.TRAILING, gl_panel_1.createSequentialGroup()
-					.addContainerGap()
-					.addGroup(gl_panel_1.createParallelGroup(Alignment.TRAILING)
-						.addComponent(panel_3, GroupLayout.PREFERRED_SIZE, 234, GroupLayout.PREFERRED_SIZE)
-						.addGroup(gl_panel_1.createSequentialGroup()
-							.addGroup(gl_panel_1.createParallelGroup(Alignment.TRAILING)
-								.addGroup(gl_panel_1.createSequentialGroup()
-									.addComponent(lblOptions)
-									.addGap(64))
-								.addGroup(gl_panel_1.createSequentialGroup()
-									.addComponent(chckbxContracting)
-									.addPreferredGap(ComponentPlacement.RELATED)))
-							.addGap(2)
-							.addGroup(gl_panel_1.createParallelGroup(Alignment.BASELINE)
-								.addComponent(lblRuns)
-								.addComponent(textFieldruns, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-							.addPreferredGap(ComponentPlacement.RELATED, 46, Short.MAX_VALUE)
-							.addComponent(chckbxSetSpecification)
-							.addGap(18)
-							.addGroup(gl_panel_1.createParallelGroup(Alignment.BASELINE)
-								.addComponent(textFieldStartPercent, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-								.addComponent(textFieldEndPercent, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-								.addComponent(lblTo)
-								.addComponent(chckbxRandomized))
-							.addGap(18)
-							.addGroup(gl_panel_1.createParallelGroup(Alignment.BASELINE)
-								.addComponent(lblGranulation)
-								.addComponent(comboBoxGranulation, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))))
-					.addContainerGap())
-		);
-
-		JButton btnShowXychart = new JButton("Show Chart");
-		btnShowXychart.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				createChart();
-
-			}
-		});
-
-		JButton btnClearData = new JButton("Clear Data");
-		btnClearData.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				clearData();
-			}
-		});
-
-		chckbxMergeIntoLast = new JCheckBox("Merge");
-		chckbxMergeIntoLast.setToolTipText("Merge last results into chart.\nOnly possible for a line-chart.");
-		chckbxMergeIntoLast.setBackground(UIManager.getColor("MenuItem.selectionBackground"));
-		
-		comboBoxChart = new JComboBox();
-		comboBoxChart.setModel(new DefaultComboBoxModel(new String[] {"Line", "Bar", "Boxplot"}));
-		
-		JButton btnCreateExcelFile = new JButton("Create Excel File");
-		btnCreateExcelFile.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				createExcelFile();
-			}
-		});
-		GroupLayout gl_panel_3 = new GroupLayout(panel_3);
-		gl_panel_3.setHorizontalGroup(
-			gl_panel_3.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_panel_3.createSequentialGroup()
-					.addContainerGap()
-					.addGroup(gl_panel_3.createParallelGroup(Alignment.LEADING)
-						.addComponent(chckbxMergeIntoLast)
-						.addGroup(gl_panel_3.createSequentialGroup()
-							.addComponent(btnClearData)
-							.addGap(49)
-							.addComponent(btnCreateExcelFile)
-							.addGap(30)
-							.addGroup(gl_panel_3.createParallelGroup(Alignment.LEADING)
-								.addComponent(comboBoxChart, GroupLayout.PREFERRED_SIZE, 88, GroupLayout.PREFERRED_SIZE)
-								.addComponent(btnShowXychart, GroupLayout.PREFERRED_SIZE, 139, GroupLayout.PREFERRED_SIZE))))
-					.addContainerGap())
-		);
-		gl_panel_3.setVerticalGroup(
-			gl_panel_3.createParallelGroup(Alignment.TRAILING)
-				.addGroup(gl_panel_3.createSequentialGroup()
-					.addContainerGap(119, Short.MAX_VALUE)
-					.addGroup(gl_panel_3.createParallelGroup(Alignment.LEADING)
-						.addGroup(Alignment.TRAILING, gl_panel_3.createSequentialGroup()
-							.addComponent(chckbxMergeIntoLast)
-							.addGap(55))
-						.addGroup(Alignment.TRAILING, gl_panel_3.createSequentialGroup()
-							.addComponent(comboBoxChart, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-							.addGap(28)))
-					.addGroup(gl_panel_3.createParallelGroup(Alignment.BASELINE)
-						.addComponent(btnClearData)
-						.addComponent(btnShowXychart)
-						.addComponent(btnCreateExcelFile))
-					.addContainerGap())
-		);
-		panel_3.setLayout(gl_panel_3);
-		panel_1.setLayout(gl_panel_1);
+		JPanel panelProperties = new JPanel();
+		panelProperties.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
+		panelProperties.setBackground(UIManager.getColor("Button.darkShadow"));
 
 		panel_2 = new JPanel();
 		panel_2.setBackground(UIManager.getColor("EditorPane.foreground"));
+		
+				JPanel panel_3 = new JPanel();
+				panel_3.setBackground(UIManager.getColor("MenuItem.selectionBackground"));
+						panel_3.setLayout(new GridLayout(0, 3, 0, 0));
+						
+						label_23 = new JLabel("");
+						panel_3.add(label_23);
+										
+										label_24 = new JLabel("");
+										panel_3.add(label_24);
+										
+										label_25 = new JLabel("");
+										panel_3.add(label_25);
+										
+										label_26 = new JLabel("");
+										panel_3.add(label_26);
 		GroupLayout groupLayout = new GroupLayout(getContentPane());
-		groupLayout.setHorizontalGroup(groupLayout.createParallelGroup(Alignment.LEADING).addGroup(Alignment.TRAILING,
-				groupLayout.createSequentialGroup().addContainerGap()
-						.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
-								.addComponent(panel_1, Alignment.LEADING, GroupLayout.DEFAULT_SIZE,
-										GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-								.addGroup(groupLayout.createSequentialGroup()
-										.addComponent(panel, GroupLayout.PREFERRED_SIZE, 372,
-												GroupLayout.PREFERRED_SIZE)
-										.addPreferredGap(ComponentPlacement.RELATED)
-										.addComponent(panel_2, GroupLayout.DEFAULT_SIZE, 524, Short.MAX_VALUE)))
-						.addContainerGap()));
-		groupLayout.setVerticalGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-				.addGroup(groupLayout.createSequentialGroup().addContainerGap()
-						.addGroup(groupLayout.createParallelGroup(Alignment.LEADING, false)
-								.addComponent(panel_2, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 291,
-										Short.MAX_VALUE)
-								.addComponent(panel, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE,
-										GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-						.addPreferredGap(ComponentPlacement.RELATED)
-						.addComponent(panel_1, GroupLayout.PREFERRED_SIZE, 278, GroupLayout.PREFERRED_SIZE)
-						.addContainerGap()));
+		groupLayout.setHorizontalGroup(
+			groupLayout.createParallelGroup(Alignment.LEADING)
+				.addGroup(groupLayout.createSequentialGroup()
+					.addContainerGap()
+					.addComponent(panelProperties, GroupLayout.PREFERRED_SIZE, 372, GroupLayout.PREFERRED_SIZE)
+					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+						.addGroup(groupLayout.createSequentialGroup()
+							.addGap(18)
+							.addComponent(panel_2, GroupLayout.DEFAULT_SIZE, 613, Short.MAX_VALUE))
+						.addGroup(groupLayout.createSequentialGroup()
+							.addGap(87)
+							.addComponent(panel_3, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+							.addGap(77)))
+					.addContainerGap())
+		);
+		groupLayout.setVerticalGroup(
+			groupLayout.createParallelGroup(Alignment.LEADING)
+				.addGroup(groupLayout.createSequentialGroup()
+					.addContainerGap()
+					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+						.addComponent(panelProperties, GroupLayout.PREFERRED_SIZE, 622, GroupLayout.PREFERRED_SIZE)
+						.addGroup(groupLayout.createSequentialGroup()
+							.addComponent(panel_2, GroupLayout.PREFERRED_SIZE, 227, GroupLayout.PREFERRED_SIZE)
+							.addGap(71)
+							.addComponent(panel_3, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
+					.addGap(351))
+		);
 		SpringLayout sl_panel_2 = new SpringLayout();
 		panel_2.setLayout(sl_panel_2);
 
@@ -380,21 +236,6 @@ public class UILaunch extends JFrame {
 		panel_2.add(textFieldStarterM);
 		textFieldStarterM.setColumns(10);
 
-		JButton btnExecVerify = new JButton("Verify");
-		sl_panel_2.putConstraint(SpringLayout.SOUTH, textFieldStarterM, -24, SpringLayout.NORTH, btnExecVerify);
-		sl_panel_2.putConstraint(SpringLayout.EAST, btnExecVerify, -66, SpringLayout.EAST, panel_2);
-		btnExecVerify.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				try {
-					executeVerify();
-				} catch (Exception e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-			}
-		});
-		panel_2.add(btnExecVerify);
-
 		lblSpecification = new JLabel("");
 		sl_panel_2.putConstraint(SpringLayout.EAST, lblSpecification, 0, SpringLayout.EAST, lblNewLabel_1);
 		lblSpecification.setForeground(UIManager.getColor("menu"));
@@ -403,10 +244,10 @@ public class UILaunch extends JFrame {
 		panel_2.add(lblSpecification);
 
 		textFieldinfo = new JTextField();
+		sl_panel_2.putConstraint(SpringLayout.SOUTH, textFieldStarterM, -74, SpringLayout.NORTH, textFieldinfo);
 		sl_panel_2.putConstraint(SpringLayout.WEST, textFieldinfo, 23, SpringLayout.EAST, scrollPane);
 		sl_panel_2.putConstraint(SpringLayout.EAST, textFieldinfo, -28, SpringLayout.EAST, panel_2);
 		sl_panel_2.putConstraint(SpringLayout.EAST, textFieldStarterM, 0, SpringLayout.EAST, textFieldinfo);
-		sl_panel_2.putConstraint(SpringLayout.SOUTH, btnExecVerify, -25, SpringLayout.NORTH, textFieldinfo);
 		textFieldinfo.setForeground(Color.WHITE);
 		textFieldinfo.setBackground(Color.BLACK);
 		textFieldinfo.setEnabled(false);
@@ -431,113 +272,233 @@ public class UILaunch extends JFrame {
 		sl_panel_2.putConstraint(SpringLayout.WEST, lblClass, 0, SpringLayout.WEST, textFieldStarterM);
 		lblClass.setForeground(Color.WHITE);
 		panel_2.add(lblClass);
-
-		JLabel lblProgramm = new JLabel("Programs");
-		lblProgramm.setFont(new Font("Dialog", Font.BOLD | Font.ITALIC, 14));
-
-		chckbxChooseExistingJava = new JCheckBox("Choose existing Java Class");
-		chckbxChooseExistingJava.setBackground(UIManager.getColor("Button.darkShadow"));
-
-		JLabel lblCreate = new JLabel("Create");
-
-		comboBox = new JComboBox();
-		comboBox.setModel(new DefaultComboBoxModel(new String[] { "Add", "Bubblesort" }));
-
-		btnSearch = new JButton("Search");
-		btnSearch.addActionListener(new ActionListener() {
+		panelProperties.setLayout(new GridLayout(0, 2, 10, 5));
+		
+				JLabel lblProgramm = new JLabel("Program Options");
+				lblProgramm.setForeground(UIManager.getColor("Button.background"));
+				lblProgramm.setFont(new Font("Dialog", Font.BOLD | Font.ITALIC, 14));
+				panelProperties.add(lblProgramm);
+		
+		label = new JLabel("");
+		panelProperties.add(label);
+		
+				JLabel lblCreate = new JLabel("Create");
+				panelProperties.add(lblCreate);
+		
+				comboBox = new JComboBox();
+				comboBox.setModel(new DefaultComboBoxModel(new String[] { "Add", "Bubblesort" }));
+				panelProperties.add(comboBox);
+		JLabel lblWidth = new JLabel("Width");
+		panelProperties.add(lblWidth);
+		
+				textFieldwidth = new JTextField();
+				textFieldwidth.setText("2");
+				textFieldwidth.setColumns(10);
+				panelProperties.add(textFieldwidth);
+		
+				JLabel lblDepth = new JLabel("Depth");
+				panelProperties.add(lblDepth);
+		
+				textFielddepth = new JTextField();
+				textFielddepth.setText("2");
+				textFielddepth.setColumns(10);
+				panelProperties.add(textFielddepth);
+		
+		label_1 = new JLabel("");
+		panelProperties.add(label_1);
+		
+				chckbxFromTo = new JCheckBox("from 1 to depth");
+				chckbxFromTo.setBackground(UIManager.getColor("Button.darkShadow"));
+				panelProperties.add(chckbxFromTo);
+		
+		label_2 = new JLabel("");
+		panelProperties.add(label_2);
+		
+		label_3 = new JLabel("");
+		panelProperties.add(label_3);
+		
+				chckbxChooseExistingJava = new JCheckBox("Choose File");
+				chckbxChooseExistingJava.setBackground(UIManager.getColor("Button.darkShadow"));
+				panelProperties.add(chckbxChooseExistingJava);
+		
+		label_4 = new JLabel("");
+		panelProperties.add(label_4);
+		
+				btnSearch = new JButton("Search");
+				btnSearch.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						chooseInputFile();
+					}
+				});
+				panelProperties.add(btnSearch);
+		
+				textFieldsearch = new JTextField();
+				textFieldsearch.setEditable(false);
+				textFieldsearch.setColumns(10);
+				panelProperties.add(textFieldsearch);
+		
+		label_5 = new JLabel("");
+		panelProperties.add(label_5);
+		
+		label_6 = new JLabel("");
+		panelProperties.add(label_6);
+				
+				label_7 = new JLabel("");
+				panelProperties.add(label_7);
+				
+						btnGenerate = new JButton("Generate");
+						btnGenerate.setForeground(new Color(0, 128, 0));
+						btnGenerate.addActionListener(new ActionListener() {
+							public void actionPerformed(ActionEvent e) {
+								try {
+									executeGenerate();
+								} catch (Exception e1) {
+									// TODO Auto-generated catch block
+									e1.printStackTrace();
+								}
+							}
+						});
+						panelProperties.add(btnGenerate);
+				JLabel lblOptions = new JLabel("Verify Options");
+				lblOptions.setForeground(UIManager.getColor("Button.background"));
+				panelProperties.add(lblOptions);
+				lblOptions.setFont(new Font("Dialog", Font.BOLD | Font.ITALIC, 14));
+				
+				label_8 = new JLabel("");
+				panelProperties.add(label_8);
+				chckbxContracting = new JCheckBox("contracting");
+				panelProperties.add(chckbxContracting);
+				chckbxContracting.setBackground(UIManager.getColor("Button.darkShadow"));
+				chckbxContracting.setSelected(true);
+				
+				label_9 = new JLabel("");
+				panelProperties.add(label_9);
+		
+				JLabel lblRuns = new JLabel("Runs");
+				panelProperties.add(lblRuns);
+		textFieldruns = new JTextField();
+		panelProperties.add(textFieldruns);
+		textFieldruns.setText("1");
+		textFieldruns.setColumns(10);
+		
+		chckbxSetSpecification = new JCheckBox("Set Specification");
+		panelProperties.add(chckbxSetSpecification);
+		chckbxSetSpecification.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				chooseInputFile();
-			}
-		});
-
-		textFieldsearch = new JTextField();
-		textFieldsearch.setEditable(false);
-		textFieldsearch.setColumns(10);
-
-		btnGenerate = new JButton("Generate");
-		btnGenerate.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				try {
-					executeGenerate();
-				} catch (Exception e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
+				if(chckbxSetSpecification.isSelected()) {
+					textFieldStartPercent.setEnabled(true);
+					textFieldEndPercent.setEnabled(true);	
+				} else {
+					textFieldStartPercent.setEnabled(false);
+					textFieldEndPercent.setEnabled(false);
 				}
 			}
 		});
-		JLabel lblWidth = new JLabel("Width");
+		chckbxSetSpecification.setBackground(UIManager.getColor("Button.darkShadow"));
+		
+				chckbxRandomized = new JCheckBox("Randomized");
+				panelProperties.add(chckbxRandomized);
+				chckbxRandomized.setBackground(UIManager.getColor("Button.darkShadow"));
+		
+				textFieldStartPercent = new JTextField();
+				panelProperties.add(textFieldStartPercent);
+				textFieldStartPercent.setEnabled(false);
+				textFieldStartPercent.setText("0");
+				textFieldStartPercent.setColumns(10);
+		
+				textFieldEndPercent = new JTextField();
+				panelProperties.add(textFieldEndPercent);
+				textFieldEndPercent.setEnabled(false);
+				textFieldEndPercent.setText("100");
+				textFieldEndPercent.setColumns(10);
+		
+				JLabel lblGranulation = new JLabel("Granulation");
+				panelProperties.add(lblGranulation);
+		
+				comboBoxGranulation = new JComboBox();
+				panelProperties.add(comboBoxGranulation);
+				comboBoxGranulation
+						.setModel(new DefaultComboBoxModel(new String[] { "1", "5", "10", "15", "20", "30", "40", "50" }));
+				comboBoxGranulation.setSelectedIndex(2);
+		
+		label_10 = new JLabel("");
+		panelProperties.add(label_10);
+		
+		label_11 = new JLabel("");
+		panelProperties.add(label_11);
+		
+		label_12 = new JLabel("");
+		panelProperties.add(label_12);
+						
+								JButton btnExecVerify = new JButton("Verify");
+								btnExecVerify.setForeground(new Color(0, 128, 0));
+								panelProperties.add(btnExecVerify);
+								sl_panel_2.putConstraint(SpringLayout.EAST, btnExecVerify, -66, SpringLayout.EAST, panel_2);
+								btnExecVerify.addActionListener(new ActionListener() {
+									public void actionPerformed(ActionEvent e) {
+										try {
+											executeVerify();
+										} catch (Exception e1) {
+											// TODO Auto-generated catch block
+											e1.printStackTrace();
+										}
+									}
+								});
+								sl_panel_2.putConstraint(SpringLayout.SOUTH, btnExecVerify, -25, SpringLayout.NORTH, textFieldinfo);
+						
+						lblStatistics = new JLabel("Statistics");
+						lblStatistics.setForeground(UIManager.getColor("Button.background"));
+						lblStatistics.setFont(new Font("Dialog", Font.BOLD | Font.ITALIC, 14));
+						panelProperties.add(lblStatistics);
+						
+						label_13 = new JLabel("");
+						panelProperties.add(label_13);
+						
+								chckbxMergeIntoLast = new JCheckBox("Merge");
+								panelProperties.add(chckbxMergeIntoLast);
+								chckbxMergeIntoLast.setToolTipText("Merge last results into chart.\nOnly possible for a line-chart.");
+								chckbxMergeIntoLast.setBackground(UIManager.getColor("MenuItem.selectionBackground"));
+						
+						comboBoxChart = new JComboBox();
+						panelProperties.add(comboBoxChart);
+						comboBoxChart.setModel(new DefaultComboBoxModel(new String[] {"Line", "Bar", "Boxplot"}));
+						
+								JButton btnClearData = new JButton("Clear Data");
+								panelProperties.add(btnClearData);
+								btnClearData.addActionListener(new ActionListener() {
+									public void actionPerformed(ActionEvent e) {
+										clearData();
+									}
+								});
+						
+								JButton btnShowXychart = new JButton("Show Chart");
+								panelProperties.add(btnShowXychart);
+								btnShowXychart.addActionListener(new ActionListener() {
+									public void actionPerformed(ActionEvent e) {
+										createChart();
 
-		JLabel lblDepth = new JLabel("Depth");
-
-		textFieldwidth = new JTextField();
-		textFieldwidth.setText("2");
-		textFieldwidth.setColumns(10);
-
-		textFielddepth = new JTextField();
-		textFielddepth.setText("2");
-		textFielddepth.setColumns(10);
-
-		chckbxFromTo = new JCheckBox("from 1 to depth");
-		chckbxFromTo.setBackground(UIManager.getColor("Button.darkShadow"));
-		GroupLayout gl_panel = new GroupLayout(panel);
-		gl_panel.setHorizontalGroup(gl_panel.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_panel.createSequentialGroup().addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
-						.addGroup(gl_panel.createSequentialGroup().addGap(123).addComponent(lblProgramm))
-						.addGroup(gl_panel.createSequentialGroup().addContainerGap()
-								.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
-										.addComponent(lblCreate, GroupLayout.PREFERRED_SIZE, 64,
-												GroupLayout.PREFERRED_SIZE)
-										.addComponent(lblWidth))
-								.addPreferredGap(ComponentPlacement.RELATED)
-								.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
-										.addComponent(comboBox, GroupLayout.PREFERRED_SIZE, 166,
-												GroupLayout.PREFERRED_SIZE)
-										.addGroup(gl_panel.createSequentialGroup()
-												.addGroup(gl_panel.createParallelGroup(Alignment.TRAILING, false)
-														.addComponent(textFieldwidth, Alignment.LEADING, 0, 0,
-																Short.MAX_VALUE)
-														.addComponent(textFielddepth, Alignment.LEADING,
-																GroupLayout.DEFAULT_SIZE, 61, Short.MAX_VALUE))
-												.addGap(29).addComponent(chckbxFromTo)))))
-						.addContainerGap(60, Short.MAX_VALUE))
-				.addGroup(gl_panel.createSequentialGroup().addContainerGap().addGroup(gl_panel
-						.createParallelGroup(Alignment.TRAILING)
-						.addComponent(chckbxChooseExistingJava, GroupLayout.PREFERRED_SIZE, 238,
-								GroupLayout.PREFERRED_SIZE)
-						.addGroup(gl_panel.createSequentialGroup().addGroup(gl_panel
-								.createParallelGroup(Alignment.TRAILING)
-								.addComponent(btnGenerate, GroupLayout.PREFERRED_SIZE, 114, GroupLayout.PREFERRED_SIZE)
-								.addGroup(gl_panel.createSequentialGroup()
-										.addComponent(btnSearch, GroupLayout.PREFERRED_SIZE, 91,
-												GroupLayout.PREFERRED_SIZE)
-										.addGap(18).addComponent(textFieldsearch, GroupLayout.PREFERRED_SIZE, 215,
-												GroupLayout.PREFERRED_SIZE)))
-								.addPreferredGap(ComponentPlacement.RELATED)))
-						.addGap(35))
-				.addGroup(gl_panel.createSequentialGroup().addContainerGap().addComponent(lblDepth).addContainerGap(317,
-						Short.MAX_VALUE)));
-		gl_panel.setVerticalGroup(gl_panel.createParallelGroup(Alignment.LEADING).addGroup(gl_panel
-				.createSequentialGroup().addContainerGap().addComponent(lblProgramm).addGap(24)
-				.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE).addComponent(lblCreate).addComponent(
-						comboBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-				.addPreferredGap(ComponentPlacement.RELATED)
-				.addGroup(gl_panel.createParallelGroup(Alignment.TRAILING)
-						.addComponent(textFieldwidth, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
-								GroupLayout.PREFERRED_SIZE)
-						.addComponent(lblWidth))
-				.addPreferredGap(ComponentPlacement.UNRELATED)
-				.addGroup(gl_panel.createParallelGroup(Alignment.TRAILING).addComponent(lblDepth)
-						.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE)
-								.addComponent(textFielddepth, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
-										GroupLayout.PREFERRED_SIZE)
-								.addComponent(chckbxFromTo)))
-				.addGap(32).addComponent(chckbxChooseExistingJava).addPreferredGap(ComponentPlacement.UNRELATED)
-				.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE).addComponent(btnSearch).addComponent(
-						textFieldsearch, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
-						GroupLayout.PREFERRED_SIZE))
-				.addPreferredGap(ComponentPlacement.UNRELATED)
-				.addComponent(btnGenerate, GroupLayout.PREFERRED_SIZE, 35, GroupLayout.PREFERRED_SIZE).addGap(21)));
-		panel.setLayout(gl_panel);
+									}
+								});
+						
+						JButton btnCreateExcelFile = new JButton("Create Excel File");
+						panelProperties.add(btnCreateExcelFile);
+						btnCreateExcelFile.addActionListener(new ActionListener() {
+							public void actionPerformed(ActionEvent e) {
+								createExcelFile();
+							}
+						});
+						
+						label_14 = new JLabel("");
+						panelProperties.add(label_14);
+						
+						label_15 = new JLabel("");
+						panelProperties.add(label_15);
+				
+				label_16 = new JLabel("");
+				panelProperties.add(label_16);
+		
+		label_20 = new JLabel("");
+		panelProperties.add(label_20);
 		getContentPane().setLayout(groupLayout);
 		setTitle("Method Call Treatment");
 	}
