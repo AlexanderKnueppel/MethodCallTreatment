@@ -1,13 +1,13 @@
 package de.tubs.mt.launch;
 import javax.swing.WindowConstants;
 
-import de.tubs.mt.ui.UILaunch;
+import de.tubs.mt.ui.UIView;
 
 
 class Launcher {
 
 	public static void main(String[] args) {
-		UILaunch uil = new UILaunch();
+		UIView uil = new UIView();
 		uil.setVisible(true);
 		uil.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 	}

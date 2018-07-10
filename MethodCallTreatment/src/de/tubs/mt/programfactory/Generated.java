@@ -13,6 +13,7 @@ import de.tubs.mt.codegen.Incrementer;
 import de.tubs.mt.evaluation.VerificationEffortMain;
 import de.tubs.mt.files.FileControl;
 import de.tubs.mt.result.ResultHandler;
+import de.tubs.mt.ui.UIModel;
 
 class Generated implements IProgram {
 
@@ -26,12 +27,11 @@ class Generated implements IProgram {
 
 
 	@Override
-	public void setParameters(int width, int depth, boolean isToDepth,
-			String program) {
-		this.width = width;
-		this.depth = depth;
-		this.startDepth = isToDepth ? 1 : depth;
-		this.program = program;
+	public void setParameters(UIModel model) {
+		this.width = model.getWidth();
+		this.depth = model.getDepth();
+		this.startDepth = model.isToDepth() ? 1 : depth;
+		this.program = model.getGenerateProgram();
 		this.name = program + "Width" + width;
 	}
 

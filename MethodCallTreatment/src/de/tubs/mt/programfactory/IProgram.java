@@ -4,10 +4,11 @@ import java.io.File;
 import java.util.List;
 
 import de.tubs.mt.codeanalyze.PrepClasses;
+import de.tubs.mt.ui.UIModel;
 
 public interface IProgram {
 	
-	public void setParameters(int width, int depth, boolean isToDepth, String program);
+	public void setParameters(UIModel model);
 	
 	public void prepare(File file);
 	

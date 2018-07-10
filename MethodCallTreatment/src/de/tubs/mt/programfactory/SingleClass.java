@@ -14,6 +14,7 @@ import de.tubs.mt.codeanalyze.PrepMethod;
 import de.tubs.mt.evaluation.VerificationEffortMain;
 import de.tubs.mt.files.FileControl;
 import de.tubs.mt.result.ResultHandler;
+import de.tubs.mt.ui.UIModel;
 
 class SingleClass implements IProgram {
 
@@ -67,8 +68,7 @@ class SingleClass implements IProgram {
 	}
 
 	@Override
-	public void setParameters(int width, int depth, boolean isToDepth,
-			String program) {
+	public void setParameters(UIModel model) {
 		// just for the generated Program
 	}
 
