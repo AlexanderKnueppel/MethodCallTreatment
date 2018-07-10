@@ -1,6 +1,8 @@
 package de.tubs.mt.launch;
 import javax.swing.WindowConstants;
 
+import de.tubs.mt.ui.UILaunch;
+
 
 class Launcher {
 
