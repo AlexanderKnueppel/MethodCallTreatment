@@ -11,6 +11,10 @@ import de.tubs.mt.programfactory.IProgram;
 import de.tubs.mt.result.ChartResults;
 import de.tubs.mt.result.XYChart;
 
+
+/**
+ * The Class UIModel.
+ */
 public class UIModel {
 	
 	
@@ -58,91 +62,201 @@ public class UIModel {
 	//##################
 	
 
+	/**
+	 * Gets the generate program.
+	 *
+	 * @return the generate program
+	 */
 	public String getGenerateProgram() {
 		return generateProgram;
 	}
 
+	/**
+	 * Sets the generate program.
+	 *
+	 * @param generateProgram the new generate program
+	 */
 	public void setGenerateProgram(String generateProgram) {
 		this.generateProgram = generateProgram;
 	}
 
+	/**
+	 * Gets the width.
+	 *
+	 * @return the width
+	 */
 	public int getWidth() {
 		return width;
 	}
 
+	/**
+	 * Sets the width.
+	 *
+	 * @param width the new width
+	 */
 	public void setWidth(int width) {
 		this.width = width;
 	}
 
+	/**
+	 * Gets the depth.
+	 *
+	 * @return the depth
+	 */
 	public int getDepth() {
 		return depth;
 	}
 
+	/**
+	 * Sets the depth.
+	 *
+	 * @param depth the new depth
+	 */
 	public void setDepth(int depth) {
 		this.depth = depth;
 	}
 
+	/**
+	 * Checks if is to depth.
+	 *
+	 * @return true, if is to depth
+	 */
 	public boolean isToDepth() {
 		return isToDepth;
 	}
 
+	/**
+	 * Sets the to depth.
+	 *
+	 * @param isToDepth the new to depth
+	 */
 	public void setToDepth(boolean isToDepth) {
 		this.isToDepth = isToDepth;
 	}
 
+	/**
+	 * Gets the method list.
+	 *
+	 * @return the method list
+	 */
 	public List<PrepMethod> getMethodList() {
 		return methodList;
 	}
 
+	/**
+	 * Sets the method list.
+	 *
+	 * @param methodList the new method list
+	 */
 	public void setMethodList(List<PrepMethod> methodList) {
 		this.methodList = methodList;
 	}
 
+	/**
+	 * Gets the class list.
+	 *
+	 * @return the class list
+	 */
 	public List<PrepClasses> getClassList() {
 		return classList;
 	}
 
+	/**
+	 * Sets the class list.
+	 *
+	 * @param classList the new class list
+	 */
 	public void setClassList(List<PrepClasses> classList) {
 		this.classList = classList;
 	}
 
+	/**
+	 * Gets the result lists.
+	 *
+	 * @return the result lists
+	 */
 	public ArrayList<List<ChartResults>> getResultLists() {
 		return resultLists;
 	}
 
+	/**
+	 * Sets the result lists.
+	 *
+	 * @param resultLists the new result lists
+	 */
 	public void setResultLists(ArrayList<List<ChartResults>> resultLists) {
 		this.resultLists = resultLists;
 	}
 
+	/**
+	 * Gets the properties list.
+	 *
+	 * @return the properties list
+	 */
 	public List<String> getPropertiesList() {
 		return propertiesList;
 	}
 
+	/**
+	 * Sets the properties list.
+	 *
+	 * @param propertiesList the new properties list
+	 */
 	public void setPropertiesList(List<String> propertiesList) {
 		this.propertiesList = propertiesList;
 	}
 
+	/**
+	 * Gets the choosen file.
+	 *
+	 * @return the choosen file
+	 */
 	public File getChoosenFile() {
 		return choosenFile;
 	}
 
+	/**
+	 * Sets the choosen file.
+	 *
+	 * @param choosenFile the new choosen file
+	 */
 	public void setChoosenFile(File choosenFile) {
 		this.choosenFile = choosenFile;
 	}
 
+	/**
+	 * Gets the program.
+	 *
+	 * @return the program
+	 */
 	public IProgram getProgram() {
 		return program;
 	}
 
+	/**
+	 * Sets the program.
+	 *
+	 * @param program the new program
+	 */
 	public void setProgram(IProgram program) {
 		this.program = program;
 	}
 
 	
+	/**
+	 * Gets the xychart.
+	 *
+	 * @return the xychart
+	 */
 	public XYChart getXychart() {
 		return xychart;
 	}
 
+	/**
+	 * Sets the xychart.
+	 *
+	 * @param xychart the new xychart
+	 */
 	public void setXychart(XYChart xychart) {
 		this.xychart = xychart;
 	}

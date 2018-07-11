@@ -3,16 +3,8 @@ package de.tubs.mt.codeanalyze;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.nio.charset.Charset;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
-
-import org.apache.commons.io.FileUtils;
 
 import com.github.javaparser.JavaParser;
 import com.github.javaparser.ast.CompilationUnit;
@@ -20,22 +12,31 @@ import com.github.javaparser.ast.NodeList;
 import com.github.javaparser.ast.body.BodyDeclaration;
 import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.body.TypeDeclaration;
-import com.github.javaparser.ast.comments.Comment;
 
-import de.tubs.mt.files.FileControl;
 import de.tubs.mt.files.ListFilesUtil;
 
 
 
 
-
+/**
+ * The Class ClassMethodHandler.
+ */
 public abstract class ClassMethodHandler {
 
+	/** The class list. */
 	private static List<PrepClasses> classList = new ArrayList<PrepClasses>();
+	
+	/** The file list. */
 	private static List<File> fileList = new ArrayList<File>();
 
 	
 	
+	/**
+	 * Gets the class list.
+	 *
+	 * @param input the input
+	 * @return the class list
+	 */
 	public static List<PrepClasses> getClassList(File input) {
 		classList.clear();
 
@@ -53,11 +54,12 @@ public abstract class ClassMethodHandler {
 	}
 
 	/**
-	 * 
-	 * @param input
-	 * @param seed
-	 * @return
+	 * Gets the method list.
+	 *
+	 * @param input the input
+	 * @return the method list
 	 */
+	@SuppressWarnings("deprecation")
 	public static List<PrepMethod> getMethodList(String input) {
 		List<PrepMethod> methodList = new ArrayList<PrepMethod>();
 
@@ -83,9 +85,10 @@ public abstract class ClassMethodHandler {
 	}
 
 	/**
-	 * 
-	 * @param methodList
-	 * @return
+	 * Gets the specification in percent.
+	 *
+	 * @param methodList the method list
+	 * @return the spec percent
 	 */
 	public static int getSpecPercent(List<PrepMethod> methodList) {
 		int size = methodList.size();

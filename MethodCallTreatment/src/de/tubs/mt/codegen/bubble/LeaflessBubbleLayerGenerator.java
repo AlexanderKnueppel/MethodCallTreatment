@@ -9,11 +9,21 @@ import de.tubs.mt.codegen.structure.MethodCallCode;
 import de.tubs.mt.codegen.structure.TextCode;
 import de.tubs.mt.codegen.structure.Variable;
 
-public class LeaflessBubbleLayerGenerator implements MethodGenerator {
 
+/**
+ * The Class LeaflessBubbleLayerGenerator.
+ */
+class LeaflessBubbleLayerGenerator implements MethodGenerator {
+
+	/** The Constant ARRAY_NAME. */
 	private static final String ARRAY_NAME = "a";
+	
+	/** The Constant POSITION. */
 	private static final String POSITION = "pos";
 	
+	/* (non-Javadoc)
+	 * @see de.tubs.mt.codegen.methods.MethodGenerator#getMethod(int, int, int, int, de.tubs.mt.codegen.methods.Method)
+	 */
 	@Override
 	public Method getMethod(int currentDepth, int number, int depth, int width,
 			Method blatt) {
@@ -53,6 +63,12 @@ public class LeaflessBubbleLayerGenerator implements MethodGenerator {
 		return m;
 	}
 	
+	/**
+	 * Adds the leaf code.
+	 *
+	 * @param field the field
+	 * @param m the m
+	 */
 	private void addLeafCode(int field, Method m){
 		m.addCode(new TextCode("		int b = 0;\n"));
 		m.addCode(new TextCode("		/*@ loop_invariant\n"));

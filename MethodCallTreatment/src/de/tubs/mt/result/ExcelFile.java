@@ -15,8 +15,18 @@ import org.apache.poi.ss.usermodel.Row;
 
 import de.tubs.mt.files.FileControl;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class ExcelFile.
+ */
 public abstract class ExcelFile {
 
+	/**
+	 * Creates the style for title.
+	 *
+	 * @param workbook the workbook
+	 * @return the HSSF cell style
+	 */
 	private static HSSFCellStyle createStyleForTitle(HSSFWorkbook workbook) {
 		HSSFFont font = workbook.createFont();
 		font.setBold(true);
@@ -25,6 +35,13 @@ public abstract class ExcelFile {
 		return style;
 	}
 
+	/**
+	 * Creates the table.
+	 *
+	 * @param resultLists the result lists
+	 * @param verifyEffort the verify effort
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 */
 	public static void createTable(List<List<ChartResults>> resultLists, String verifyEffort) throws IOException {
 		
 		List<ChartResults> results = resultLists.get(resultLists.size()-1);

@@ -10,10 +10,23 @@ import java.util.List;
 import de.tubs.mt.codegen.methods.Method;
 import de.tubs.mt.codegen.methods.MethodGenerator;
 
+
+/**
+ * The Class TreeCodeGenerator.
+ */
 public abstract class TreeCodeGenerator {
 
 
-	public void generateCode(OutputStream stream, int depth, int width, String name) throws IOException {
+	/**
+	 * Generate code.
+	 *
+	 * @param stream the stream
+	 * @param depth the depth
+	 * @param width the width
+	 * @param name the name
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 */
+	void generateCode(OutputStream stream, int depth, int width, String name) throws IOException {
 	
 		try (BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(stream))) {
 			bw.write("public class "+name+" {\n");
@@ -74,8 +87,25 @@ public abstract class TreeCodeGenerator {
 	}
 
 	
+	/**
+	 * Gets the next method generator.
+	 *
+	 * @return the next method generator
+	 */
 	protected abstract MethodGenerator getNextMethodGenerator();
+	
+	/**
+	 * Gets the leaf method generator.
+	 *
+	 * @return the leaf method generator
+	 */
 	protected abstract MethodGenerator getLeafMethodGenerator();
+	
+	/**
+	 * Gets the execution method generator.
+	 *
+	 * @return the execution method generator
+	 */
 	protected abstract MethodGenerator getExecutionMethodGenerator();
 
 }

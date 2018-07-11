@@ -19,17 +19,32 @@ import de.tubs.mt.result.XYChart;
 import de.tubs.mt.result.XYChart.Chart;
 
 
-public class UIControl {
+
+/**
+ * The Class UIControl.
+ */
+class UIControl {
 	
+	/** The model. */
 	private UIModel model;
+	
+	/** The view. */
 	private UIView view;
 	
+	/**
+	 * Instantiates a new UI control.
+	 *
+	 * @param view the view
+	 */
 	public UIControl(UIView view) {
 		this.model = new UIModel();
 		this.view = view;
 	}
 	
 	
+	/**
+	 * Choose input file.
+	 */
 	public void chooseInputFile() {
 		final JFileChooser chooser = new JFileChooser();
 		chooser.setCurrentDirectory(new java.io.File("TestClasses/"));
@@ -46,6 +61,11 @@ public class UIControl {
 	
 
 	
+	/**
+	 * Execute generate.
+	 *
+	 * @throws Exception the exception
+	 */
 	public void executeGenerate() throws Exception {
 		String programType = "generated";
 		if (view.getChckbxChooseExistingJava().isSelected()) {
@@ -58,6 +78,9 @@ public class UIControl {
 	}
 	
 	
+	/**
+	 * Sets the parameter.
+	 */
 	private void setParameter() {
 		model.setDepth(Integer.parseInt(view.getTextFielddepth().getText()));
 		model.setWidth(Integer.parseInt(view.getTextFieldwidth().getText()));
@@ -67,6 +90,12 @@ public class UIControl {
 	}
 	
 	
+	/**
+	 * Show methods.
+	 *
+	 * @throws Exception the exception
+	 */
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	private void showMethods() throws Exception {
 		model.getMethodList().clear();
 		model.getClassList().clear();
@@ -91,6 +120,10 @@ public class UIControl {
 	
 	
 	
+	/**
+	 * Sets the class depended methods.
+	 */
+	@SuppressWarnings("unchecked")
 	public void setClassDependedMethods() {
 		String className = view.getComboBoxClasses().getSelectedItem().toString();
 		view.getMethodVector().clear();
@@ -107,6 +140,11 @@ public class UIControl {
 	}
 	
 	
+	/**
+	 * Execute verify.
+	 *
+	 * @throws Exception the exception
+	 */
 	public void executeVerify() throws Exception {
 		view.getTextFieldinfo().setText("Start to run");
 		setParameter();
@@ -118,7 +156,7 @@ public class UIControl {
 		int startP = Integer.parseInt(view.getTextFieldStartPercent().getText());
 		int endP = Integer.parseInt(view.getTextFieldEndPercent().getText());
 		int gran = Integer.parseInt(view.getComboBoxGranulation().getSelectedItem().toString());
-		boolean randomized = view.getChckbxRandomized().isSelected();
+		//boolean randomized = view.getChckbxRandomized().isSelected(); //TODO add different strategies of deleting jml
 		if (!view.getChckbxSetSpecification().isSelected()) {
 			startP = endP;
 		}
@@ -141,11 +179,17 @@ public class UIControl {
 
 	}
 	
+	/**
+	 * Clear data.
+	 */
 	public void clearData() {
 		model.getResultLists().clear();
 		view.getTextFieldinfo().setText("Resultlist is empty.");
 	}
 	
+	/**
+	 * Creates the chart.
+	 */
 	public void createChart() {
 		String plot = view.getComboBoxChart().getSelectedItem().toString();
 		Chart chart;
@@ -165,6 +209,9 @@ public class UIControl {
 	}
 	
 
+	/**
+	 * Creates the excel file.
+	 */
 	public void createExcelFile() {
 		int width = model.getWidth();
 		boolean contracting = view.getChckbxContracting().isSelected();

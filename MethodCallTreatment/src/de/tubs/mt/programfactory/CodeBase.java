@@ -17,12 +17,24 @@ import de.tubs.mt.result.ResultHandler;
 import de.tubs.mt.ui.UIModel;
 
 
+
+/**
+ * The Class CodeBase.
+ */
 class CodeBase implements IProgram {
 	
+	/** The prep path. */
 	private File prepPath;
+	
+	/** The class list. */
 	private List<PrepClasses> classList = new ArrayList<PrepClasses>();
+	
+	/** The pm. */
 	private List<PrepMethod> pm = new ArrayList<PrepMethod>();
 
+	/* (non-Javadoc)
+	 * @see de.tubs.mt.programfactory.IProgram#prepare(java.io.File)
+	 */
 	@Override
 	public void prepare(File file) {
 		FileControl.initStructure();
@@ -36,6 +48,9 @@ class CodeBase implements IProgram {
 
 	}
 
+	/* (non-Javadoc)
+	 * @see de.tubs.mt.programfactory.IProgram#manipulate(int, int)
+	 */
 	@Override
 	public void manipulate(int depth, int perc) {
 		FileControl.rebuildExecPath();
@@ -44,6 +59,9 @@ class CodeBase implements IProgram {
 
 	}
 
+	/* (non-Javadoc)
+	 * @see de.tubs.mt.programfactory.IProgram#verify(int, boolean, int, int, int, java.lang.String)
+	 */
 	@Override
 	public void verify(int runs, boolean contracting, int startPercentage, int endPercentage,
 			int granulation, String starter) {
@@ -66,6 +84,9 @@ class CodeBase implements IProgram {
 		ResultHandler.printResults();
 	}
 	
+	/**
+	 * Sets the method list.
+	 */
 	private void setMethodList() {
 		pm.clear();
 		classList = getClasses();
@@ -76,11 +97,17 @@ class CodeBase implements IProgram {
 	}
 	
 
+	/* (non-Javadoc)
+	 * @see de.tubs.mt.programfactory.IProgram#getClasses()
+	 */
 	@Override
 	public List<PrepClasses> getClasses() {
 		return ClassMethodHandler.getClassList(prepPath);
 	}
 
+	/* (non-Javadoc)
+	 * @see de.tubs.mt.programfactory.IProgram#setParameters(de.tubs.mt.ui.UIModel)
+	 */
 	@Override
 	public void setParameters(UIModel model) {
 		// just for the generated Program

@@ -4,8 +4,18 @@ import java.util.List;
 
 import de.tubs.mt.codegen.structure.Variable;
 
+
+/**
+ * The Class CallHelper.
+ */
 public class CallHelper {
 
+	/**
+	 * Gets the variable definition.
+	 *
+	 * @param variables the variables
+	 * @return the variable definition
+	 */
 	public static String getVariableDefinition(List<Variable> variables){
 		StringBuilder b = new StringBuilder();
 		b.append("(");
@@ -20,6 +30,12 @@ public class CallHelper {
 		return b.toString();
 	}
 	
+	/**
+	 * Gets the call usage.
+	 *
+	 * @param variables the variables
+	 * @return the call usage
+	 */
 	public static String getCallUsage(List<Variable> variables){
 		StringBuilder b = new StringBuilder();
 		b.append("(");

@@ -4,70 +4,22 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+
+/**
+ * The Class ListFilesUtil.
+ */
 public abstract class ListFilesUtil {
 
 	
-	static List<File> fileList = new ArrayList<File>();
-	/**
-	 * 
-	 * List all the files and folders from a directory
-	 * 
-	 * @param directoryName
-	 *            to be listed
-	 * 
-	 */
-	public static void listFilesAndFolders(String directoryName) {
-		File directory = new File(directoryName);
-		File[] fList = directory.listFiles();
-		for (File file : fList) {
-			System.out.println(file.getName());
-		}
-	}
-
-	/**
-	 * 
-	 * List all the files under a directory
-	 * 
-	 * @param directoryName
-	 *            to be listed
-	 * 
-	 */
-	public static void listFiles(String directoryName) {
-		File directory = new File(directoryName);
-		File[] fList = directory.listFiles();
-		for (File file : fList) {
-			if (file.isFile()) {
-				System.out.println(file.getName());
-			}
-		}
-	}
-
-	/**
-	 * 
-	 * List all the folder under a directory
-	 * 
-	 * @param directoryName
-	 *            to be listed
-	 * 
-	 */
-	public static void listFolders(String directoryName) {
-		File directory = new File(directoryName);
-		File[] fList = directory.listFiles();
-		for (File file : fList) {
-			if (file.isDirectory()) {
-				System.out.println(file.getName());
-			}
-		}
-	}
+	/** The file list. */
+	private static List<File> fileList = new ArrayList<File>();
 
 	
 	/**
-	 * 
-	 * List all files from a directory and its subdirectories
-	 * 
-	 * @param directoryName
-	 *            to be listed
-	 * 
+	 * List all files from a directory and its subdirectories.
+	 *
+	 * @param directory the directory
+	 * @return the list
 	 */
 	public static List<File> listFilesAndFilesSubDirectories(File directory) {
 		clearFileList();
@@ -83,7 +35,10 @@ public abstract class ListFilesUtil {
 	}
 	
 	
-	public static void clearFileList() {
+	/**
+	 * Clear file list.
+	 */
+	private static void clearFileList() {
 		fileList.clear();
 	}
 }

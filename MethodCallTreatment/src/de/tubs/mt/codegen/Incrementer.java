@@ -4,22 +4,39 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 import de.tubs.mt.codegen.add.BroadCodeGenerator;
 import de.tubs.mt.codegen.bubble.BubbleCodeGenerator;
 
 
+
+/**
+ * The Class Incrementer.
+ */
 public class Incrementer {
 
+	/** The counter. */
 	public static int counter = 0;
 
-	public static int numberOfMethods(int level, int width) {
+	/**
+	 * Number of methods.
+	 *
+	 * @param level the level
+	 * @param width the width
+	 * @return the int
+	 */
+	private static int numberOfMethods(int level, int width) {
 		return (int) Math.pow(width, level - 1);
 	}
 
-	public static int totalNumberOfMethods(int width, int depth) {
+	/**
+	 * Total number of methods.
+	 *
+	 * @param width the width
+	 * @param depth the depth
+	 * @return the int
+	 */
+	private static int totalNumberOfMethods(int width, int depth) {
 		int res = 0;
 		for (int i = 1; i <= depth; ++i)
 			res += numberOfMethods(i, width);
@@ -29,6 +46,16 @@ public class Incrementer {
 
 
 
+	/**
+	 * Generate program for add.
+	 *
+	 * @param width the width
+	 * @param depth the depth
+	 * @param seed the seed
+	 * @param path the path
+	 * @param name the name
+	 * @throws FileNotFoundException the file not found exception
+	 */
 	public static void generateProgramForAdd(final int width, final int depth, int seed, String path, String name)
 			throws FileNotFoundException {
 
@@ -56,6 +83,16 @@ public class Incrementer {
 
 	}
 
+	/**
+	 * Generate program for bubble sort.
+	 *
+	 * @param width the width
+	 * @param depth the depth
+	 * @param seed the seed
+	 * @param path the path
+	 * @param name the name
+	 * @throws FileNotFoundException the file not found exception
+	 */
 	public static void generateProgramForBubbleSort(final int width, final int depth, int seed,
 			String path, String name) throws FileNotFoundException {
 
@@ -65,8 +102,6 @@ public class Incrementer {
 		counter = 1;
 		
 		final TreeCodeGenerator cg = new BubbleCodeGenerator();
-
-		//String name = "BubbleSortDepth" + (depth) + "Width" + (width);
 
 		File f = new File(path + "/" + seed);
 		f.mkdir();

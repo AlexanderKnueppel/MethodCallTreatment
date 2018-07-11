@@ -8,10 +8,17 @@ import de.tubs.mt.codegen.structure.MethodCallCode;
 import de.tubs.mt.codegen.structure.TextCode;
 import de.tubs.mt.codegen.structure.Variable;
 
-public class BubbleExecutionLayerGenerator implements MethodGenerator {
+/**
+ * The Class BubbleExecutionLayerGenerator.
+ */
+class BubbleExecutionLayerGenerator implements MethodGenerator {
 
+	/** The Constant ARRAY_NAME. */
 	private static final String ARRAY_NAME = "a";
 
+	/* (non-Javadoc)
+	 * @see de.tubs.mt.codegen.methods.MethodGenerator#getMethod(int, int, int, int, de.tubs.mt.codegen.methods.Method)
+	 */
 	@Override
 	public Method getMethod(int currentDepth, int number, int depth, int width,
 			Method blatt) {

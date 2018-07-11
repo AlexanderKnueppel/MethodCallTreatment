@@ -23,10 +23,23 @@ import de.uka.ilkd.key.strategy.StrategyProperties;
 import de.uka.ilkd.key.util.KeYTypeUtil;
 import de.uka.ilkd.key.util.MiscTools;
 
+
+/**
+ * The Class VerificationEffortMain.
+ */
 public abstract class VerificationEffortMain {
 
+	/** The result. */
 	private static List<Integer> result = new ArrayList<Integer>();
 
+	/**
+	 * Verify program.
+	 *
+	 * @param directory the directory
+	 * @param starter the starter
+	 * @param contracting the contracting
+	 * @return the list
+	 */
 	public static List<Integer> verifyProgram(String directory, String starter,
 			boolean contracting) {
 		result.clear();
@@ -38,6 +51,14 @@ public abstract class VerificationEffortMain {
 		return result;
 	}
 
+	/**
+	 * Verify.
+	 *
+	 * @param directory the directory
+	 * @param starter the starter
+	 * @param contracting the contracting
+	 * @return the list
+	 */
 	private static List<VerificationResult> verify(String directory,
 			List<String> starter, boolean contracting) {
 		List<File> classPaths = null; // Optionally: Additional specifications

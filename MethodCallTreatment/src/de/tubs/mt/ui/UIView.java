@@ -1,6 +1,5 @@
 package de.tubs.mt.ui;
 
-
 import de.tubs.mt.codeanalyze.PrepMethod;
 import java.util.Vector;
 
@@ -28,7 +27,6 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.GridLayout;
 
-
 public class UIView extends JFrame {
 	/**
 	 * 
@@ -36,156 +34,186 @@ public class UIView extends JFrame {
 	private static final long serialVersionUID = 1L;
 
 	private UIControl control;
-	
+
+	// Gui - Elements for programm-generate field
+	// ###########################################
+
 	/** The text field search. */
 	private JTextField textFieldSearch;
+
 	public JTextField getTextFieldsearch() {
 		return textFieldSearch;
-	}
-	
-	/** The text fieldruns. */
-	private JTextField textFieldruns;
-	public JTextField getTextFieldruns() {
-		return textFieldruns;
 	}
 
 	/** The text fieldwidth. */
 	private JTextField textFieldwidth;
+
 	public JTextField getTextFieldwidth() {
 		return textFieldwidth;
 	}
 
 	/** The text fielddepth. */
 	private JTextField textFielddepth;
+
 	public JTextField getTextFielddepth() {
 		return textFielddepth;
 	}
-	
+
 	/** The chckbx from to. */
 	private JCheckBox chckbxFromTo;
+
 	public JCheckBox getChckbxFromTo() {
 		return chckbxFromTo;
 	}
 
-	
-	/** The text fieldinfo. */
-	private JTextField textFieldinfo;
-	public JTextField getTextFieldinfo() {
-		return textFieldinfo;
+	/** The chckbx choose existing java. */
+	private JCheckBox chckbxChooseExistingJava;
+
+	public JCheckBox getChckbxChooseExistingJava() {
+		return chckbxChooseExistingJava;
 	}
 
-	/** The text field starter M. */
-	private JTextField textFieldStarterM;
-	public JTextField getTextFieldStarterM() {
-		return textFieldStarterM;
+	/** The combo box program. */
+	private JComboBox<String> comboBoxProgram;
+
+	public JComboBox<String> getComboBoxProgram() {
+		return comboBoxProgram;
+	}
+
+	// Gui - Elements for verify-option-field
+	// #######################################
+
+	/** The text fieldruns. */
+	private JTextField textFieldruns;
+
+	public JTextField getTextFieldruns() {
+		return textFieldruns;
 	}
 
 	/** The text field start percent. */
 	private JTextField textFieldStartPercent;
+
 	public JTextField getTextFieldStartPercent() {
 		return textFieldStartPercent;
 	}
 
 	/** The text field end percent. */
 	private JTextField textFieldEndPercent;
+
 	public JTextField getTextFieldEndPercent() {
 		return textFieldEndPercent;
 	}
 
 	/** The chckbx contracting. */
 	private JCheckBox chckbxContracting;
+
 	public JCheckBox getChckbxContracting() {
 		return chckbxContracting;
 	}
 
 	/** The chckbx randomized. */
 	private JCheckBox chckbxRandomized;
+
 	public JCheckBox getChckbxRandomized() {
 		return chckbxRandomized;
 	}
 
-	
 	/** The chckbx set specification. */
 	private JCheckBox chckbxSetSpecification;
+
 	public JCheckBox getChckbxSetSpecification() {
 		return chckbxSetSpecification;
 	}
 
-	/** The chckbx choose existing java. */
-	private JCheckBox chckbxChooseExistingJava;
-	public JCheckBox getChckbxChooseExistingJava() {
-		return chckbxChooseExistingJava;
-	}
-
-	/** The chckbx merge into last. */
-	private JCheckBox chckbxMergeIntoLast;
-	public JCheckBox getChckbxMergeIntoLast() {
-		return chckbxMergeIntoLast;
-	}
-
-	/** The combo box program. */
-	private JComboBox<String> comboBoxProgram;
-	public JComboBox<String> getComboBoxProgram() {
-		return comboBoxProgram;
-	}
-	
 	/** The combo box granulation. */
 	private JComboBox<String> comboBoxGranulation;
+
 	public JComboBox<String> getComboBoxGranulation() {
 		return comboBoxGranulation;
 	}
 
+	// Gui - Elements for statistics-field
+	// #######################################
+
+	/** The chckbx merge into last. */
+	private JCheckBox chckbxMergeIntoLast;
+
+	public JCheckBox getChckbxMergeIntoLast() {
+		return chckbxMergeIntoLast;
+	}
+
 	/** The combo box chart. */
 	private JComboBox<String> comboBoxChart;
+
 	public JComboBox<String> getComboBoxChart() {
 		return comboBoxChart;
 	}
 
+	// Gui - Elements for classes-method view
+	// #######################################
+
+	/** The text fieldinfo. */
+	private JTextField textFieldinfo;
+
+	public JTextField getTextFieldinfo() {
+		return textFieldinfo;
+	}
+
+	/** The text field starter M. */
+	private JTextField textFieldStarterM;
+
+	public JTextField getTextFieldStarterM() {
+		return textFieldStarterM;
+	}
+
 	/** The combo box classes. */
 	private JComboBox<String> comboBoxClasses;
+
 	public JComboBox<String> getComboBoxClasses() {
 		return comboBoxClasses;
 	}
 
 	/** The method vector. */
 	private Vector<PrepMethod> methodVector = new Vector<PrepMethod>();
+
 	public Vector<PrepMethod> getMethodVector() {
 		return methodVector;
 	}
 
-	
 	/** The list. */
+	@SuppressWarnings("rawtypes")
 	private JList list;
+
+	@SuppressWarnings("rawtypes")
 	public JList getList() {
 		return list;
 	}
-	
+
 	/** The sel listener. */
 	private ListSelectionListener selListener = new ListSelectionListener() {
 		public void valueChanged(ListSelectionEvent e) {
 			changeStarter();
 		}
 	};
+
 	public ListSelectionListener getListSelectionListener() {
 		return selListener;
 	}
 
-	
 	/** The lbl specification. */
 	private JLabel lblSpecification;
+
 	public JLabel getLblSpecification() {
 		return lblSpecification;
 	}
-	
-	
-	
+
 	/**
 	 * Instantiates a new UI view.
 	 */
 	public UIView() {
 		control = new UIControl(this);
-		this.setSize(1000, 665);
-		this.setLocation(200, 100);
+		this.setSize(700, 665);
+		this.setLocation(400, 100);
 		this.setTitle("Method Call Treatment");
 		getContentPane().setBackground(SystemColor.infoText);
 		getContentPane().setLayout(new GridLayout(0, 2, 0, 0));
@@ -205,10 +233,11 @@ public class UIView extends JFrame {
 	}
 
 	/**
-	 * Gets the programm-generate field.
+	 * Gets the programm-generate field # Panel with GridLayout
 	 *
 	 * @return the programm-generate field
 	 */
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	private JPanel getProgrammGenerateField() {
 		JPanel ProgrammGenerateField = new JPanel();
 
@@ -234,7 +263,6 @@ public class UIView extends JFrame {
 		textFielddepth.setText("2");
 		textFielddepth.setColumns(10);
 
-
 		chckbxChooseExistingJava = new JCheckBox("Choose File");
 		chckbxChooseExistingJava.setBackground(UIManager.getColor("Button.select"));
 
@@ -245,7 +273,8 @@ public class UIView extends JFrame {
 		JButton btnSearch = new JButton("Search");
 		btnSearch.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				control.chooseInputFile();;
+				control.chooseInputFile();
+				;
 			}
 		});
 
@@ -256,7 +285,6 @@ public class UIView extends JFrame {
 				try {
 					control.executeGenerate();
 				} catch (Exception e1) {
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
 			}
@@ -281,12 +309,12 @@ public class UIView extends JFrame {
 
 	}
 
-
 	/**
-	 * Gets the verify-options field.
+	 * Gets the verify-options field. # Panel with GridLayout
 	 *
 	 * @return the verify-options field
 	 */
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	private JPanel getVerifyOptionsField() {
 
 		JPanel VerifyOptionsField = new JPanel();
@@ -305,7 +333,6 @@ public class UIView extends JFrame {
 		textFieldEndPercent = new JTextField("100");
 		textFieldEndPercent.setEnabled(false);
 
-
 		chckbxSetSpecification = new JCheckBox("Set Specification");
 		chckbxSetSpecification.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -321,10 +348,11 @@ public class UIView extends JFrame {
 		chckbxSetSpecification.setBackground(UIManager.getColor("Button.select"));
 		chckbxRandomized = new JCheckBox("Randomized");
 		chckbxRandomized.setBackground(UIManager.getColor("Button.select"));
-		
+
 		JLabel lblGranulation = new JLabel("Granulation");
 		comboBoxGranulation = new JComboBox<String>();
-		comboBoxGranulation.setModel(new DefaultComboBoxModel(new String[] { "1", "5", "10", "15", "20", "30", "40", "50" }));
+		comboBoxGranulation
+				.setModel(new DefaultComboBoxModel(new String[] { "1", "5", "10", "15", "20", "30", "40", "50" }));
 		comboBoxGranulation.setSelectedIndex(2);
 		JButton btnExecVerify = new JButton("Verify");
 		btnExecVerify.setForeground(new Color(0, 128, 0));
@@ -333,7 +361,6 @@ public class UIView extends JFrame {
 				try {
 					control.executeVerify();
 				} catch (Exception e1) {
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
 			}
@@ -358,12 +385,12 @@ public class UIView extends JFrame {
 
 	}
 
-	
 	/**
-	 * Gets the statistics-field.
+	 * Gets the statistics-field. # Panel with GridLayout
 	 *
 	 * @return the statistics-field
 	 */
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	private JPanel getStatisticsField() {
 
 		JPanel StatisticsField = new JPanel();
@@ -415,12 +442,12 @@ public class UIView extends JFrame {
 		return StatisticsField;
 	}
 
-	
 	/**
-	 * Gets the view methods field.
+	 * Gets the view methods field. # Panel with GridLayout
 	 *
 	 * @return the view methods field
 	 */
+	@SuppressWarnings({ "unchecked", "serial", "rawtypes" })
 	private JPanel getViewMethodsField() {
 		JPanel ViewMethodsField = new JPanel();
 
@@ -505,7 +532,7 @@ public class UIView extends JFrame {
 		return ViewMethodsField;
 
 	}
-	
+
 	private void changeStarter() {
 		PrepMethod pm = (PrepMethod) list.getModel().getElementAt(list.getSelectedIndex());
 		textFieldStarterM.setText(pm.name);
