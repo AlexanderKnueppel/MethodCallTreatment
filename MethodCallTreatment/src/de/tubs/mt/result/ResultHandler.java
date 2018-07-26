@@ -53,7 +53,6 @@ public abstract class ResultHandler {
 		resList.addAll(effort);
 		rfxy.add(new ChartResults(run, depth, perc, effort.get(effort.size()-1)));
 		xlsList.add(effort.get(effort.size()-1));
-		
 		System.out.println("Results: "  + resList.toString() + "\n");
 	}
 	

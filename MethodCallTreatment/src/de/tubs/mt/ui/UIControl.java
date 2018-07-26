@@ -147,7 +147,6 @@ class UIControl {
 	 */
 	public void executeVerify() throws Exception {
 		view.getTextFieldinfo().setText("Start to run");
-		setParameter();
 		String starter = view.getTextFieldStarterM().getText();
 		if (starter.equals("")) {
 			view.getTextFieldinfo().setText("Choose a starter");
@@ -156,14 +155,16 @@ class UIControl {
 		int startP = Integer.parseInt(view.getTextFieldStartPercent().getText());
 		int endP = Integer.parseInt(view.getTextFieldEndPercent().getText());
 		int gran = Integer.parseInt(view.getComboBoxGranulation().getSelectedItem().toString());
-		//boolean randomized = view.getChckbxRandomized().isSelected(); //TODO add different strategies of deleting jml
+		String strategy = view.getComboBoxStrategy().getSelectedItem().toString();
+		
 		if (!view.getChckbxSetSpecification().isSelected()) {
 			startP = endP;
 		}
+		
 		boolean contracting = view.getChckbxContracting().isSelected();
 		int run = Integer.parseInt(view.getTextFieldruns().getText());
 
-		model.getProgram().verify(run, contracting, startP, endP, gran, starter);
+		model.getProgram().verify(run, contracting, startP, endP, gran, starter, strategy);
 
 		List<ChartResults> res = new ArrayList<>();
 		res.addAll(ResultHandler.getResultsForXY());
@@ -174,7 +175,7 @@ class UIControl {
 			model.getPropertiesList().add("Inlining-Width" + view.getTextFieldwidth().getText());
 		}
 
-		System.out.println("---------Ready--------");
+		System.out.println("-------------------Ready------------------\n\n");
 		view.getTextFieldinfo().setText("Ready");
 
 	}
@@ -219,7 +220,6 @@ class UIControl {
 		try {
 			ExcelFile.createTable(model.getResultLists(), name);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

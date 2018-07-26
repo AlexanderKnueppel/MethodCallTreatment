@@ -99,9 +99,9 @@ class Generated implements IProgram {
 	 * @see de.tubs.mt.programfactory.IProgram#manipulate(int, int)
 	 */
 	@Override
-	public void manipulate(int dp, int perc) {
+	public void manipulate(int dp, int perc, String strategy) {
 		FileControl.rebuildExecPath();
-		JMLManipulator.setBlackList(perc, pm, null);
+		JMLManipulator.setBlackList(perc, pm, strategy);
 		JMLManipulator.iterateClasses(getClasses());
 	}
 
@@ -110,7 +110,7 @@ class Generated implements IProgram {
 	 */
 	@Override
 	public void verify(int runs, boolean contracting, int startPercentage,
-			int endPercentage, int granulation, String starter) {
+			int endPercentage, int granulation, String starter, String strategy) {
 		
 		ResultHandler.initResults(contracting);
 		for (int run = 1; run <= runs; run++) {
@@ -123,7 +123,7 @@ class Generated implements IProgram {
 				JMLManipulator.setStaterMethdod(starter);
 				JMLManipulator.clearBlackList();
 				for (int perc = endPercentage; perc >= startPercentage; perc -= granulation) {
-					manipulate(dp, perc);
+					manipulate(dp, perc, strategy);
 					List<Integer> effort =VerificationEffortMain.verifyProgram(FileControl.getExecPath().getPath(), starter, contracting);
 					ResultHandler.addResults(effort, run, dp, perc);
 				}

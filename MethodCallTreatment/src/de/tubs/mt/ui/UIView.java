@@ -111,11 +111,11 @@ public class UIView extends JFrame {
 		return chckbxContracting;
 	}
 
-	/** The chckbx randomized. */
-	private JCheckBox chckbxRandomized;
+	/** The combo box strategy. */
+	private JComboBox<String> comboBoxStrategy;
 
-	public JCheckBox getChckbxRandomized() {
-		return chckbxRandomized;
+	public JComboBox<String> getComboBoxStrategy() {
+		return comboBoxStrategy;
 	}
 
 	/** The chckbx set specification. */
@@ -346,8 +346,8 @@ public class UIView extends JFrame {
 			}
 		});
 		chckbxSetSpecification.setBackground(UIManager.getColor("Button.select"));
-		chckbxRandomized = new JCheckBox("Randomized");
-		chckbxRandomized.setBackground(UIManager.getColor("Button.select"));
+		comboBoxStrategy = new JComboBox<String>();
+		comboBoxStrategy.setModel(new DefaultComboBoxModel(new String[] { "Straight", "Randomized" }));
 
 		JLabel lblGranulation = new JLabel("Granulation");
 		comboBoxGranulation = new JComboBox<String>();
@@ -373,7 +373,7 @@ public class UIView extends JFrame {
 		VerifyOptionsField.add(new JLabel(""));
 		VerifyOptionsField.add(new JLabel(""));
 		VerifyOptionsField.add(chckbxSetSpecification);
-		VerifyOptionsField.add(chckbxRandomized);
+		VerifyOptionsField.add(comboBoxStrategy);
 		VerifyOptionsField.add(textFieldStartPercent);
 		VerifyOptionsField.add(textFieldEndPercent);
 		VerifyOptionsField.add(lblGranulation);

@@ -20,7 +20,7 @@ import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.body.TypeDeclaration;
 
 import de.tubs.mt.files.FileControl;
-
+import de.tubs.mt.ui.UIModel;
 
 /**
  * The Class JMLManipulator.
@@ -29,38 +29,45 @@ public abstract class JMLManipulator {
 
 	/** The white list. */
 	private static List<String> whiteList = new ArrayList<String>();
-	
+
 	/** The black list. */
 	private static List<String> blackList = new ArrayList<String>();
-	
+
 	/** The spec list length. */
 	private static int specListLength;
-	
+
 	/** The method list length. */
 	private static int methodListLength;
-	
+
 	/** The white list length. */
 	private static int whiteListLength;
-	
+
 	/** The to del methods. */
 	private static int toDelMethods;
-	
+
 	/** The starter method. */
 	private static String starterMethod;
 
 	/**
 	 * Sets the black list.
 	 *
-	 * @param specPerc the spec perc
-	 * @param pmList the pm list
-	 * @param strategy the strategy
+	 * @param specPerc
+	 *            the spec perc
+	 * @param pmList
+	 *            the pm list
+	 * @param strategy
+	 *            the strategy
 	 */
-	public static void setBlackList(int specPerc, List<PrepMethod> pmList,
-			String strategy) {
+	public static void setBlackList(int specPerc, List<PrepMethod> pmList, String strategy) {
 		setMethodListLength(pmList);
 		setSpecListLength(pmList);
 		setToDelMethods(specPerc);
 		setWhiteListLength();
+
+		if (strategy.equals("Randomized")) {
+			clearBlackList();
+			setWhiteList(pmList);
+		}
 
 		int tmp = 0;
 		int next = 0;
@@ -78,7 +85,8 @@ public abstract class JMLManipulator {
 				}
 			}
 		}
-		System.out.println("Specification: " + specPerc + "%");
+
+		System.out.println("Specification: " + specPerc + "%\tStrategy: " + strategy);
 		System.out.println("BlackList: " + blackList.toString());
 		System.out.println("WhiteList: " + whiteList.toString());
 
@@ -92,9 +100,17 @@ public abstract class JMLManipulator {
 	}
 
 	/**
+	 * Clear white list.
+	 */
+	public static void clearWhiteList() {
+		whiteList.clear();
+	}
+
+	/**
 	 * Sets the stater methdod.
 	 *
-	 * @param starter the new stater methdod
+	 * @param starter
+	 *            the new stater methdod
 	 */
 	public static void setStaterMethdod(String starter) {
 		starterMethod = starter;
@@ -110,10 +126,11 @@ public abstract class JMLManipulator {
 	/**
 	 * (1) fist init Whitelist.
 	 *
-	 * @param pmList the new white list
+	 * @param pmList
+	 *            the new white list
 	 */
 	public static void setWhiteList(List<PrepMethod> pmList) {
-		whiteList.clear();
+		clearWhiteList();
 		for (PrepMethod pm : pmList) {
 			if (pm.jml) {
 				whiteList.add(pm.name);
@@ -124,12 +141,12 @@ public abstract class JMLManipulator {
 	/**
 	 * Sets the to del methods.
 	 *
-	 * @param specPerc the new to del methods
+	 * @param specPerc
+	 *            the new to del methods
 	 */
 	private static void setToDelMethods(int specPerc) {
 		double tmp = (double) methodListLength * specPerc / 100;
-		toDelMethods = (int) (specListLength - Math.ceil(tmp) - blackList
-				.size());
+		toDelMethods = (int) (specListLength - Math.ceil(tmp) - blackList.size());
 		if (toDelMethods >= specListLength) {
 			toDelMethods = specListLength - 1;
 		}
@@ -138,7 +155,8 @@ public abstract class JMLManipulator {
 	/**
 	 * Sets the method list length.
 	 *
-	 * @param pmList the new method list length
+	 * @param pmList
+	 *            the new method list length
 	 */
 	private static void setMethodListLength(List<PrepMethod> pmList) {
 		methodListLength = pmList.size();
@@ -147,7 +165,8 @@ public abstract class JMLManipulator {
 	/**
 	 * Sets the spec list length.
 	 *
-	 * @param pmList the new spec list length
+	 * @param pmList
+	 *            the new spec list length
 	 */
 	private static void setSpecListLength(List<PrepMethod> pmList) {
 		int tmp = 0;
@@ -162,7 +181,8 @@ public abstract class JMLManipulator {
 	/**
 	 * Iterate classes.
 	 *
-	 * @param pcList the pc list
+	 * @param pcList
+	 *            the pc list
 	 */
 	public static void iterateClasses(List<PrepClasses> pcList) {
 		for (PrepClasses pc : pcList) {
@@ -173,7 +193,8 @@ public abstract class JMLManipulator {
 	/**
 	 * Recreate java file.
 	 *
-	 * @param pc the pc
+	 * @param pc
+	 *            the pc
 	 */
 	private static void recreateJavaFile(PrepClasses pc) {
 
@@ -203,10 +224,8 @@ public abstract class JMLManipulator {
 					f.mkdir();
 				}
 
-				Files.write(
-						Paths.get(FileControl.getExecPath().getPath() + "/"
-								+ pc.name), lines, Charset.forName("UTF-8"),
-						StandardOpenOption.CREATE);
+				Files.write(Paths.get(FileControl.getExecPath().getPath() + "/" + pc.name), lines,
+						Charset.forName("UTF-8"), StandardOpenOption.CREATE);
 
 			}
 		} catch (FileNotFoundException e) {

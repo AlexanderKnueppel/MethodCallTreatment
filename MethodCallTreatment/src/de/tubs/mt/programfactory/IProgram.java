@@ -32,7 +32,7 @@ public interface IProgram {
 	 * @param depth the depth
 	 * @param perc the perc
 	 */
-	public void manipulate(int depth, int perc);
+	public void manipulate(int depth, int perc, String strategy);
 	
 	/**
 	 * Verify.
@@ -45,7 +45,7 @@ public interface IProgram {
 	 * @param starter the starter
 	 */
 	public void verify(int runs, boolean contracting, int startPercentage, int endPercentage,
-			int granulation, String starter);
+			int granulation, String starter, String startegy);
 	
 	/**
 	 * Gets the classes.

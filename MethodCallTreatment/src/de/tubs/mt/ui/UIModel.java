@@ -12,6 +12,7 @@ import de.tubs.mt.result.ChartResults;
 import de.tubs.mt.result.XYChart;
 
 
+// TODO: Auto-generated Javadoc
 /**
  * The Class UIModel.
  */
@@ -48,6 +49,8 @@ public class UIModel {
 	/** The program. */
 	private IProgram program;
 	
+	/** The strategy. */
+	private String strategy;
 	
 	/** The xychart. */
 	private XYChart xychart;
@@ -259,6 +262,24 @@ public class UIModel {
 	 */
 	public void setXychart(XYChart xychart) {
 		this.xychart = xychart;
+	}
+
+	/**
+	 * Gets the strategy.
+	 *
+	 * @return the strategy
+	 */
+	public String getStrategy() {
+		return strategy;
+	}
+
+	/**
+	 * Sets the strategy.
+	 *
+	 * @param strategy the new strategy
+	 */
+	public void setStrategy(String strategy) {
+		this.strategy = strategy;
 	}
 
 }
