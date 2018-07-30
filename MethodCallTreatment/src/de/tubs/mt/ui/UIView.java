@@ -14,6 +14,8 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.JButton;
 import javax.swing.JTextField;
+import javax.swing.ListCellRenderer;
+import javax.swing.ListModel;
 import javax.swing.SwingConstants;
 import javax.swing.JList;
 import javax.swing.event.ListSelectionListener;
@@ -474,6 +476,8 @@ public class UIView extends JFrame {
 					setText(nextMethod.name);
 					if (nextMethod.jml) {
 						setBackground(Color.GREEN);
+						JCheckBox cb = new JCheckBox();
+						list.add(cb, index);
 					} else {
 						setBackground(Color.RED);
 					}
@@ -487,6 +491,7 @@ public class UIView extends JFrame {
 			}
 
 		});
+		
 
 		lblSpecification = new JLabel("");
 		lblSpecification.setForeground(UIManager.getColor("Button.background"));
@@ -538,5 +543,6 @@ public class UIView extends JFrame {
 		textFieldStarterM.setText(pm.name);
 		textFieldinfo.setText("");
 	}
+	
 
 }
