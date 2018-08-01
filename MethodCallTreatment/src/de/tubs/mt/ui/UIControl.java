@@ -11,6 +11,7 @@ import javax.swing.JFileChooser;
 import de.tubs.mt.codeanalyze.ClassMethodHandler;
 import de.tubs.mt.codeanalyze.PrepClasses;
 import de.tubs.mt.codeanalyze.PrepMethod;
+import de.tubs.mt.output.observer.LogOutput;
 import de.tubs.mt.programfactory.ProgramFactory;
 import de.tubs.mt.result.ChartResults;
 import de.tubs.mt.result.ExcelFile;
@@ -30,6 +31,9 @@ class UIControl {
 	
 	/** The view. */
 	private UIView view;
+	
+	/** The log output. */
+	private LogOutput logOutput = new LogOutput();
 	
 	/**
 	 * Instantiates a new UI control.
@@ -85,6 +89,7 @@ class UIControl {
 		model.setDepth(Integer.parseInt(view.getTextFielddepth().getText()));
 		model.setWidth(Integer.parseInt(view.getTextFieldwidth().getText()));
 		model.setToDepth(view.getChckbxFromTo().isSelected());
+		model.setTreeOrTinyCode(view.getComboBoxTinyTree().getSelectedItem().toString());
 		model.setGenerateProgram(view.getComboBoxProgram().getSelectedItem().toString());
 		model.getProgram().setParameters(model);
 	}
@@ -148,23 +153,25 @@ class UIControl {
 	public void executeVerify() throws Exception {
 		view.getTextFieldinfo().setText("Start to run");
 		String starter = view.getTextFieldStarterM().getText();
+		
 		if (starter.equals("")) {
 			view.getTextFieldinfo().setText("Choose a starter");
 			return;
 		}
-		int startP = Integer.parseInt(view.getTextFieldStartPercent().getText());
-		int endP = Integer.parseInt(view.getTextFieldEndPercent().getText());
-		int gran = Integer.parseInt(view.getComboBoxGranulation().getSelectedItem().toString());
-		String strategy = view.getComboBoxStrategy().getSelectedItem().toString();
+		model.setStarter(starter);
+		model.setStartPerc(Integer.parseInt(view.getTextFieldStartPercent().getText()));
+		model.setEndPerc(Integer.parseInt(view.getTextFieldEndPercent().getText()));
+		model.setGranulation(Integer.parseInt(view.getComboBoxGranulation().getSelectedItem().toString()));
+		model.setStrategy(view.getComboBoxStrategy().getSelectedItem().toString());
 		
 		if (!view.getChckbxSetSpecification().isSelected()) {
-			startP = endP;
+			model.setStartPerc(model.getEndPerc());
 		}
 		
-		boolean contracting = view.getChckbxContracting().isSelected();
-		int run = Integer.parseInt(view.getTextFieldruns().getText());
-
-		model.getProgram().verify(run, contracting, startP, endP, gran, starter, strategy);
+		model.setContracting(view.getChckbxContracting().isSelected());
+		model.setRun(Integer.parseInt(view.getTextFieldruns().getText()));
+		
+		model.getProgram().verify(model);
 
 		List<ChartResults> res = new ArrayList<>();
 		res.addAll(ResultHandler.getResultsForXY());
@@ -175,7 +182,7 @@ class UIControl {
 			model.getPropertiesList().add("Inlining-Width" + view.getTextFieldwidth().getText());
 		}
 
-		System.out.println("-------------------Ready------------------\n\n");
+		logOutput.apend("-------------------Ready------------------\n\n");
 		view.getTextFieldinfo().setText("Ready");
 
 	}

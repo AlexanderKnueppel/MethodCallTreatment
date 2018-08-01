@@ -13,6 +13,7 @@ import de.tubs.mt.codeanalyze.PrepClasses;
 import de.tubs.mt.codeanalyze.PrepMethod;
 import de.tubs.mt.evaluation.VerificationEffortMain;
 import de.tubs.mt.files.FileControl;
+import de.tubs.mt.output.observer.LogOutput;
 import de.tubs.mt.result.ResultHandler;
 import de.tubs.mt.ui.UIModel;
 
@@ -31,6 +32,9 @@ class CodeBase implements IProgram {
 	
 	/** The pm. */
 	private List<PrepMethod> pm = new ArrayList<PrepMethod>();
+	
+	/** The log output. */
+	private LogOutput logOutput = new LogOutput();
 
 	/* (non-Javadoc)
 	 * @see de.tubs.mt.programfactory.IProgram#prepare(java.io.File)
@@ -63,20 +67,19 @@ class CodeBase implements IProgram {
 	 * @see de.tubs.mt.programfactory.IProgram#verify(int, boolean, int, int, int, java.lang.String)
 	 */
 	@Override
-	public void verify(int runs, boolean contracting, int startPercentage, int endPercentage,
-			int granulation, String starter, String strategy) {
-		ResultHandler.initResults(contracting);
-		for (int run = 1; run <= runs; run++) {
+	public void verify(UIModel model) {
+		ResultHandler.initResults(model.isContracting());
+		for (int run = 1; run <= model.getRun(); run++) {
 			ResultHandler.clearResultList();
-			System.out.println("Run: " + run);
+			updateOutput("\n\nRun: " + run);
 			setMethodList();
 			JMLManipulator.setWhiteList(pm);
-			JMLManipulator.setStaterMethdod(starter);
+			JMLManipulator.setStaterMethdod(model.getStarter());
 			JMLManipulator.clearBlackList();
-			for (int perc = endPercentage; perc >= startPercentage; perc -= granulation) {
-				manipulate(0, perc, strategy);
+			for (int perc = model.getEndPerc(); perc >= model.getStartPerc(); perc -= model.getGranulation()) {
+				manipulate(0, perc, model.getStrategy());
 				List<Integer> effort = VerificationEffortMain.verifyProgram(FileControl.getExecPath()
-						.getPath(), starter, contracting);
+						.getPath(), model.getStarter(), model.isContracting(), logOutput);
 				ResultHandler.addResults(effort, run, 0, perc);
 
 			}
@@ -111,6 +114,12 @@ class CodeBase implements IProgram {
 	@Override
 	public void setParameters(UIModel model) {
 		// just for the generated Program
+		
+	}
+
+	@Override
+	public void updateOutput(String s) {
+		logOutput.apend(s);	
 		
 	}
 

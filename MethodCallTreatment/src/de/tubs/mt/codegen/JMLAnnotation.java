@@ -9,7 +9,7 @@ import java.util.List;
  */
 public class JMLAnnotation {
 	
-
+	public boolean include = true;
 	/** The requires. */
 	private List<String> requires = new ArrayList<>();
 	
@@ -40,6 +40,8 @@ public class JMLAnnotation {
 	 * @return the string
 	 */
 	public String generateCode(){
+		if(!include) return "";
+		
 		StringBuilder sb = new StringBuilder();
 		sb.append("	/*@ public normal_behavior\n");
 		for (String req : requires) {

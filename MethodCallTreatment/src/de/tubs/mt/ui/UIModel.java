@@ -58,6 +58,22 @@ public class UIModel {
 	/** The generate program. */
 	private String generateProgram;
 	
+	private int startPerc;
+	private int endPerc;
+	private int granulation;
+	private int run;
+	public String getTreeOrTinyCode() {
+		return treeOrTinyCode;
+	}
+
+	public void setTreeOrTinyCode(String treeOrTinyCode) {
+		this.treeOrTinyCode = treeOrTinyCode;
+	}
+
+	private String starter;
+	private boolean contracting;
+	private String treeOrTinyCode;
+	
 	
 	
 	
@@ -280,6 +296,54 @@ public class UIModel {
 	 */
 	public void setStrategy(String strategy) {
 		this.strategy = strategy;
+	}
+
+	public int getStartPerc() {
+		return startPerc;
+	}
+
+	public void setStartPerc(int startPerc) {
+		this.startPerc = startPerc;
+	}
+
+	public int getEndPerc() {
+		return endPerc;
+	}
+
+	public void setEndPerc(int endPerc) {
+		this.endPerc = endPerc;
+	}
+
+	public int getGranulation() {
+		return granulation;
+	}
+
+	public void setGranulation(int granulation) {
+		this.granulation = granulation;
+	}
+
+	public int getRun() {
+		return run;
+	}
+
+	public void setRun(int run) {
+		this.run = run;
+	}
+
+	public String getStarter() {
+		return starter;
+	}
+
+	public void setStarter(String starter) {
+		this.starter = starter;
+	}
+
+	public boolean isContracting() {
+		return contracting;
+	}
+
+	public void setContracting(boolean contracting) {
+		this.contracting = contracting;
 	}
 
 }

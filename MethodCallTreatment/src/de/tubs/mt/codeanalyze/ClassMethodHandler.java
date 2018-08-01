@@ -74,7 +74,7 @@ public abstract class ClassMethodHandler {
 				for (BodyDeclaration<?> member : members) {
 					if (member instanceof MethodDeclaration) {
 						MethodDeclaration method = (MethodDeclaration) member;
-						methodList.add(new PrepMethod(method.getName().asString(), method.hasComment()));
+						methodList.add(new PrepMethod(method.getName().asString(), method.hasComment(), method.getParameters().toString(), method.toString()));
 					}
 				}
 			}

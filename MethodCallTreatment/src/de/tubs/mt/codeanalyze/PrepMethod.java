@@ -12,8 +12,10 @@ public class PrepMethod {
 	 * @param name the name
 	 * @param jml the jml
 	 */
-	PrepMethod(String name, boolean jml) {
+	PrepMethod(String name, boolean jml, String parameters, String body) {
 		this.name = name;
+		this.body = body;
+		this.parameters = parameters;
 		this.jml = jml;	
 	}
 	
@@ -22,4 +24,10 @@ public class PrepMethod {
 	
 	/** The jml. */
 	public boolean jml;
+	
+	/** The parameters. */
+	public String parameters;
+	
+	/** The body. */
+	public String body;
 }

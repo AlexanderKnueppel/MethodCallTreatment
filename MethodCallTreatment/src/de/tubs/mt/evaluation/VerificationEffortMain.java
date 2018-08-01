@@ -10,6 +10,7 @@ import java.util.Set;
 
 import org.key_project.util.collection.ImmutableSet;
 
+import de.tubs.mt.output.observer.LogOutput;
 import de.uka.ilkd.key.control.KeYEnvironment;
 import de.uka.ilkd.key.java.abstraction.KeYJavaType;
 import de.uka.ilkd.key.logic.op.IObserverFunction;
@@ -42,11 +43,12 @@ public abstract class VerificationEffortMain {
 	 *            the contracting
 	 * @return the list
 	 */
-	public static List<Integer> verifyProgram(String directory, String starter, boolean contracting) {
+	public static List<Integer> verifyProgram(String directory, String starter, boolean contracting, LogOutput logOutput) {
 		result.clear();
-		for (VerificationResult v : verify(directory, Arrays.asList(starter), contracting)) {
+		for (VerificationResult v : verify(directory, Arrays.asList(starter), contracting, logOutput)) {
 			result.add(v.getStatistics().nodes);
-			System.out.println("\nClosed? " + v.isClosed());
+			logOutput.apend("\nResult: " + v.getStatistics().nodes);
+			logOutput.apend("\nClosed? " + v.isClosed() + "\n");
 		}
 		return result;
 	}
@@ -62,7 +64,7 @@ public abstract class VerificationEffortMain {
 	 *            the contracting
 	 * @return the list
 	 */
-	private static List<VerificationResult> verify(String directory, List<String> starter, boolean contracting) {
+	private static List<VerificationResult> verify(String directory, List<String> starter, boolean contracting, LogOutput logOutput) {
 		List<File> classPaths = null; // Optionally: Additional specifications
 		// classPaths.add(new
 		// File("/home/neapel/Desktop/MethodCallTreat/MethodCallTreatment/MethodCallTreatment/TestClasses/lib_specs"));
@@ -112,11 +114,11 @@ public abstract class VerificationEffortMain {
 					}
 				}
 
-				System.out.print("Skipped: ");
+				String skipOutput = "Skipped: ";
 				for (Contract contract : proofContracts) {
 					if (starter != null) {
 						if (!starter.contains(contract.getTarget().toString().split("::")[1])) {
-							System.out.print((contract.getTarget().toString().split("::")[1]) + " ");
+							skipOutput = skipOutput + (contract.getTarget().toString().split("::")[1]) + " ";
 							continue;
 						}
 					}
@@ -156,6 +158,7 @@ public abstract class VerificationEffortMain {
 					}
 
 				}
+				logOutput.apend(skipOutput);
 			} finally {
 				env.dispose(); // Ensure always that all instances of
 								// KeYEnvironment are disposed

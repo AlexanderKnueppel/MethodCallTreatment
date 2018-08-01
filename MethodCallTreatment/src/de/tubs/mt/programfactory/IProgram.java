@@ -44,8 +44,7 @@ public interface IProgram {
 	 * @param granulation the granulation
 	 * @param starter the starter
 	 */
-	public void verify(int runs, boolean contracting, int startPercentage, int endPercentage,
-			int granulation, String starter, String startegy);
+	public void verify(UIModel model);
 	
 	/**
 	 * Gets the classes.
@@ -53,5 +52,12 @@ public interface IProgram {
 	 * @return the classes
 	 */
 	public List<PrepClasses> getClasses();
+	
+	/**
+	 * Update output at the JTextArea in UIViewvia Observer.
+	 *
+	 * @param s the s
+	 */
+	public void updateOutput(String s);
 
 }

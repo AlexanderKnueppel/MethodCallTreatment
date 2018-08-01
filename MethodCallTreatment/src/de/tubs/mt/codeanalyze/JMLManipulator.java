@@ -85,11 +85,6 @@ public abstract class JMLManipulator {
 				}
 			}
 		}
-
-		System.out.println("Specification: " + specPerc + "%\tStrategy: " + strategy);
-		System.out.println("BlackList: " + blackList.toString());
-		System.out.println("WhiteList: " + whiteList.toString());
-
 	}
 
 	/**

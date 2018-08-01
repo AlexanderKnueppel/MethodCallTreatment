@@ -1,11 +1,15 @@
 package de.tubs.mt.ui;
 
 import de.tubs.mt.codeanalyze.PrepMethod;
+
 import java.util.Vector;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JSplitPane;
+import javax.swing.JTabbedPane;
+import javax.swing.JTextArea;
 import javax.swing.UIManager;
 import javax.swing.JLabel;
 import javax.swing.JCheckBox;
@@ -14,9 +18,8 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.JButton;
 import javax.swing.JTextField;
-import javax.swing.ListCellRenderer;
-import javax.swing.ListModel;
 import javax.swing.SwingConstants;
+import javax.swing.SwingWorker;
 import javax.swing.JList;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.event.ListSelectionEvent;
@@ -27,6 +30,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Font;
 import java.awt.GridLayout;
 
 public class UIView extends JFrame {
@@ -80,6 +84,13 @@ public class UIView extends JFrame {
 
 	public JComboBox<String> getComboBoxProgram() {
 		return comboBoxProgram;
+	}
+	
+	/** The combo box program. */
+	private JComboBox<String> comboBoxTinyTree;
+
+	public JComboBox<String> getComboBoxTinyTree() {
+		return comboBoxTinyTree;
 	}
 
 	// Gui - Elements for verify-option-field
@@ -209,28 +220,46 @@ public class UIView extends JFrame {
 		return lblSpecification;
 	}
 
+	// Gui - Elements for output view
+	// #######################################
+
+	/** The output text. Static - changes by LogObserver class */
+	public static JTextArea outputText;
+	
+	/** The method text. Static */
+	public JTextArea methodBodyText;
+	
+
 	/**
 	 * Instantiates a new UI view.
 	 */
 	public UIView() {
 		control = new UIControl(this);
-		this.setSize(700, 665);
+		this.setSize(1000, 665);
 		this.setLocation(400, 100);
 		this.setTitle("Method Call Treatment");
 		getContentPane().setBackground(SystemColor.infoText);
-		getContentPane().setLayout(new GridLayout(0, 2, 0, 0));
+		//getContentPane().setLayout(new GridLayout(0, 3, 0, 0));
 
+		JPanel mainControlPanel = new JPanel();
+		JSplitPane splitPanel = new JSplitPane();
+		splitPanel.setOrientation(JSplitPane.HORIZONTAL_SPLIT);
+		mainControlPanel.setLayout(new GridLayout(0, 2, 0, 0));
+		
 		JPanel panelProperties = new JPanel();
 		panelProperties.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
 		panelProperties.setBackground(UIManager.getColor("Button.foreground"));
 		panelProperties.setLayout(new GridLayout(0, 1, 5, 5));
-
 		panelProperties.add(getProgrammGenerateField());
 		panelProperties.add(getVerifyOptionsField());
 		panelProperties.add(getStatisticsField());
+		
+		mainControlPanel.add(panelProperties);
+		mainControlPanel.add(getViewMethodsField());
 
-		getContentPane().add(panelProperties);
-		getContentPane().add(getViewMethodsField());
+		splitPanel.setLeftComponent(mainControlPanel);
+		splitPanel.setRightComponent(getOutputArea());
+		getContentPane().add(splitPanel);
 
 	}
 
@@ -252,6 +281,9 @@ public class UIView extends JFrame {
 		comboBoxProgram = new JComboBox<String>();
 		comboBoxProgram.setModel(new DefaultComboBoxModel(new String[] { "Add", "Bubblesort" }));
 
+		comboBoxTinyTree = new JComboBox<String>();
+		comboBoxTinyTree.setModel(new DefaultComboBoxModel(new String[] { "Tree", "Tiny" }));
+		
 		JLabel lblWidth = new JLabel("Width");
 
 		textFieldwidth = new JTextField();
@@ -292,6 +324,8 @@ public class UIView extends JFrame {
 			}
 		});
 
+		ProgrammGenerateField.add(new JLabel(""));
+		ProgrammGenerateField.add(comboBoxTinyTree);
 		ProgrammGenerateField.add(lblCreate);
 		ProgrammGenerateField.add(comboBoxProgram);
 		ProgrammGenerateField.add(lblWidth);
@@ -300,13 +334,11 @@ public class UIView extends JFrame {
 		ProgrammGenerateField.add(textFielddepth);
 		ProgrammGenerateField.add(new JLabel(""));
 		ProgrammGenerateField.add(new JLabel(""));
-		ProgrammGenerateField.add(chckbxChooseExistingJava);
-		ProgrammGenerateField.add(new JLabel(""));
 		ProgrammGenerateField.add(btnSearch);
+		ProgrammGenerateField.add(chckbxChooseExistingJava);
 		ProgrammGenerateField.add(textFieldSearch);
-		ProgrammGenerateField.add(new JLabel(""));
 		ProgrammGenerateField.add(btnGenerate);
-
+		
 		return ProgrammGenerateField;
 
 	}
@@ -360,8 +392,21 @@ public class UIView extends JFrame {
 		btnExecVerify.setForeground(new Color(0, 128, 0));
 		btnExecVerify.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				outputText.setText("");
 				try {
-					control.executeVerify();
+					/**
+					 * We use a SwingWorker cause the verfication
+					 * is a time-consuming computation and will
+					 * freeze the gui
+					 */
+					new SwingWorker<String, Object>() {
+
+						@Override
+						protected String doInBackground() throws Exception {
+							control.executeVerify();
+							return null;
+						}
+					}.execute();
 				} catch (Exception e1) {
 					e1.printStackTrace();
 				}
@@ -473,15 +518,14 @@ public class UIView extends JFrame {
 				Component c = super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
 				if (value instanceof PrepMethod) {
 					PrepMethod nextMethod = (PrepMethod) value;
-					setText(nextMethod.name);
+					setText(nextMethod.name + " " + nextMethod.parameters);
 					if (nextMethod.jml) {
 						setBackground(Color.GREEN);
-						JCheckBox cb = new JCheckBox();
-						list.add(cb, index);
 					} else {
 						setBackground(Color.RED);
 					}
 					if (isSelected) {
+						methodBodyText.setText(nextMethod.body);
 						setBackground(getBackground().darker());
 					}
 				} else {
@@ -491,7 +535,6 @@ public class UIView extends JFrame {
 			}
 
 		});
-		
 
 		lblSpecification = new JLabel("");
 		lblSpecification.setForeground(UIManager.getColor("Button.background"));
@@ -538,11 +581,31 @@ public class UIView extends JFrame {
 
 	}
 
+	private JTabbedPane getOutputArea() {
+		JTabbedPane tabpane = new JTabbedPane(JTabbedPane.TOP,JTabbedPane.SCROLL_TAB_LAYOUT );
+		
+		outputText = new JTextArea();
+		outputText.setFont(new Font("Monospaced", Font.PLAIN, 12));
+		outputText.setEditable(false);
+		outputText.setForeground(Color.WHITE);
+		outputText.setBackground(Color.BLACK);
+		JScrollPane outputPanel = new JScrollPane(outputText);
+		
+		methodBodyText = new JTextArea();
+		methodBodyText.setEditable(false);
+		methodBodyText.setFont(new Font("Monospaced", Font.PLAIN, 12));
+		
+		
+		tabpane.addTab("Method", methodBodyText);
+		tabpane.addTab("Output", outputPanel);
+
+		return tabpane;
+	}
+
 	private void changeStarter() {
 		PrepMethod pm = (PrepMethod) list.getModel().getElementAt(list.getSelectedIndex());
 		textFieldStarterM.setText(pm.name);
 		textFieldinfo.setText("");
 	}
-	
 
 }

@@ -12,6 +12,7 @@ import de.tubs.mt.codeanalyze.PrepMethod;
 import de.tubs.mt.codegen.Incrementer;
 import de.tubs.mt.evaluation.VerificationEffortMain;
 import de.tubs.mt.files.FileControl;
+import de.tubs.mt.output.observer.LogOutput;
 import de.tubs.mt.result.ResultHandler;
 import de.tubs.mt.ui.UIModel;
 
@@ -28,6 +29,8 @@ class Generated implements IProgram {
 	/** The depth. */
 	private int depth;
 	
+	private boolean isTree;
+	
 	/** The program. */
 	private String program;
 	
@@ -42,6 +45,9 @@ class Generated implements IProgram {
 	
 	/** The List of Prep-Methods. */
 	private List<PrepMethod> pm = new ArrayList<PrepMethod>();
+	
+	/** The log output. */
+	private LogOutput logOutput = new LogOutput();
 
 
 	/* (non-Javadoc)
@@ -52,6 +58,7 @@ class Generated implements IProgram {
 		this.width = model.getWidth();
 		this.depth = model.getDepth();
 		this.startDepth = model.isToDepth() ? 1 : depth;
+		this.isTree = model.getTreeOrTinyCode().equals("Tree") ? true : false;
 		this.program = model.getGenerateProgram();
 		this.name = program + "Width" + width;
 	}
@@ -69,7 +76,7 @@ class Generated implements IProgram {
 				if (program.equals("Add")) {
 					Incrementer.generateProgramForAdd(width, flowDepth,
 							flowDepth, FileControl.getPrepPath().getPath(),
-							name);
+							name, isTree);
 				} else {
 					Incrementer.generateProgramForBubbleSort(width, depth,
 							flowDepth, FileControl.getPrepPath().getPath(),
@@ -109,22 +116,21 @@ class Generated implements IProgram {
 	 * @see de.tubs.mt.programfactory.IProgram#verify(int, boolean, int, int, int, java.lang.String)
 	 */
 	@Override
-	public void verify(int runs, boolean contracting, int startPercentage,
-			int endPercentage, int granulation, String starter, String strategy) {
-		
-		ResultHandler.initResults(contracting);
-		for (int run = 1; run <= runs; run++) {
+	public void verify(UIModel model) {
+		ResultHandler.initResults(model.isContracting());
+		for (int run = 1; run <= model.getRun(); run++) {
 			for (int dp = startDepth; dp <= depth; dp++) {
 				ResultHandler.clearResultList();
 				this.prepPath = new File(getDepthPrepPath(dp));
-				System.out.println("Run: " + run + "   Depth: " + dp);
+				updateOutput("\n\nStrategy: " + model.getStrategy() +  "  Run: " + run + "  Depth: " + dp +"\n");
 				pm = ClassMethodHandler.getMethodList(getDepthPrepPath(dp));
 				JMLManipulator.setWhiteList(pm);
-				JMLManipulator.setStaterMethdod(starter);
+				JMLManipulator.setStaterMethdod(model.getStarter());
 				JMLManipulator.clearBlackList();
-				for (int perc = endPercentage; perc >= startPercentage; perc -= granulation) {
-					manipulate(dp, perc, strategy);
-					List<Integer> effort =VerificationEffortMain.verifyProgram(FileControl.getExecPath().getPath(), starter, contracting);
+				for (int perc = model.getEndPerc(); perc >= model.getStartPerc(); perc -= model.getGranulation()) {
+					updateOutput("\nSpecification: " + perc +"\n");
+					manipulate(dp, perc, model.getStrategy());
+					List<Integer> effort =VerificationEffortMain.verifyProgram(FileControl.getExecPath().getPath(), model.getStarter(), model.isContracting(), logOutput);
 					ResultHandler.addResults(effort, run, dp, perc);
 				}
 			}
@@ -140,4 +146,8 @@ class Generated implements IProgram {
 		return ClassMethodHandler.getClassList(prepPath);
 	}
 
+	@Override
+	public void updateOutput(String s) {
+		logOutput.apend(s);	
+	}
 }
