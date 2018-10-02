@@ -12,7 +12,6 @@ import de.tubs.mt.result.ChartResults;
 import de.tubs.mt.result.XYChart;
 
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class UIModel.
  */
@@ -58,20 +57,43 @@ public class UIModel {
 	/** The generate program. */
 	private String generateProgram;
 	
+	/** The start perc. */
 	private int startPerc;
+	
+	/** The end perc. */
 	private int endPerc;
+	
+	/** The granulation. */
 	private int granulation;
+	
+	/** The run. */
 	private int run;
+	
+	/**
+	 * Gets the tree or tiny code.
+	 *
+	 * @return the tree or tiny code
+	 */
 	public String getTreeOrTinyCode() {
 		return treeOrTinyCode;
 	}
 
+	/**
+	 * Sets the tree or tiny code.
+	 *
+	 * @param treeOrTinyCode the new tree or tiny code
+	 */
 	public void setTreeOrTinyCode(String treeOrTinyCode) {
 		this.treeOrTinyCode = treeOrTinyCode;
 	}
 
+	/** The starter. */
 	private String starter;
+	
+	/** The contracting. */
 	private boolean contracting;
+	
+	/** The tree or tiny code. */
 	private String treeOrTinyCode;
 	
 	
@@ -298,50 +320,110 @@ public class UIModel {
 		this.strategy = strategy;
 	}
 
+	/**
+	 * Gets the start perc.
+	 *
+	 * @return the start perc
+	 */
 	public int getStartPerc() {
 		return startPerc;
 	}
 
+	/**
+	 * Sets the start perc.
+	 *
+	 * @param startPerc the new start perc
+	 */
 	public void setStartPerc(int startPerc) {
 		this.startPerc = startPerc;
 	}
 
+	/**
+	 * Gets the end perc.
+	 *
+	 * @return the end perc
+	 */
 	public int getEndPerc() {
 		return endPerc;
 	}
 
+	/**
+	 * Sets the end perc.
+	 *
+	 * @param endPerc the new end perc
+	 */
 	public void setEndPerc(int endPerc) {
 		this.endPerc = endPerc;
 	}
 
+	/**
+	 * Gets the granulation.
+	 *
+	 * @return the granulation
+	 */
 	public int getGranulation() {
 		return granulation;
 	}
 
+	/**
+	 * Sets the granulation.
+	 *
+	 * @param granulation the new granulation
+	 */
 	public void setGranulation(int granulation) {
 		this.granulation = granulation;
 	}
 
+	/**
+	 * Gets the run.
+	 *
+	 * @return the run
+	 */
 	public int getRun() {
 		return run;
 	}
 
+	/**
+	 * Sets the run.
+	 *
+	 * @param run the new run
+	 */
 	public void setRun(int run) {
 		this.run = run;
 	}
 
+	/**
+	 * Gets the starter.
+	 *
+	 * @return the starter
+	 */
 	public String getStarter() {
 		return starter;
 	}
 
+	/**
+	 * Sets the starter.
+	 *
+	 * @param starter the new starter
+	 */
 	public void setStarter(String starter) {
 		this.starter = starter;
 	}
 
+	/**
+	 * Checks if is contracting.
+	 *
+	 * @return true, if is contracting
+	 */
 	public boolean isContracting() {
 		return contracting;
 	}
 
+	/**
+	 * Sets the contracting.
+	 *
+	 * @param contracting the new contracting
+	 */
 	public void setContracting(boolean contracting) {
 		this.contracting = contracting;
 	}

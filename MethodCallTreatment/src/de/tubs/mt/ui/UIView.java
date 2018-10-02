@@ -33,12 +33,16 @@ import java.awt.Component;
 import java.awt.Font;
 import java.awt.GridLayout;
 
+
+/**
+ * The Class UIView.
+ */
 public class UIView extends JFrame {
-	/**
-	 * 
-	 */
+	
+	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
 
+	/** The control. */
 	private UIControl control;
 
 	// Gui - Elements for programm-generate field
@@ -47,6 +51,11 @@ public class UIView extends JFrame {
 	/** The text field search. */
 	private JTextField textFieldSearch;
 
+	/**
+	 * Gets the text fieldsearch.
+	 *
+	 * @return the text fieldsearch
+	 */
 	public JTextField getTextFieldsearch() {
 		return textFieldSearch;
 	}
@@ -54,6 +63,11 @@ public class UIView extends JFrame {
 	/** The text fieldwidth. */
 	private JTextField textFieldwidth;
 
+	/**
+	 * Gets the text fieldwidth.
+	 *
+	 * @return the text fieldwidth
+	 */
 	public JTextField getTextFieldwidth() {
 		return textFieldwidth;
 	}
@@ -61,6 +75,11 @@ public class UIView extends JFrame {
 	/** The text fielddepth. */
 	private JTextField textFielddepth;
 
+	/**
+	 * Gets the text fielddepth.
+	 *
+	 * @return the text fielddepth
+	 */
 	public JTextField getTextFielddepth() {
 		return textFielddepth;
 	}
@@ -68,6 +87,11 @@ public class UIView extends JFrame {
 	/** The chckbx from to. */
 	private JCheckBox chckbxFromTo;
 
+	/**
+	 * Gets the chckbx from to.
+	 *
+	 * @return the chckbx from to
+	 */
 	public JCheckBox getChckbxFromTo() {
 		return chckbxFromTo;
 	}
@@ -75,6 +99,11 @@ public class UIView extends JFrame {
 	/** The chckbx choose existing java. */
 	private JCheckBox chckbxChooseExistingJava;
 
+	/**
+	 * Gets the chckbx choose existing java.
+	 *
+	 * @return the chckbx choose existing java
+	 */
 	public JCheckBox getChckbxChooseExistingJava() {
 		return chckbxChooseExistingJava;
 	}
@@ -82,6 +111,11 @@ public class UIView extends JFrame {
 	/** The combo box program. */
 	private JComboBox<String> comboBoxProgram;
 
+	/**
+	 * Gets the combo box program.
+	 *
+	 * @return the combo box program
+	 */
 	public JComboBox<String> getComboBoxProgram() {
 		return comboBoxProgram;
 	}
@@ -89,6 +123,11 @@ public class UIView extends JFrame {
 	/** The combo box program. */
 	private JComboBox<String> comboBoxTinyTree;
 
+	/**
+	 * Gets the combo box tiny tree.
+	 *
+	 * @return the combo box tiny tree
+	 */
 	public JComboBox<String> getComboBoxTinyTree() {
 		return comboBoxTinyTree;
 	}
@@ -99,6 +138,11 @@ public class UIView extends JFrame {
 	/** The text fieldruns. */
 	private JTextField textFieldruns;
 
+	/**
+	 * Gets the text fieldruns.
+	 *
+	 * @return the text fieldruns
+	 */
 	public JTextField getTextFieldruns() {
 		return textFieldruns;
 	}
@@ -106,6 +150,11 @@ public class UIView extends JFrame {
 	/** The text field start percent. */
 	private JTextField textFieldStartPercent;
 
+	/**
+	 * Gets the text field start percent.
+	 *
+	 * @return the text field start percent
+	 */
 	public JTextField getTextFieldStartPercent() {
 		return textFieldStartPercent;
 	}
@@ -113,6 +162,11 @@ public class UIView extends JFrame {
 	/** The text field end percent. */
 	private JTextField textFieldEndPercent;
 
+	/**
+	 * Gets the text field end percent.
+	 *
+	 * @return the text field end percent
+	 */
 	public JTextField getTextFieldEndPercent() {
 		return textFieldEndPercent;
 	}
@@ -120,6 +174,11 @@ public class UIView extends JFrame {
 	/** The chckbx contracting. */
 	private JCheckBox chckbxContracting;
 
+	/**
+	 * Gets the chckbx contracting.
+	 *
+	 * @return the chckbx contracting
+	 */
 	public JCheckBox getChckbxContracting() {
 		return chckbxContracting;
 	}
@@ -127,6 +186,11 @@ public class UIView extends JFrame {
 	/** The combo box strategy. */
 	private JComboBox<String> comboBoxStrategy;
 
+	/**
+	 * Gets the combo box strategy.
+	 *
+	 * @return the combo box strategy
+	 */
 	public JComboBox<String> getComboBoxStrategy() {
 		return comboBoxStrategy;
 	}
@@ -134,6 +198,11 @@ public class UIView extends JFrame {
 	/** The chckbx set specification. */
 	private JCheckBox chckbxSetSpecification;
 
+	/**
+	 * Gets the chckbx set specification.
+	 *
+	 * @return the chckbx set specification
+	 */
 	public JCheckBox getChckbxSetSpecification() {
 		return chckbxSetSpecification;
 	}
@@ -141,6 +210,11 @@ public class UIView extends JFrame {
 	/** The combo box granulation. */
 	private JComboBox<String> comboBoxGranulation;
 
+	/**
+	 * Gets the combo box granulation.
+	 *
+	 * @return the combo box granulation
+	 */
 	public JComboBox<String> getComboBoxGranulation() {
 		return comboBoxGranulation;
 	}
@@ -151,6 +225,11 @@ public class UIView extends JFrame {
 	/** The chckbx merge into last. */
 	private JCheckBox chckbxMergeIntoLast;
 
+	/**
+	 * Gets the chckbx merge into last.
+	 *
+	 * @return the chckbx merge into last
+	 */
 	public JCheckBox getChckbxMergeIntoLast() {
 		return chckbxMergeIntoLast;
 	}
@@ -158,6 +237,11 @@ public class UIView extends JFrame {
 	/** The combo box chart. */
 	private JComboBox<String> comboBoxChart;
 
+	/**
+	 * Gets the combo box chart.
+	 *
+	 * @return the combo box chart
+	 */
 	public JComboBox<String> getComboBoxChart() {
 		return comboBoxChart;
 	}
@@ -168,6 +252,11 @@ public class UIView extends JFrame {
 	/** The text fieldinfo. */
 	private JTextField textFieldinfo;
 
+	/**
+	 * Gets the text fieldinfo.
+	 *
+	 * @return the text fieldinfo
+	 */
 	public JTextField getTextFieldinfo() {
 		return textFieldinfo;
 	}
@@ -175,6 +264,11 @@ public class UIView extends JFrame {
 	/** The text field starter M. */
 	private JTextField textFieldStarterM;
 
+	/**
+	 * Gets the text field starter M.
+	 *
+	 * @return the text field starter M
+	 */
 	public JTextField getTextFieldStarterM() {
 		return textFieldStarterM;
 	}
@@ -182,6 +276,11 @@ public class UIView extends JFrame {
 	/** The combo box classes. */
 	private JComboBox<String> comboBoxClasses;
 
+	/**
+	 * Gets the combo box classes.
+	 *
+	 * @return the combo box classes
+	 */
 	public JComboBox<String> getComboBoxClasses() {
 		return comboBoxClasses;
 	}
@@ -189,6 +288,11 @@ public class UIView extends JFrame {
 	/** The method vector. */
 	private Vector<PrepMethod> methodVector = new Vector<PrepMethod>();
 
+	/**
+	 * Gets the method vector.
+	 *
+	 * @return the method vector
+	 */
 	public Vector<PrepMethod> getMethodVector() {
 		return methodVector;
 	}
@@ -197,6 +301,11 @@ public class UIView extends JFrame {
 	@SuppressWarnings("rawtypes")
 	private JList list;
 
+	/**
+	 * Gets the list.
+	 *
+	 * @return the list
+	 */
 	@SuppressWarnings("rawtypes")
 	public JList getList() {
 		return list;
@@ -209,6 +318,11 @@ public class UIView extends JFrame {
 		}
 	};
 
+	/**
+	 * Gets the list selection listener.
+	 *
+	 * @return the list selection listener
+	 */
 	public ListSelectionListener getListSelectionListener() {
 		return selListener;
 	}
@@ -216,6 +330,11 @@ public class UIView extends JFrame {
 	/** The lbl specification. */
 	private JLabel lblSpecification;
 
+	/**
+	 * Gets the lbl specification.
+	 *
+	 * @return the lbl specification
+	 */
 	public JLabel getLblSpecification() {
 		return lblSpecification;
 	}
@@ -239,7 +358,6 @@ public class UIView extends JFrame {
 		this.setLocation(400, 100);
 		this.setTitle("Method Call Treatment");
 		getContentPane().setBackground(SystemColor.infoText);
-		//getContentPane().setLayout(new GridLayout(0, 3, 0, 0));
 
 		JPanel mainControlPanel = new JPanel();
 		JSplitPane splitPanel = new JSplitPane();
@@ -264,7 +382,7 @@ public class UIView extends JFrame {
 	}
 
 	/**
-	 * Gets the programm-generate field # Panel with GridLayout
+	 * Gets the programm-generate field # Panel with GridLayout.
 	 *
 	 * @return the programm-generate field
 	 */
@@ -397,7 +515,7 @@ public class UIView extends JFrame {
 					/**
 					 * We use a SwingWorker cause the verfication
 					 * is a time-consuming computation and will
-					 * freeze the gui
+					 * freeze the gui for (maybe) a long time
 					 */
 					new SwingWorker<String, Object>() {
 
@@ -581,6 +699,11 @@ public class UIView extends JFrame {
 
 	}
 
+	/**
+	 * Gets the output and method-body area.
+	 *
+	 * @return the output area
+	 */
 	private JTabbedPane getOutputArea() {
 		JTabbedPane tabpane = new JTabbedPane(JTabbedPane.TOP,JTabbedPane.SCROLL_TAB_LAYOUT );
 		
@@ -602,6 +725,9 @@ public class UIView extends JFrame {
 		return tabpane;
 	}
 
+	/**
+	 * Change starter.
+	 */
 	private void changeStarter() {
 		PrepMethod pm = (PrepMethod) list.getModel().getElementAt(list.getSelectedIndex());
 		textFieldStarterM.setText(pm.name);

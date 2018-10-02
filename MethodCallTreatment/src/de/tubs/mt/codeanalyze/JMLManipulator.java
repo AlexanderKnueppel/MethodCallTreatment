@@ -20,7 +20,6 @@ import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.body.TypeDeclaration;
 
 import de.tubs.mt.files.FileControl;
-import de.tubs.mt.ui.UIModel;
 
 /**
  * The Class JMLManipulator.
