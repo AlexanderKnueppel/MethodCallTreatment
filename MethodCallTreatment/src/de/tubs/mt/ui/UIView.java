@@ -348,6 +348,9 @@ public class UIView extends JFrame {
 	/** The method text. Static */
 	public JTextArea methodBodyText;
 	
+	/** The Tab of method/output */
+	private JTabbedPane tabpane;
+	
 
 	/**
 	 * Instantiates a new UI view.
@@ -510,6 +513,7 @@ public class UIView extends JFrame {
 		btnExecVerify.setForeground(new Color(0, 128, 0));
 		btnExecVerify.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				tabpane.setSelectedIndex(1);
 				outputText.setText("");
 				try {
 					/**
@@ -705,7 +709,7 @@ public class UIView extends JFrame {
 	 * @return the output area
 	 */
 	private JTabbedPane getOutputArea() {
-		JTabbedPane tabpane = new JTabbedPane(JTabbedPane.TOP,JTabbedPane.SCROLL_TAB_LAYOUT );
+		tabpane = new JTabbedPane(JTabbedPane.TOP,JTabbedPane.SCROLL_TAB_LAYOUT );
 		
 		outputText = new JTextArea();
 		outputText.setFont(new Font("Monospaced", Font.PLAIN, 12));
