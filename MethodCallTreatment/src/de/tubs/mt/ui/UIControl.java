@@ -1,6 +1,5 @@
 package de.tubs.mt.ui;
 
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,33 +18,31 @@ import de.tubs.mt.result.ResultHandler;
 import de.tubs.mt.result.XYChart;
 import de.tubs.mt.result.XYChart.Chart;
 
-
-
 /**
  * The Class UIControl.
  */
 class UIControl {
-	
+
 	/** The model. */
 	private UIModel model;
-	
+
 	/** The view. */
 	private UIView view;
-	
+
 	/** The log output. */
 	private LogOutput logOutput = new LogOutput();
-	
+
 	/**
 	 * Instantiates a new UI control.
 	 *
-	 * @param view the view
+	 * @param view
+	 *            the view
 	 */
 	public UIControl(UIView view) {
 		this.model = new UIModel();
 		this.view = view;
 	}
-	
-	
+
 	/**
 	 * Choose input file.
 	 */
@@ -62,26 +59,54 @@ class UIControl {
 			System.out.println("No Selection ");
 		}
 	}
-	
 
-	
 	/**
 	 * Execute generate.
 	 *
-	 * @throws Exception the exception
+	 * @throws Exception
+	 *             the exception
 	 */
 	public void executeGenerate() throws Exception {
 		String programType = "generated";
 		if (view.getChckbxChooseExistingJava().isSelected()) {
-			programType = model.getChoosenFile().isFile() ? "single" : "codebase";
+			if(view.getTextFieldsearch().getText().equals("")) {
+				view.getTextFieldinfo().setText("Choose a .java file or codebase");
+				return;
+			} else {
+				programType = model.getChoosenFile().isFile() ? "single" : "codebase";
+			}
+			
 		}
+		view.getTextFieldinfo().setText("");
+		if (view.getComboBoxTinyTree().getSelectedItem().toString().equals("Tree")) {
+			enableSpecification();
+		} else {
+			disableSpecification();
+		}
+		
 		model.setProgram(ProgramFactory.getProgram(programType));
 		setParameter();
 		model.getProgram().prepare(model.getChoosenFile());
 		showMethods();
+		view.getBtnExecVerify().setEnabled(true);
 	}
 	
+	private void enableSpecification() {
+		view.getTextFieldStartPercent().setEnabled(true);
+		view.getTextFieldEndPercent().setEnabled(true);
+		view.getComboBoxStrategy().setEnabled(true);
+		view.getChckbxSetSpecification().setEnabled(true);
+		view.getComboBoxGranulation().setEnabled(true);
+	}
 	
+	private void disableSpecification() {
+		view.getTextFieldStartPercent().setEnabled(false);
+		view.getTextFieldEndPercent().setEnabled(false);
+		view.getComboBoxStrategy().setEnabled(false);
+		view.getChckbxSetSpecification().setEnabled(false);
+		view.getComboBoxGranulation().setEnabled(false);
+	}
+
 	/**
 	 * Sets the parameter.
 	 */
@@ -93,12 +118,12 @@ class UIControl {
 		model.setGenerateProgram(view.getComboBoxProgram().getSelectedItem().toString());
 		model.getProgram().setParameters(model);
 	}
-	
-	
+
 	/**
 	 * Show methods.
 	 *
-	 * @throws Exception the exception
+	 * @throws Exception
+	 *             the exception
 	 */
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	private void showMethods() throws Exception {
@@ -115,16 +140,14 @@ class UIControl {
 			model.getMethodList().addAll(pc.prepMethods);
 		}
 
-		String properties = "Classes: " + model.getClassList().size() + "   Methods: " + model.getMethodList().size() + "   Spec: "
-				+ ClassMethodHandler.getSpecPercent(model.getMethodList()) + "%";
+		String properties = "Classes: " + model.getClassList().size() + "   Methods: " + model.getMethodList().size()
+				+ "   Spec: " + ClassMethodHandler.getSpecPercent(model.getMethodList()) + "%";
 		view.getComboBoxClasses().setModel(new DefaultComboBoxModel(classString.toArray()));
 		view.getLblSpecification().setText(properties);
 		view.getTextFieldEndPercent().setText("" + ClassMethodHandler.getSpecPercent(model.getMethodList()));
 		setClassDependedMethods();
 	}
-	
-	
-	
+
 	/**
 	 * Sets the class depended methods.
 	 */
@@ -143,17 +166,17 @@ class UIControl {
 		view.getList().setListData(view.getMethodVector());
 		view.getList().addListSelectionListener(view.getListSelectionListener());
 	}
-	
-	
+
 	/**
 	 * Execute verify.
 	 *
-	 * @throws Exception the exception
+	 * @throws Exception
+	 *             the exception
 	 */
 	public void executeVerify() throws Exception {
 		view.getTextFieldinfo().setText("Start to run");
 		String starter = view.getTextFieldStarterM().getText();
-		
+
 		if (starter.equals("")) {
 			view.getTextFieldinfo().setText("Choose a starter");
 			return;
@@ -163,14 +186,14 @@ class UIControl {
 		model.setEndPerc(Integer.parseInt(view.getTextFieldEndPercent().getText()));
 		model.setGranulation(Integer.parseInt(view.getComboBoxGranulation().getSelectedItem().toString()));
 		model.setStrategy(view.getComboBoxStrategy().getSelectedItem().toString());
-		
+
 		if (!view.getChckbxSetSpecification().isSelected()) {
 			model.setStartPerc(model.getEndPerc());
 		}
-		
+
 		model.setContracting(view.getChckbxContracting().isSelected());
 		model.setRun(Integer.parseInt(view.getTextFieldruns().getText()));
-		
+
 		model.getProgram().verify(model);
 
 		List<ChartResults> res = new ArrayList<>();
@@ -186,7 +209,7 @@ class UIControl {
 		view.getTextFieldinfo().setText("Ready");
 
 	}
-	
+
 	/**
 	 * Clear data.
 	 */
@@ -194,7 +217,7 @@ class UIControl {
 		model.getResultLists().clear();
 		view.getTextFieldinfo().setText("Resultlist is empty.");
 	}
-	
+
 	/**
 	 * Creates the chart.
 	 */
@@ -211,11 +234,10 @@ class UIControl {
 		if (model.getResultLists().isEmpty()) {
 			view.getTextFieldinfo().setText("No charts available.");
 		} else {
-			model.setXychart(new XYChart("XY-Chart", "ContractTest", model.getResultLists(), model.getPropertiesList(), chart,
-					view.getChckbxMergeIntoLast().isSelected()));
+			model.setXychart(new XYChart("XY-Chart", "ContractTest", model.getResultLists(), model.getPropertiesList(),
+					chart, view.getChckbxMergeIntoLast().isSelected()));
 		}
 	}
-	
 
 	/**
 	 * Creates the excel file.
@@ -230,6 +252,5 @@ class UIControl {
 			e.printStackTrace();
 		}
 	}
-	
 
 }

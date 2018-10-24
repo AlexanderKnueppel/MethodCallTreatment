@@ -28,6 +28,8 @@ import javax.swing.border.BevelBorder;
 import java.awt.SystemColor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
@@ -131,9 +133,22 @@ public class UIView extends JFrame {
 	public JComboBox<String> getComboBoxTinyTree() {
 		return comboBoxTinyTree;
 	}
+	
 
+	private JButton btnSearch;
+
+	
+	public JButton getBtnSearch() {
+		return btnSearch;
+	}
+
+	public void setBtnSearch(JButton btnSearch) {
+		this.btnSearch = btnSearch;
+	}
 	// Gui - Elements for verify-option-field
 	// #######################################
+
+	
 
 	/** The text fieldruns. */
 	private JTextField textFieldruns;
@@ -218,9 +233,22 @@ public class UIView extends JFrame {
 	public JComboBox<String> getComboBoxGranulation() {
 		return comboBoxGranulation;
 	}
+	
+	
+	private JButton btnExecVerify;
+
+	public JButton getBtnExecVerify() {
+		return btnExecVerify;
+	}
+
+	public void setBtnExecVerify(JButton btnExecVerify) {
+		this.btnExecVerify = btnExecVerify;
+	}
 
 	// Gui - Elements for statistics-field
 	// #######################################
+
+	
 
 	/** The chckbx merge into last. */
 	private JCheckBox chckbxMergeIntoLast;
@@ -419,13 +447,21 @@ public class UIView extends JFrame {
 		textFielddepth.setColumns(10);
 
 		chckbxChooseExistingJava = new JCheckBox("Choose File");
+		chckbxChooseExistingJava.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+            	enableFileSearch(e);
+            }
+        });
+		
 		chckbxChooseExistingJava.setBackground(UIManager.getColor("Button.select"));
 
 		textFieldSearch = new JTextField();
 		textFieldSearch.setEditable(false);
 		textFieldSearch.setColumns(10);
 
-		JButton btnSearch = new JButton("Search");
+		btnSearch = new JButton("Search");
+		btnSearch.setEnabled(false);
 		btnSearch.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				control.chooseInputFile();
@@ -439,6 +475,7 @@ public class UIView extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				try {
 					control.executeGenerate();
+					textFieldStarterM.setText("");
 				} catch (Exception e1) {
 					e1.printStackTrace();
 				}
@@ -509,7 +546,8 @@ public class UIView extends JFrame {
 		comboBoxGranulation
 				.setModel(new DefaultComboBoxModel(new String[] { "1", "5", "10", "15", "20", "30", "40", "50" }));
 		comboBoxGranulation.setSelectedIndex(2);
-		JButton btnExecVerify = new JButton("Verify");
+		btnExecVerify = new JButton("Verify");
+		btnExecVerify.setEnabled(false);
 		btnExecVerify.setForeground(new Color(0, 128, 0));
 		btnExecVerify.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -736,6 +774,18 @@ public class UIView extends JFrame {
 		PrepMethod pm = (PrepMethod) list.getModel().getElementAt(list.getSelectedIndex());
 		textFieldStarterM.setText(pm.name);
 		textFieldinfo.setText("");
+	}
+	
+	
+	/**
+	 * 
+	 */
+	private void enableFileSearch(ItemEvent e){
+		if(e.getStateChange() == ItemEvent.SELECTED) {
+			btnSearch.setEnabled(true);
+		} else {
+			btnSearch.setEnabled(false);
+		}
 	}
 
 }
